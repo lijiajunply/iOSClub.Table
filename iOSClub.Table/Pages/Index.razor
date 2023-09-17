@@ -76,7 +76,7 @@
     };
 
     public string[] Genders => new[] { "男", "女" };
-    public SignModel Model { get; set; } = new();
+    public SignModel Model { get; } = new();
 
 
     private async Task OnFinish()
@@ -107,7 +107,7 @@
 
     private bool Loading { get; set; }
 
-    private async Task OnFinishFailed()
+    private void OnFinishFailed()
     {
         Console.WriteLine("出问题了");
         Loading = false;
