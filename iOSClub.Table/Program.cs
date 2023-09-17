@@ -1,5 +1,5 @@
+using iOSClub.Table.Data;
 using Microsoft.EntityFrameworkCore;
-using TableData;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,14 +8,11 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddAntDesign();
 builder.Services.AddDbContextFactory<SignContext>(opt =>
-    opt.UseSqlite($"Data Source={nameof(SignContext)}.db"));
+    opt.UseSqlite($"Data Source={nameof(SignContext.Students)}.db"));
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(
-        policy =>
-        {
-            policy.WithOrigins("http://qm.qq.com");
-        });
+        policy => { policy.WithOrigins("http://qm.qq.com"); });
 });
 
 
@@ -25,7 +22,6 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 

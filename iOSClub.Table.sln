@@ -2,8 +2,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iOSClub.Table", "iOSClub.Table\iOSClub.Table.csproj", "{6F7EF52A-04B3-4C01-AE70-F2D3F1ACFBE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableData", "TableData\TableData.csproj", "{ABEA1F86-EBF0-4401-B83B-5178589B8856}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -14,9 +12,5 @@ Global
 		{6F7EF52A-04B3-4C01-AE70-F2D3F1ACFBE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F7EF52A-04B3-4C01-AE70-F2D3F1ACFBE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F7EF52A-04B3-4C01-AE70-F2D3F1ACFBE8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ABEA1F86-EBF0-4401-B83B-5178589B8856}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ABEA1F86-EBF0-4401-B83B-5178589B8856}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ABEA1F86-EBF0-4401-B83B-5178589B8856}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ABEA1F86-EBF0-4401-B83B-5178589B8856}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

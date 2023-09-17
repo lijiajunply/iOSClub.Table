@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace TableData;
+namespace iOSClub.Table.Data;
 
 public class SignContext : DbContext
 {

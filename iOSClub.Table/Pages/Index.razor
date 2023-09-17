@@ -1,6 +1,6 @@
 ﻿@page "/{Text?}"
-@using TableData
 @using Microsoft.EntityFrameworkCore
+@using iOSClub.Table.Data
 @inject IDbContextFactory<SignContext> DbFactory
 @inject NavigationManager NavigationManager
 
@@ -42,7 +42,7 @@
 {
     [Parameter]
     public string? Text { get; set; }
-    
+
     public string[] Academies => new[]
     {
         "信息与控制工程学院",
@@ -81,27 +81,43 @@
 
     private async Task OnFinish()
     {
-        Console.WriteLine("搞定！");
-        Console.WriteLine(Model);
-        // await using var context = await DbFactory.CreateDbContextAsync();
-        // context.Students.Add(Model);
-        // await context.SaveChangesAsync();
-        
-        if(string.IsNullOrEmpty(Text))return;
+        if (string.IsNullOrEmpty(Model.UserName) || string.IsNullOrEmpty(Model.ClassName) || string.IsNullOrEmpty(Model.PhoneNum)) return;
+
+        if (Loading)
+            return;
+        try
+        {
+            Loading = true;
+            await using var context = await DbFactory.CreateDbContextAsync();
+            context.Students.Add(Model);
+            await context.SaveChangesAsync();
+        }
+        finally
+        {
+            Loading = false;
+        }
+
+        if (Text == "mc")
+        {
+            NavigationManager.NavigateTo("/QRCode");
+            return;
+        }
         NavigationManager.NavigateTo("http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=OBvNEKKtJIILY5CKtWVtnWmHjESZBVdI&authKey=rsTTBwwSZS9TBFqmZSJuTPWYf3zoSyokaLrAN5XYUvsN%2FMpw90O6scuR4v4y67bK&noverify=0&group_code=952954710");
-        
     }
+
+    private bool Loading { get; set; }
 
     private async Task OnFinishFailed()
     {
         Console.WriteLine("出问题了");
+        Loading = false;
     }
 
-    private FormValidationRule[] UserNameRules => new FormValidationRule[] { new() { Pattern = "^[\\u4E00-\\u9FA5A-Za-z\\s]+(·[\\u4E00-\\u9FA5A-Za-z]+)*$"} };
+    private FormValidationRule[] UserNameRules => new FormValidationRule[] { new() { Pattern = "^[\\u4E00-\\u9FA5A-Za-z\\s]+(·[\\u4E00-\\u9FA5A-Za-z]+)*$" } };
 
     private FormValidationRule[] IdRules => new FormValidationRule[] { new() { Max = 10 } };
 
-    private FormValidationRule[] PhoneNumRules => new FormValidationRule[] { new() { Max = 11, Pattern = "^1\\d{10}$",Message = "手机号不正确!"} };
+    private FormValidationRule[] PhoneNumRules => new FormValidationRule[] { new() { Max = 11, Pattern = "^1\\d{10}$", Message = "手机号不正确!" } };
 
     private FormValidationRule[] ClassNameRules => new FormValidationRule[] { new() };
 

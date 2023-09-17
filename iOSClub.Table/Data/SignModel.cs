@@ -1,4 +1,4 @@
-﻿namespace TableData;
+﻿namespace iOSClub.Table.Data;
 
 public class SignModel
 {
