@@ -2,14 +2,13 @@
 @using Microsoft.EntityFrameworkCore
 @using System.Text.Json
 @using iOSClub.Table.Data
-<Title>AllData</Title>
 @inject IDbContextFactory<SignContext> DbFactory
 
 
-<h5>@Context</h5>
+<h5></h5>
 
 @code {
-    public string Context { get; set; }
+    public string Context { get; set; } = "";
 
     protected override async Task OnInitializedAsync()
     {

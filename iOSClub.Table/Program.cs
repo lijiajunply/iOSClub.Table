@@ -1,5 +1,8 @@
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 using iOSClub.Table.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.WebEncoders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +17,7 @@ builder.Services.AddCors(options =>
     options.AddDefaultPolicy(
         policy => { policy.WithOrigins("http://qm.qq.com"); });
 });
-
+builder.Services.Configure<WebEncoderOptions>(options =>options.TextEncoderSettings = new TextEncoderSettings(UnicodeRanges.All));
 
 var app = builder.Build();
 
