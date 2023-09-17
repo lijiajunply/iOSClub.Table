@@ -1,0 +1,108 @@
+﻿@page "/{Text?}"
+@using TableData
+@using Microsoft.EntityFrameworkCore
+@inject IDbContextFactory<SignContext> DbFactory
+@inject NavigationManager NavigationManager
+
+<PageTitle>iOS Club - 注册</PageTitle>
+
+
+<Form Model="@Model"
+      ValidateMode="@FormValidateMode.Rules"
+      OnFinish="OnFinish"
+      OnFinishFailed="OnFinishFailed">
+    <FormItem Label="姓名" ShowFeedbackOnError="true" Rules="UserNameRules">
+        <Input @bind-Value="@context.UserName"/>
+    </FormItem>
+    <FormItem Label="性别" ShowFeedbackOnError="true">
+        <Select @bind-Value="@context.Gender" DataSource="@Genders"></Select>
+    </FormItem>
+    <FormItem Label="学号" ShowFeedbackOnError="true" Rules="IdRules">
+        <Input @bind-Value="@context.Id"/>
+    </FormItem>
+    <FormItem Label="学院" ShowFeedbackOnError="true">
+        <Select @bind-Value="@context.Academy" DataSource="@Academies"></Select>
+    </FormItem>
+    <FormItem Label="政治面貌" ShowFeedbackOnError="true">
+        <Select @bind-Value="@context.PoliticalLandscape" DataSource="@PoliticalLandscapes"></Select>
+    </FormItem>
+    <FormItem Label="专业班级" ShowFeedbackOnError="true" Rules="ClassNameRules">
+        <Input @bind-Value="@context.ClassName"/>
+    </FormItem>
+    <FormItem Label="手机号码" ShowFeedbackOnError="true" Rules="PhoneNumRules">
+        <Input @bind-Value="@context.PhoneNum"/>
+    </FormItem>
+
+    <FormItem WrapperColOffset="8" WrapperColSpan="16">
+        <Button Type="@ButtonType.Primary" HtmlType="submit">提交</Button>
+    </FormItem>
+</Form>
+
+@code
+{
+    [Parameter]
+    public string? Text { get; set; }
+    
+    public string[] Academies => new[]
+    {
+        "信息与控制工程学院",
+        "理学院",
+        "机电学院",
+        "建筑学院",
+        "机电工程学院",
+        "管理学院",
+        "土木工程学院",
+        "环境与市政工程学院",
+        "建筑设备科学与工程学院",
+        "材料科学与工程学院",
+        "冶金工程学院",
+        "资源工程学院",
+        "文学院",
+        "艺术学院",
+        "马克思主义学院",
+        "公共管理学院",
+        "化学与化工学院",
+        "体育学院",
+        "安德学院",
+        "未来技术学院"
+    };
+
+    public string[] PoliticalLandscapes => new[]
+    {
+        "群众",
+        "共青团员",
+        "共产党员",
+        "预备党员"
+    };
+
+    public string[] Genders => new[] { "男", "女" };
+    public SignModel Model { get; set; } = new();
+
+
+    private async Task OnFinish()
+    {
+        Console.WriteLine("搞定！");
+        Console.WriteLine(Model);
+        // await using var context = await DbFactory.CreateDbContextAsync();
+        // context.Students.Add(Model);
+        // await context.SaveChangesAsync();
+        
+        if(string.IsNullOrEmpty(Text))return;
+        NavigationManager.NavigateTo("http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=OBvNEKKtJIILY5CKtWVtnWmHjESZBVdI&authKey=rsTTBwwSZS9TBFqmZSJuTPWYf3zoSyokaLrAN5XYUvsN%2FMpw90O6scuR4v4y67bK&noverify=0&group_code=952954710");
+        
+    }
+
+    private async Task OnFinishFailed()
+    {
+        Console.WriteLine("出问题了");
+    }
+
+    private FormValidationRule[] UserNameRules => new FormValidationRule[] { new() { Pattern = "^[\\u4E00-\\u9FA5A-Za-z\\s]+(·[\\u4E00-\\u9FA5A-Za-z]+)*$"} };
+
+    private FormValidationRule[] IdRules => new FormValidationRule[] { new() { Max = 10 } };
+
+    private FormValidationRule[] PhoneNumRules => new FormValidationRule[] { new() { Max = 11, Pattern = "^1\\d{10}$",Message = "手机号不正确!"} };
+
+    private FormValidationRule[] ClassNameRules => new FormValidationRule[] { new() };
+
+}

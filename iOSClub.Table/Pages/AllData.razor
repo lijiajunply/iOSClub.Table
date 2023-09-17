@@ -1,0 +1,21 @@
+﻿@page "/AllData"
+@using Microsoft.EntityFrameworkCore
+@using TableData
+@using System.Text.Json
+<Title>AllData</Title>
+@inject IDbContextFactory<SignContext> DbFactory
+
+
+<h5>@Context</h5>
+
+@code {
+    public string Context { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await using var context = await DbFactory.CreateDbContextAsync();
+        var list = await context.Students.ToListAsync();
+        Context = JsonSerializer.Serialize(list);
+        await base.OnInitializedAsync();
+    }
+}
