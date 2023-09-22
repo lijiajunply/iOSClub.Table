@@ -8,4 +8,9 @@ public class SignContext : DbContext
         : base(options) { }
 
     public DbSet<SignModel> Students { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+    }
 }
