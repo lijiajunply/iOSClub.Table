@@ -11,6 +11,6 @@ public class SignContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<SignModel>().ToTable("Students");
     }
 }
