@@ -7,15 +7,15 @@
 <PageTitle>iOS Club - 注册</PageTitle>
 
 <Form Model="@Model"
-      ValidateMessages="new FormValidateErrorMessages()"
+      ValidateOnChange="true"
       Layout="vertical"
       ValidateMode="@FormValidateMode.Rules"
       OnFinish="OnFinish"
       OnFinishFailed="OnFinishFailed">
-    <FormItem Label="姓名" LabelStyle="color: #f5f5f7;" ShowFeedbackOnError="true" Rules="UserNameRules">
-        <Input @bind-Value="@context.UserName">
+    <FormItem Label="姓名" LabelStyle="color: #f5f5f7;" ShowFeedbackOnError="true" Rules="@(UserNameRules)">
+        <Input @bind-Value="@context.UserName" >
             <Prefix><Icon Type="user"/></Prefix>
-        </Input>
+        </Input >
     </FormItem>
     <FormItem Label="性别" LabelStyle="color: #f5f5f7;" ShowFeedbackOnError="true">
         <Select @bind-Value="@context.Gender" DefaultValue="@("男")" TItemValue="string" TItem="string">

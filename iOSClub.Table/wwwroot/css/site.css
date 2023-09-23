@@ -2,6 +2,10 @@
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-image: linear-gradient(to bottom right, #ff6b6b, #7171ae, #10bce7);
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: initial;
 }
 
 h1:focus {
