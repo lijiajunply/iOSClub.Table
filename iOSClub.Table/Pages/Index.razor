@@ -14,7 +14,7 @@
         <Input @bind-Value="@context.UserName"/>
     </FormItem>
     <FormItem Label="性别" ShowFeedbackOnError="true">
-        <Select @bind-Value="@context.Gender" TItemValue="string" TItem="string">
+        <Select @bind-Value="@context.Gender" DefaultValue="@("男")" TItemValue="string" TItem="string">
             <SelectOptions>
                 @foreach (var item in Genders)
                 {
@@ -27,10 +27,24 @@
         <Input @bind-Value="@context.Id"/>
     </FormItem>
     <FormItem Label="学院" ShowFeedbackOnError="true">
-        <Select @bind-Value="@context.Academy" DataSource="@Academies"></Select>
+        <Select @bind-Value="@context.Academy" DefaultValue="@("信息与控制工程学院")" TItemValue="string" TItem="string">
+            <SelectOptions>
+                @foreach (var item in Academies)
+                {
+                    <SelectOption TItemValue="string" TItem="string" Value=@item Label=@item/>
+                }
+            </SelectOptions>
+        </Select>
     </FormItem>
     <FormItem Label="政治面貌" ShowFeedbackOnError="true">
-        <Select @bind-Value="@context.PoliticalLandscape" DataSource="@PoliticalLandscapes"></Select>
+        <Select @bind-Value="@context.PoliticalLandscape" DefaultValue="@("群众")" TItemValue="string" TItem="string">
+            <SelectOptions>
+                @foreach (var item in PoliticalLandscapes)
+                {
+                    <SelectOption TItemValue="string" TItem="string" Value=@item Label=@item/>
+                }
+            </SelectOptions>
+        </Select>
     </FormItem>
     <FormItem Label="专业班级" ShowFeedbackOnError="true" Rules="ClassNameRules">
         <Input @bind-Value="@context.ClassName"/>
