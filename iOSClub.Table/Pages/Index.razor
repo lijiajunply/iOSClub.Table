@@ -14,7 +14,14 @@
         <Input @bind-Value="@context.UserName"/>
     </FormItem>
     <FormItem Label="性别" ShowFeedbackOnError="true">
-        <Select @bind-Value="@context.Gender" DataSource="@Genders"></Select>
+        <Select @bind-Value="@context.Gender" TItemValue="string" TItem="string">
+            <SelectOptions>
+                @foreach (var item in Genders)
+                {
+                    <SelectOption TItemValue="string" TItem="string" Value=@item Label=@item/>
+                }
+            </SelectOptions>
+        </Select>
     </FormItem>
     <FormItem Label="学号" ShowFeedbackOnError="true" Rules="IdRules">
         <Input @bind-Value="@context.Id"/>
@@ -123,9 +130,9 @@
         Loading = false;
     }
 
-    private FormValidationRule[] UserNameRules => new FormValidationRule[] { new() { Pattern = "^[\\u4E00-\\u9FA5A-Za-z\\s]+(·[\\u4E00-\\u9FA5A-Za-z]+)*$" } };
+    private FormValidationRule[] UserNameRules => new FormValidationRule[] { new() { Pattern = "^[\\u4E00-\\u9FA5A-Za-z\\s]+(·[\\u4E00-\\u9FA5A-Za-z]+)*$", Message = "姓名出错!" } };
 
-    private FormValidationRule[] IdRules => new FormValidationRule[] { new() { Max = 10 } };
+    private FormValidationRule[] IdRules => new FormValidationRule[] { new() { Len = 10, Message = "学号出错!" } };
 
     private FormValidationRule[] PhoneNumRules => new FormValidationRule[] { new() { Max = 11, Pattern = "^1\\d{10}$", Message = "手机号不正确!" } };
 
