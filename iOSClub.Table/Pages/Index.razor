@@ -7,13 +7,17 @@
 <PageTitle>iOS Club - 注册</PageTitle>
 
 <Form Model="@Model"
+      ValidateMessages="new FormValidateErrorMessages()"
+      Layout="vertical"
       ValidateMode="@FormValidateMode.Rules"
       OnFinish="OnFinish"
       OnFinishFailed="OnFinishFailed">
-    <FormItem Label="姓名" ShowFeedbackOnError="true" Rules="UserNameRules">
-        <Input @bind-Value="@context.UserName"/>
+    <FormItem Label="姓名" LabelStyle="color: #f5f5f7;" ShowFeedbackOnError="true" Rules="UserNameRules">
+        <Input @bind-Value="@context.UserName">
+            <Prefix><Icon Type="user"/></Prefix>
+        </Input>
     </FormItem>
-    <FormItem Label="性别" ShowFeedbackOnError="true">
+    <FormItem Label="性别" LabelStyle="color: #f5f5f7;" ShowFeedbackOnError="true">
         <Select @bind-Value="@context.Gender" DefaultValue="@("男")" TItemValue="string" TItem="string">
             <SelectOptions>
                 @foreach (var item in Genders)
@@ -23,10 +27,10 @@
             </SelectOptions>
         </Select>
     </FormItem>
-    <FormItem Label="学号" ShowFeedbackOnError="true" Rules="IdRules">
-        <Input @bind-Value="@context.Id"/>
+    <FormItem Label="学号" LabelStyle="color: #f5f5f7;" ShowFeedbackOnError="true" Rules="IdRules">
+        <Input @bind-Value="@context.Id">
     </FormItem>
-    <FormItem Label="学院" ShowFeedbackOnError="true">
+    <FormItem Label="学院" LabelStyle="color: #f5f5f7;" ShowFeedbackOnError="true">
         <Select @bind-Value="@context.Academy" DefaultValue="@("信息与控制工程学院")" TItemValue="string" TItem="string">
             <SelectOptions>
                 @foreach (var item in Academies)
@@ -36,7 +40,7 @@
             </SelectOptions>
         </Select>
     </FormItem>
-    <FormItem Label="政治面貌" ShowFeedbackOnError="true">
+    <FormItem Label="政治面貌" LabelStyle="color: #f5f5f7;" ShowFeedbackOnError="true">
         <Select @bind-Value="@context.PoliticalLandscape" DefaultValue="@("群众")" TItemValue="string" TItem="string">
             <SelectOptions>
                 @foreach (var item in PoliticalLandscapes)
@@ -46,11 +50,11 @@
             </SelectOptions>
         </Select>
     </FormItem>
-    <FormItem Label="专业班级" ShowFeedbackOnError="true" Rules="ClassNameRules">
-        <Input @bind-Value="@context.ClassName"/>
+    <FormItem Label="专业班级" LabelStyle="color: #f5f5f7;" ShowFeedbackOnError="true" Rules="ClassNameRules">
+        <Input @bind-Value="@context.ClassName">
     </FormItem>
-    <FormItem Label="手机号码" ShowFeedbackOnError="true" Rules="PhoneNumRules">
-        <Input @bind-Value="@context.PhoneNum"/>
+    <FormItem Label="手机号码" LabelStyle="color: #f5f5f7;" ShowFeedbackOnError="true" Rules="PhoneNumRules">
+        <Input @bind-Value="@context.PhoneNum">
     </FormItem>
 
     <FormItem WrapperColOffset="8" WrapperColSpan="16">
@@ -119,7 +123,7 @@
                 f.ClassName = Model.ClassName;
                 f.PhoneNum = Model.PhoneNum;
                 f.Gender = Model.Gender;
-                f.PoliticalLandscape = Model.Gender;
+                f.PoliticalLandscape = Model.PoliticalLandscape;
             }
             await context.SaveChangesAsync();
         }
@@ -133,7 +137,7 @@
             NavigationManager.NavigateTo("/QRCode");
             return;
         }
-        NavigationManager.NavigateTo("http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=OBvNEKKtJIILY5CKtWVtnWmHjESZBVdI&authKey=rsTTBwwSZS9TBFqmZSJuTPWYf3zoSyokaLrAN5XYUvsN%2FMpw90O6scuR4v4y67bK&noverify=0&group_code=952954710");
+        NavigationManager.NavigateTo("https://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=OBvNEKKtJIILY5CKtWVtnWmHjESZBVdI&authKey=rsTTBwwSZS9TBFqmZSJuTPWYf3zoSyokaLrAN5XYUvsN%2FMpw90O6scuR4v4y67bK&noverify=0&group_code=952954710");
     }
 
     private bool Loading { get; set; }
@@ -144,12 +148,16 @@
         Loading = false;
     }
 
-    private FormValidationRule[] UserNameRules => new FormValidationRule[] { new() { Pattern = "^[\\u4E00-\\u9FA5A-Za-z\\s]+(·[\\u4E00-\\u9FA5A-Za-z]+)*$", Message = "姓名出错!" } };
+    private FormValidationRule[] UserNameRules => new FormValidationRule[] { new() { Pattern = @"^[\u4E00-\u9FA5A-Za-z\s]+(·[\u4E00-\u9FA5A-Za-z]+)*$", Message = "姓名出错!" } };
 
-    private FormValidationRule[] IdRules => new FormValidationRule[] { new() { Len = 10, Message = "学号出错!" } };
+    private FormValidationRule[] IdRules => new FormValidationRule[] { new() { Len = 10, Message = "学号出错!", Pattern = "(19|20|21|22|23)([0-9]{8})" } };
 
-    private FormValidationRule[] PhoneNumRules => new FormValidationRule[] { new() { Max = 11, Pattern = "^1\\d{10}$", Message = "手机号不正确!" } };
+    private FormValidationRule[] PhoneNumRules => new FormValidationRule[] { new() { Len = 11, Pattern = "^1\\d{10}$", Message = "手机号不正确!" } };
 
-    private FormValidationRule[] ClassNameRules => new FormValidationRule[] { new() };
+    private FormValidationRule[] ClassNameRules => new FormValidationRule[] { new() { Pattern = @"[\u4e00-\u9fa5]+[0-9]{4}" ,Message = "班级姓名出错!"} };
 
 }
+
+<style>
+
+</style>

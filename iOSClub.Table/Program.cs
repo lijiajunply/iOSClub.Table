@@ -15,7 +15,7 @@ builder.Services.AddDbContextFactory<SignContext>(opt =>
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(
-        policy => { policy.WithOrigins("http://qm.qq.com"); });
+        policy => { policy.WithOrigins("https://qm.qq.com"); });
 });
 builder.Services.Configure<WebEncoderOptions>(options =>
     options.TextEncoderSettings = new TextEncoderSettings(UnicodeRanges.All));
