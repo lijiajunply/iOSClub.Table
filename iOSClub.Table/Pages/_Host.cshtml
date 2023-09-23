@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css"/>
     <link href="css/site.css" rel="stylesheet"/>
     <link href="iOSClub.Table.styles.css" rel="stylesheet"/>
-    <link rel="icon" type="image/png" href="favicon.png"/>
+    <link rel="icon" type="image/png" href="iOS_Club_LOGO.png"/>
     <link href="_content/AntDesign/css/ant-design-blazor.css" rel="stylesheet">
     <script src="_content/AntDesign/js/ant-design-blazor.js"></script>
     <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered"/>
@@ -33,7 +33,17 @@
 
 <script src="_framework/blazor.server.js"></script>
 <script>
-
+window.downloadFileFromStream = async (fileName, contentStreamReference) => {
+    const arrayBuffer = await contentStreamReference.arrayBuffer();
+    const blob = new Blob([arrayBuffer]);
+    const url = URL.createObjectURL(blob);
+    const anchorElement = document.createElement('a');
+    anchorElement.href = url;
+    anchorElement.download = fileName ?? '';
+    anchorElement.click();
+    anchorElement.remove();
+    URL.revokeObjectURL(url);
+  }
 </script>
 </body>
 </html>

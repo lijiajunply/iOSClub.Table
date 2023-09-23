@@ -1,7 +1,13 @@
 ﻿@page "/AllData"
 @using Microsoft.EntityFrameworkCore
 @using iOSClub.Table.Data
+@using System.Text.Json.Serialization
+@using System.Text.Json
+@using System.Text
+@inject IJSRuntime JS
 @inject IDbContextFactory<SignContext> DbFactory
+
+<PageTitle>数据</PageTitle>
 
 <Button Type="@ButtonType.Primary" OnClick="@DataDownload">下载Json文件</Button>
 <Table TItem="SignModel" DataSource="@Models">
@@ -23,9 +29,24 @@
         await base.OnInitializedAsync();
     }
 
-    private void DataDownload()
+    private async Task DataDownload()
     {
-        
+        var fileStream = GetFileStream();
+        var fileName = "data.json";
+
+        using var streamRef = new DotNetStreamReference(stream: fileStream);
+
+        await JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+    }
+
+    private Stream GetFileStream()
+    {
+        string jsonString = JsonSerializer.Serialize(Models);
+
+        var randomBinaryData = Encoding.UTF8.GetBytes(jsonString);
+        var fileStream = new MemoryStream(randomBinaryData);
+
+        return fileStream;
     }
 
 }
