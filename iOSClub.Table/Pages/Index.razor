@@ -1,6 +1,8 @@
 ﻿@page "/{Text?}"
 @using Microsoft.EntityFrameworkCore
 @using iOSClub.Table.Data
+@using System.Net.Mail
+@using System.Text
 @inject IDbContextFactory<SignContext> DbFactory
 @inject NavigationManager NavigationManager
 
@@ -138,6 +140,34 @@
             return;
         }
         NavigationManager.NavigateTo("https://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=OBvNEKKtJIILY5CKtWVtnWmHjESZBVdI&authKey=rsTTBwwSZS9TBFqmZSJuTPWYf3zoSyokaLrAN5XYUvsN%2FMpw90O6scuR4v4y67bK&noverify=0&group_code=952954710");
+    }
+    
+    public static bool SendEmail(string title, string content, string receiverEmail)
+    {
+        string strAccount = "xxx@gmail.com";
+        string strPwd = "your_password";
+    // 邮件服务器
+        var smtpServer = "smtp.gmail.com";
+
+        var smtpClient = new SmtpClient
+        {
+            DeliveryMethod = SmtpDeliveryMethod.Network,
+            Host = smtpServer,
+            Credentials = new System.Net.NetworkCredential(strAccount, strPwd),
+        };
+
+        var mailMessage = new MailMessage(strAccount, receiverEmail)
+        {
+            Subject = title,
+            Body = content,
+            BodyEncoding = Encoding.UTF8,
+            IsBodyHtml = true,
+            Priority = MailPriority.High
+        };
+
+        smtpClient.Send(mailMessage);
+
+        return true;
     }
 
     private bool Loading { get; set; }
