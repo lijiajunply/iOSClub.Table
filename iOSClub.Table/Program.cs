@@ -42,8 +42,8 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var context = services.GetRequiredService<SignContext>();
+        context.Database.EnsureCreated();
         context.Database.MigrateAsync();
-        
         context.Dispose();
     }
     catch (Exception ex)
