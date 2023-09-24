@@ -11,6 +11,7 @@
 <PageTitle>数据</PageTitle>
 
 <Button Type="@ButtonType.Primary" OnClick="@DataDownload">下载Json文件</Button>
+<Button Type="@ButtonType.Primary" OnClick="@Flushed">刷新</Button>
 <Table TItem="SignModel" DataSource="@Models">
     <PropertyColumn Title="姓名" Property="c => c.UserName"/>
     <PropertyColumn Title="学号" Property="c => c.Id"/>
@@ -23,13 +24,12 @@
 
 @code {
 
-    public List<SignModel> Models { get; set; }
+    private List<SignModel> Models { get; set; } = new();
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
-        await using var context = await DbFactory.CreateDbContextAsync();
-        Models = await context.Students.ToListAsync();
-        await base.OnInitializedAsync();
+        await Flushed();
+        await base.OnParametersSetAsync();
     }
 
     private async Task DataDownload()
@@ -42,6 +42,13 @@
         var randomBinaryData = Encoding.UTF8.GetBytes(jsonString);
 
         await JS.InvokeVoidAsync("jsSaveAsFile", "data.json", Convert.ToBase64String(randomBinaryData));
+    }
+
+    private async Task Flushed()
+    {
+        var context = await DbFactory.CreateDbContextAsync();
+        Models = await context.Students.ToListAsync();
+        await context.DisposeAsync();
     }
 
 }
