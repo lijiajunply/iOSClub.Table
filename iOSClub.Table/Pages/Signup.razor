@@ -1,4 +1,4 @@
-﻿@page "/{Text?}"
+﻿@page "/Signup/{Text?}"
 @using Microsoft.EntityFrameworkCore
 @using iOSClub.Table.Data
 @inject IDbContextFactory<SignContext> DbFactory
@@ -13,8 +13,10 @@
       OnFinish="OnFinish"
       OnFinishFailed="OnFinishFailed">
     <FormItem Label="姓名" LabelStyle="color: #f5f5f7;" ShowFeedbackOnError="true" Rules="@(UserNameRules)">
-        <Input @bind-Value="@context.UserName" >
-            <Prefix><Icon Type="user"/></Prefix>
+        <Input @bind-Value="@context.UserName">
+            <Prefix>
+                <Icon Type="user"/>
+            </Prefix>
         </Input >
     </FormItem>
     <FormItem Label="性别" LabelStyle="color: #f5f5f7;" ShowFeedbackOnError="true">
@@ -154,6 +156,6 @@
 
     private FormValidationRule[] PhoneNumRules => new FormValidationRule[] { new() { Len = 11, Pattern = "^1\\d{10}$", Message = "手机号不正确!" } };
 
-    private FormValidationRule[] ClassNameRules => new FormValidationRule[] { new() { Pattern = @"[\u4e00-\u9fa5]+[0-9]{4}" ,Message = "班级姓名出错!"} };
+    private FormValidationRule[] ClassNameRules => new FormValidationRule[] { new() { Pattern = @"[\u4e00-\u9fa5]+[0-9]{4}", Message = "班级姓名出错!" } };
 
 }
