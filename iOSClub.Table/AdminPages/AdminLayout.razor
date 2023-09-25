@@ -1,4 +1,5 @@
-﻿@inherits LayoutComponentBase
+﻿@layout MainLayout
+@inherits LayoutComponentBase
 
 <div class="page">
     <main>
@@ -7,11 +8,11 @@
 
             <nav class="navbar">
                 <ul class="nav-menu">
-                    <a href="https://blazor.net" target="_blank" class="nav-item">关于Blazor技术</a>
-                    <a href="/Admin" target="_blank" class="nav-item">主页</a>
-                    <a href="/Env" target="_blank" class="nav-item">环境</a>
-                    <a href="/AllData" target="_blank" class="nav-item">数据中心</a>
-                    <a href="/" target="_blank" class="nav-item">注册</a>
+                    <NavLink class="nav-item" href="https://blazor.net" Match="NavLinkMatch.All">关于Blazor技术</NavLink>
+                    <NavLink class="nav-item" href="Admin" Match="NavLinkMatch.All">主页</NavLink>
+                    <NavLink class="nav-item" href="Env" Match="NavLinkMatch.All">环境</NavLink>
+                    <NavLink class="nav-item" href="AllData" Match="NavLinkMatch.All">数据中心</NavLink>
+                    <NavLink class="nav-item" href="" Match="NavLinkMatch.All">注册</NavLink>
                 </ul>
             </nav>
         </header>
@@ -19,9 +20,17 @@
         <article class="content px-4">
             @Body
         </article>
+
+        <footer>
+            <p>&copy; 2023 XAUAT iOS Club. All rights reserved. | 备案号：陕ICP备114514号</p>
+            <div class="footer-container">
+                <a href="https://cn.xauat.edu.cn/" target="_blank">西安建筑科技大学</a>
+            </div>
+        </footer>
     </main>
 </div>
 
+<link href="/Index.css" rel="stylesheet"/>
 
 <style scoped>
 nav {
@@ -37,69 +46,31 @@ h5{
   color: #f5f5f7;
 }
 
-ul {
-    display: flex;
-    list-style: none;
-    padding: 0;
-}
-
-li {
-    margin-right: 10px;
-}
-
 a {
     color: #fff;
-    text-decoration: none;
+    align-items: center;
+    justify-content: space-between;
 }
 
 a:hover {
     text-decoration: underline;
 }
 
-.header {
-    padding-left: 10px;
-    padding-right: 10px;
-    color: #333;
-    border-radius: 10px;
-    /* 添加圆角 */
-    overflow: hidden;
-    /* 防止子元素超出边界 */
-    display: flex;
-    scroll-snap-align: end;
-    align-items: center;
-    justify-content: space-between;
-
-    background: rgba(255, 255, 255, 0.3);
-    -webkit-backdrop-filter: blur(20px);
-    backdrop-filter: blur(20px);
-    box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.3);
+footer {
+  padding-top: 15px;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  color: #f5f5f5;
+  background: rgba(255, 255, 255, 0.4);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
 }
 
-.logo {
-    font-size: 24px;
-    font-weight: bold;
-}
-
-
-.nav-menu {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-}
-
-
-.nav-item {
-    font-size: 18px;
-}
-
-.nav-item a {
-    //color: #000000;
-  color: #f5f5f7;
-    text-decoration: none;
-    transition: color 0.3s;
-}
-
-.nav-item a:hover {
-    color: #e064b9;
+.footer-container {
+  padding-bottom: 10px;
 }
 </style>

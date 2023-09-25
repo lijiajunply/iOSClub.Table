@@ -1,36 +1,45 @@
 ﻿@page "/Centre"
+@inject IJSRuntime JS
+
+
 <PageTitle>个人中心</PageTitle>
 <link href="Dock.css" rel="stylesheet"/>
 
 <div id="dock">
     <ul id="icon-container">
         <li>
-            <img/>
+            <Icon Type="step-backward" Theme="outline"/>
         </li>
         <li>
-            <img/>
+            <Icon Type="step-backward" Theme="outline"/>
         </li>
         <li>
-            <img/>
+           <Icon Type="step-backward" Theme="outline"/>
         </li>
         <li>
-            <img/>
+            <Icon Type="step-backward" Theme="outline"/>
         </li>
         <li>
-            <img/>
+            <Icon Type="step-backward" Theme="outline"/>
         </li>
         <li>
-            <img/>
+            <Icon Type="step-backward" Theme="outline"/>
         </li>
         <li>
-            <img/>
+            <Icon Type="step-backward" Theme="outline"/>
         </li>
         <li>
-            <img/>
+            <Icon Type="step-backward" Theme="outline"/>
         </li>
     </ul>
 </div>
 
 @code {
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        await JS.InvokeVoidAsync("ShowDock");
+    }
 
 }

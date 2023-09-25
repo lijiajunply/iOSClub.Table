@@ -45,21 +45,23 @@ function jsSaveAsFile(filename, byteBase64)
 </script>
 
 <script>
-document.getElementById("icon-container").onmousemove = e => {
-    e.currentTarget.querySelectorAll("li").forEach((li) => {
-        // 计算每个图标中点横坐标: centroid
-        const centroid = li.offsetLeft + li.offsetWidth / 2;
-        // 根据鼠标与图标中点的横坐标偏移量计算当前的--scale
-        li.style.setProperty("--scale", curve(e.clientX - centroid));
-    });
-};
-
-document.getElementById("icon-container").onmouseleave = e => {
-    e.currentTarget.querySelectorAll("li").forEach((li) => {
-        // 鼠标移开，放大倍数归1
-        li.style.setProperty("--scale", 1);
-    });
-};
+function ShowDock(){
+    document.getElementById("icon-container").onmousemove = e => {
+        e.currentTarget.querySelectorAll("li").forEach((li) => {
+            // 计算每个图标中点横坐标: centroid
+            const centroid = li.offsetLeft + li.offsetWidth / 2;
+            // 根据鼠标与图标中点的横坐标偏移量计算当前的--scale
+            li.style.setProperty("--scale", curve(e.clientX - centroid));
+        });
+    };
+    
+    document.getElementById("icon-container").onmouseleave = e => {
+        e.currentTarget.querySelectorAll("li").forEach((li) => {
+            // 鼠标移开，放大倍数归1
+            li.style.setProperty("--scale", 1);
+        });
+    };
+}
 </script>
 </body>
 </html>

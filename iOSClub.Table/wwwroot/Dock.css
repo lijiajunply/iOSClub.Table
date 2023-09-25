@@ -19,7 +19,7 @@
     --scale: 1;
 }
 
-#icon-container > li > img {
+#icon-container > li > span {
     width: calc(var(--scale) * 50px);
     border-radius: calc(var(--scale) * 15px);
     overflow: hidden;
