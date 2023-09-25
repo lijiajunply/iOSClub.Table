@@ -22,4 +22,11 @@
         </Content>
     </ItemGroup>
 
+
+
+
+    <ItemGroup>
+      <None Include="wwwroot\Index.css" />
+    </ItemGroup>
+
 </Project>
