@@ -1,6 +1,32 @@
 ﻿@page "/Event"
+@using iOSClub.Table.Data
 <PageTitle>社团活动</PageTitle>
 
+<AntList DataSource="@EventModels" ItemLayout="@ListItemLayout.Vertical">
+    <ChildContent Context="item">
+        <ListItem Extra="item.Extra" 
+                  Actions="@(new[] { iconText(("start","156")), iconText(("like","156")), iconText(("message","2")) })">
+            <ListItemMeta>
+                <TitleTemplate>
+                    <NavLink href="@item.Url">@item.Title</NavLink>
+                </TitleTemplate>
+            </ListItemMeta>
+            @item.Description
+        </ListItem>
+    </ChildContent>
+</AntList>
+
 @code {
-    
+    public List<EventModel> EventModels { get; set; } = new();
+
+    public RenderFragment<(string icon, string text)> iconText = context =>
+        @<Template>
+            <Space>
+                <SpaceItem>
+                    <Icon Type="@context.icon"/>
+                </SpaceItem>
+                <SpaceItem>@context.text</SpaceItem>
+            </Space>
+        </Template>;
+
 }
