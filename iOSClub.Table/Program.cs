@@ -10,8 +10,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddAntDesign();
-builder.Services.AddDbContextFactory<SignContext>(opt =>
-    opt.UseSqlite(builder.Configuration.GetConnectionString("SchoolContextSQLite")));
+
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddDbContextFactory<SignContext>(opt =>
+        opt.UseSqlite(builder.Configuration.GetConnectionString("SQLite")));
+}else if (builder.Environment.IsProduction())
+{
+    builder.Services.AddDbContextFactory<SignContext>(opt =>
+        opt.UseMySQL(builder.Configuration.GetConnectionString("MySQL")!));
+}
 
 builder.Services.AddCors(options =>
 {
@@ -39,21 +47,8 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<SignContext>();
-    try
-    {
-        if (!context.Students.Any())
-            context.Database.EnsureCreated();
-    }
-    catch (Exception ex)
-    {
-        var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "An error occurred creating the DB");
-        context.Database.EnsureCreated();
-    }
-    finally
-    {
-        context.Dispose();
-    }
+    context.Database.EnsureCreated();
+    context.Dispose();
 }
 
 app.UseHttpsRedirection();
