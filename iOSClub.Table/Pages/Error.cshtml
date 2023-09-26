@@ -16,25 +16,14 @@
 <div class="main">
     <div class="content px-4">
         <h2 class="text-danger">处理您的请求时出错</h2>
-
         @if (Model.ShowRequestId)
         {
             <p>
                 <strong>请求 ID:</strong> <code>@Model.RequestId</code>
             </p>
         }
-
-        <Result Status="403"
-                Title="403"
-                SubTitle="抱歉，您无权访问此页面。"
-                Extra="@extra"/>
     </div>
 </div>
 </body>
 
 </html>
-
-@code
-{
-    readonly RenderFragment extra = @<Button Type="primary">Back Home</Button>;
-}
