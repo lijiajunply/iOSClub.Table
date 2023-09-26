@@ -1,35 +1,33 @@
 ﻿@layout MainLayout
 @inherits LayoutComponentBase
 
-<div class="page">
-    <main>
-        <header class="header">
-            <h1 class="logo">XAUAT iOS Club</h1>
+<main >
+    <header class="header">
+        <h1 class="logo">XAUAT iOS Club</h1>
 
-            <nav class="navbar">
-                <ul class="nav-menu">
-                    <NavLink class="nav-item" href="" Match="NavLinkMatch.All">主页</NavLink>
-                    <NavLink class="nav-item" href="SocietyAbout" Match="NavLinkMatch.All">关于</NavLink>
-                    <NavLink class="nav-item" href="Event" Match="NavLinkMatch.All">主页</NavLink>
-                    <NavLink class="nav-item" href="Login">登录</NavLink>
-                    <NavLink class="nav-item" href="Signup" Match="NavLinkMatch.All">注册</NavLink>
-                </ul>
-            </nav>
-        </header>
+        <nav class="navbar">
+            <ul class="nav-menu">
+                <NavLink class="nav-item" href="" Match="NavLinkMatch.All">主页</NavLink>
+                <NavLink class="nav-item" href="SocietyAbout" Match="NavLinkMatch.All">关于</NavLink>
+                <NavLink class="nav-item" href="Event" Match="NavLinkMatch.All">主页</NavLink>
+                <NavLink class="nav-item" href="Login">登录</NavLink>
+                <NavLink class="nav-item" href="Signup" Match="NavLinkMatch.All">注册</NavLink>
+            </ul>
+        </nav>
+    </header>
 
-        <article>
-            @Body
-        </article>
+    <article class="main">
+        @Body
+    </article>
 
-        <footer>
-            <p>&copy; 2023 XAUAT iOS Club. All rights reserved. | 备案号：陕ICP备114514号</p>
-            <div class="footer-container">
-                <a href="https://cn.xauat.edu.cn/" target="_blank">西安建筑科技大学</a>
-            </div>
-        </footer>
+    <footer>
+        <p>&copy; 2023 XAUAT iOS Club. All rights reserved. | 备案号：陕ICP备114514号</p>
+        <div class="footer-container">
+            <a href="https://cn.xauat.edu.cn/" target="_blank">西安建筑科技大学</a>
+        </div>
+    </footer>
+</main>
 
-    </main>
-</div>
 
 <link href="/Index.css" rel="stylesheet"/>
 
@@ -38,6 +36,9 @@ nav {
     color: #fff;
 }
 
+.main{
+min-height: 100vh;
+}
 
 h1{
   color: #f5f5f7;
