@@ -19,37 +19,34 @@
         <Input @bind-Value="@context.UserName"/>
     </FormItem>
     <FormItem Class="item" Label="性别" LabelStyle="color: #f5f5f7;" Rules="GenderRules">
-        <SimpleSelect @bind-Value="@context.Gender">
-            <SelectOptions>
-                @foreach (var item in Genders)
-                {
-                    <SimpleSelectOption Value="@item" Label="@item"></SimpleSelectOption>
-                }
-            </SelectOptions>
-        </SimpleSelect>
+        <select class="form-control" @bind="@context.Gender">
+            <option value="" selected disabled hidden></option>
+            @foreach (var item in Genders)
+            {
+                <option value="@item">@item</option>
+            }
+        </select>
     </FormItem>
     <FormItem Class="item" Label="学号" LabelStyle="color: #f5f5f7;" Rules="IdRules">
         <Input @bind-Value="@context.Id">
     </FormItem>
     <FormItem Class="item" Label="学院" LabelStyle="color: #f5f5f7;" Rules="AcademyRules">
-        <SimpleSelect @bind-Value="@context.Academy">
-            <SelectOptions>
-                @foreach (var item in Academies)
-                {
-                    <SimpleSelectOption Value="@item" Label="@item"></SimpleSelectOption>
-                }
-            </SelectOptions>
-        </SimpleSelect>
+        <select class="form-control" @bind="@context.Academy">
+            <option value="" selected disabled hidden></option>
+            @foreach (var item in Academies)
+            {
+                <option value="@item">@item</option>
+            }
+        </select>
     </FormItem>
     <FormItem Class="item" Label="政治面貌" LabelStyle="color: #f5f5f7;" Rules="PoliticalLandscapeRules">
-        <SimpleSelect @bind-Value="@context.PoliticalLandscape">
-            <SelectOptions>
-                @foreach (var item in PoliticalLandscapes)
-                {
-                    <SimpleSelectOption Value="@item" Label="@item"></SimpleSelectOption>
-                }
-            </SelectOptions>
-        </SimpleSelect>
+        <select class="form-control" @bind="@context.PoliticalLandscape">
+            <option value="" selected disabled hidden></option>
+            @foreach (var item in PoliticalLandscapes)
+            {
+                <option value="@item">@item</option>
+            }
+        </select>
     </FormItem>
     <FormItem Class="item" Label="专业班级" LabelStyle="color: #f5f5f7;" Rules="ClassNameRules">
         <Input @bind-Value="@context.ClassName">
@@ -156,11 +153,11 @@
 
     private FormValidationRule[] ClassNameRules => new FormValidationRule[] { new() { Pattern = @"[\u4e00-\u9fa5]+[0-9]{4}", Message = "班级姓名出错!", Required = true } };
 
-    private FormValidationRule[] GenderRules => new FormValidationRule[] { new() { Required = true ,Message = "性别没填!"} };
+    private FormValidationRule[] GenderRules => new FormValidationRule[] { new() { Required = true, Message = "性别没填!" } };
 
-    private FormValidationRule[] AcademyRules => new FormValidationRule[] { new() { Required = true ,Message = "学院没填!"} };
+    private FormValidationRule[] AcademyRules => new FormValidationRule[] { new() { Required = true, Message = "学院没填!" } };
 
-    private FormValidationRule[] PoliticalLandscapeRules => new FormValidationRule[] { new() { Required = true ,Message = "政治面貌没填!"} };
+    private FormValidationRule[] PoliticalLandscapeRules => new FormValidationRule[] { new() { Required = true, Message = "政治面貌没填!" } };
 }
 
 <style>
@@ -181,4 +178,33 @@
         padding-left: 10px;
         padding-right: 10px;
     }
+    
+    .form-control {
+        display: block;
+        width: 100%;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;
+        background-color: #fff;
+        background-image: none;
+        border: 1px #ccc;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+        -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    }
+   
+   option{
+        display: block;
+        width: 100%;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;
+   }
 </style>
