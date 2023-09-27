@@ -11,7 +11,12 @@
 <PageTitle>数据</PageTitle>
 
 <Button Type="@ButtonType.Primary" OnClick="@DataDownload">下载Json文件</Button>
+@* 上传 *@
 <Button Type="@ButtonType.Primary" OnClick="@Flushed">刷新</Button>
+@if (DeleteModels.Count > 0)
+{
+    <Button Type="@ButtonType.Primary" OnClick="@Recover">恢复</Button>
+}
 <Table TItem="SignModel" DataSource="@Models">
     <PropertyColumn Title="姓名" Property="c => c.UserName"/>
     <PropertyColumn Title="学号" Property="c => c.Id"/>
@@ -20,10 +25,18 @@
     <PropertyColumn Title="性别" Property="c => c.Gender"/>
     <PropertyColumn Title="专业班级" Property="c => c.ClassName"/>
     <PropertyColumn Title="手机号码" Property="c => c.PhoneNum"/>
+    <ActionColumn Title="Action">
+        <Space>
+            <SpaceItem>
+                <Button Danger OnClick="() => Delete(context)">Delete</Button>
+            </SpaceItem>
+        </Space>
+    </ActionColumn>
 </Table>
 
 @code {
 
+    private List<SignModel> DeleteModels { get; set; } = new();
     private List<SignModel> Models { get; set; } = new();
 
     protected override async Task OnParametersSetAsync()
@@ -38,7 +51,7 @@
         {
             Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
         };
-        var jsonString = JsonSerializer.Serialize(Models,options);
+        var jsonString = JsonSerializer.Serialize(Models, options);
         var randomBinaryData = Encoding.UTF8.GetBytes(jsonString);
 
         await JS.InvokeVoidAsync("jsSaveAsFile", "data.json", Convert.ToBase64String(randomBinaryData));
@@ -48,6 +61,29 @@
     {
         var context = await DbFactory.CreateDbContextAsync();
         Models = await context.Students.ToListAsync();
+        await context.DisposeAsync();
+    }
+
+    private async Task Delete(SignModel model)
+    {
+        var context = await DbFactory.CreateDbContextAsync();
+        context.Students.Remove(model);
+        await context.SaveChangesAsync();
+        Models.Remove(model);
+        DeleteModels.Add(model);
+        await context.DisposeAsync();
+    }
+
+    private async Task Recover()
+    {
+        var context = await DbFactory.CreateDbContextAsync();
+        foreach (var item in DeleteModels)
+        {
+            await context.Students.AddAsync(item);
+            Models.Add(item);
+        }
+        DeleteModels.Clear();
+        await context.SaveChangesAsync();
         await context.DisposeAsync();
     }
 
