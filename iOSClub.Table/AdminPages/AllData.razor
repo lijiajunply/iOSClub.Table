@@ -11,6 +11,7 @@
 <PageTitle>数据</PageTitle>
 
 <Button Type="@ButtonType.Primary" OnClick="@DataDownload">下载Json文件</Button>
+<Button Type="@ButtonType.Primary" OnClick="@CsvDownload">下载Csv文件</Button>
 @* 上传 *@
 <Button Type="@ButtonType.Primary" OnClick="@Flushed">刷新</Button>
 @if (DeleteModels.Count > 0)
@@ -25,10 +26,70 @@
     <PropertyColumn Title="性别" Property="c => c.Gender"/>
     <PropertyColumn Title="专业班级" Property="c => c.ClassName"/>
     <PropertyColumn Title="手机号码" Property="c => c.PhoneNum"/>
-    <ActionColumn Title="Action">
+    <ActionColumn Title="操作">
         <Space>
             <SpaceItem>
-                <Button Danger OnClick="() => Delete(context)">Delete</Button>
+                <Button Danger OnClick="() => Delete(context)">删除</Button>
+            </SpaceItem>
+            <SpaceItem>
+                <Button Danger OnClick="() => OpenTable(context)">更改</Button>
+                <Drawer Closable="true" Width="720" Visible="Visible"
+                        Title='"更改"' OnClose="_ => CloseTable()">
+                    <Template style="height:90%">
+
+                        <Form Model="ChangeModel"
+                              Context="item"
+                              Layout="vertical"
+                              ValidateMode="@FormValidateMode.Rules"
+                              OnFinish="OnFinish"
+                              OnFinishFailed="OnFinishFailed">
+                            <FormItem Class="item" Label="姓名" Rules="@(UserNameRules)">
+                                <Input @bind-Value="@item.UserName"/>
+                            </FormItem>
+                            <FormItem Class="item" Label="性别" Rules="GenderRules">
+                                <select class="form-control" @bind="@item.Gender">
+                                    <option value="" selected disabled hidden></option>
+                                    @foreach (var a in Genders)
+                                    {
+                                        <option value="@a">@a</option>
+                                    }
+                                </select>
+                            </FormItem>
+                            <FormItem Class="item" Label="学号" Rules="IdRules">
+                                <Input @bind-Value="@item.Id">
+                            </FormItem>
+                            <FormItem Class="item" Label="学院" Rules="AcademyRules">
+                                <select class="form-control" @bind="@item.Academy">
+                                    <option value="" selected disabled hidden></option>
+                                    @foreach (var a in Academies)
+                                    {
+                                        <option value="@a">@a</option>
+                                    }
+                                </select>
+                            </FormItem>
+                            <FormItem Class="item" Label="政治面貌" Rules="PoliticalLandscapeRules">
+                                <select class="form-control" @bind="@item.PoliticalLandscape">
+                                    <option value="" selected disabled hidden></option>
+                                    @foreach (var a in PoliticalLandscapes)
+                                    {
+                                        <option value="@a">@a</option>
+                                    }
+                                </select>
+                            </FormItem>
+                            <FormItem Class="item" Label="专业班级" Rules="ClassNameRules">
+                                <Input @bind-Value="@item.ClassName">
+                            </FormItem>
+                            <FormItem Class="item" Label="手机号码" Rules="PhoneNumRules">
+                                <Input @bind-Value="@item.PhoneNum">
+                            </FormItem>
+
+                            <FormItem Class="item" WrapperColOffset="8" WrapperColSpan="16">
+                                <Button Type="@ButtonType.Primary" HtmlType="submit">提交</Button>
+                            </FormItem>
+                        </Form>
+
+                    </Template>
+                </Drawer>
             </SpaceItem>
         </Space>
     </ActionColumn>
@@ -55,6 +116,14 @@
         var randomBinaryData = Encoding.UTF8.GetBytes(jsonString);
 
         await JS.InvokeVoidAsync("jsSaveAsFile", "data.json", Convert.ToBase64String(randomBinaryData));
+    }
+
+    private async Task CsvDownload()
+    {
+        var jsonString = SignModel.GetCsv(Models);
+        var randomBinaryData = Encoding.UTF8.GetBytes(jsonString);
+
+        await JS.InvokeVoidAsync("jsSaveAsFile", "data.csv", Convert.ToBase64String(randomBinaryData));
     }
 
     private async Task Flushed()
@@ -88,3 +157,117 @@
     }
 
 }
+
+@code
+{
+    private bool Visible;
+    private SignModel ChangeModel { get; set; } = new();
+
+    private void CloseTable()
+    {
+        Visible = false;
+        ChangeModel = new SignModel();
+    }
+
+    private void OpenTable(SignModel model)
+    {
+        Visible = true;
+        ChangeModel = model;
+    }
+
+
+}
+
+@code
+{
+    private readonly string[] Academies =
+    {
+        "信息与控制工程学院",
+        "理学院",
+        "机电学院",
+        "建筑学院",
+        "机电工程学院",
+        "管理学院",
+        "土木工程学院",
+        "环境与市政工程学院",
+        "建筑设备科学与工程学院",
+        "材料科学与工程学院",
+        "冶金工程学院",
+        "资源工程学院",
+        "文学院",
+        "艺术学院",
+        "马克思主义学院",
+        "公共管理学院",
+        "化学与化工学院",
+        "体育学院",
+        "安德学院",
+        "未来技术学院"
+    };
+
+    private readonly string[] PoliticalLandscapes =
+    {
+        "群众",
+        "共青团员",
+        "中共党员",
+        "中共预备党员"
+    };
+
+    private readonly string[] Genders = { "男", "女" };
+
+    private async Task OnFinish()
+    {
+        if (Loading)
+            return;
+        try
+        {
+            Loading = true;
+            await using var context = await DbFactory.CreateDbContextAsync();
+            var f = await context.Students.FirstOrDefaultAsync(x => x.Id == ChangeModel.Id);
+
+            if (f == null) return;
+
+            f.UserName = ChangeModel.UserName;
+            f.Academy = ChangeModel.Academy;
+            f.ClassName = ChangeModel.ClassName;
+            f.PhoneNum = ChangeModel.PhoneNum;
+            f.Gender = ChangeModel.Gender;
+            f.PoliticalLandscape = ChangeModel.PoliticalLandscape;
+
+            await context.SaveChangesAsync();
+        }
+        finally
+        {
+            Loading = false;
+            CloseTable();
+        }
+    }
+
+    private bool Loading { get; set; }
+
+    private void OnFinishFailed()
+    {
+        Console.WriteLine("出问题了");
+        Loading = false;
+    }
+
+    private FormValidationRule[] UserNameRules => new FormValidationRule[] { new() { Pattern = @"^[\u4E00-\u9FA5A-Za-z\s]+(·[\u4E00-\u9FA5A-Za-z]+)*$", Message = "姓名出错!", Required = true } };
+
+    private FormValidationRule[] IdRules => new FormValidationRule[] { new() { Len = 10, Message = "学号出错!", Pattern = "(19|20|21|22|23)([0-9]{8})", Required = true } };
+
+    private FormValidationRule[] PhoneNumRules => new FormValidationRule[] { new() { Len = 11, Pattern = "^1\\d{10}$", Message = "手机号不正确!", Required = true } };
+
+    private FormValidationRule[] ClassNameRules => new FormValidationRule[] { new() { Pattern = @"[\u4e00-\u9fa5]+[0-9]{4}", Message = "班级姓名出错!", Required = true } };
+
+    private FormValidationRule[] GenderRules => new FormValidationRule[] { new() { Required = true, Message = "性别没填!" } };
+
+    private FormValidationRule[] AcademyRules => new FormValidationRule[] { new() { Required = true, Message = "学院没填!" } };
+
+    private FormValidationRule[] PoliticalLandscapeRules => new FormValidationRule[] { new() { Required = true, Message = "政治面貌没填!" } };
+}
+
+<style>
+    .item{
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+</style>
