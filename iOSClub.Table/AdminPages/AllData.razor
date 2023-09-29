@@ -34,7 +34,8 @@
             <SpaceItem>
                 <Button Danger OnClick="() => OpenTable(context)">更改</Button>
                 <Drawer Closable="true" Width="720" Visible="Visible"
-                        Title='"更改"' OnClose="_ => CloseTable()">
+                        Title='"更改"' OnClose="@CloseTable"
+                        Mask="false">
                     <Template style="height:90%">
 
                         <Form Model="ChangeModel"
