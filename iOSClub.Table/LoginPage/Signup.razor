@@ -7,7 +7,7 @@
 
 <PageTitle>iOS Club - 注册</PageTitle>
 
-@if (isWeiXin)
+@if (!isWeiXin)
 {
     <div id="Mask">
         <Image Src="weixin.jpg"></Image>
@@ -120,6 +120,7 @@ else
     //isWeiXin
             isWeiXin = await Js.InvokeAsync<bool>("isWeiXin");
             Console.WriteLine(isWeiXin);
+            StateHasChanged();
         }
         await base.OnAfterRenderAsync(firstRender);
     }
