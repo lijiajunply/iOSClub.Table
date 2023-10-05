@@ -123,6 +123,7 @@
         {
     //isWeiXin
             var result = await Js.InvokeAsync<bool>("isWeiXin");
+            Console.WriteLine(result);
             if (result)
             {
                 (webHidden,formHidden) = (formHidden,webHidden);
