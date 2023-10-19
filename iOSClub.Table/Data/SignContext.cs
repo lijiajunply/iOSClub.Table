@@ -8,9 +8,11 @@ public class SignContext : DbContext
         : base(options) { }
 
     public DbSet<SignModel> Students { get; set; }
+    public DbSet<PermissionsModel> Staffs { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<SignModel>().ToTable("Students");
+        modelBuilder.Entity<PermissionsModel>().ToTable("Staffs");
     }
 }

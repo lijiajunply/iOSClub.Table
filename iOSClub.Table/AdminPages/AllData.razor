@@ -5,6 +5,8 @@
 @using System.Text
 @using System.Text.Encodings.Web
 @using System.Text.Unicode
+@using Newtonsoft.Json
+@using JsonSerializer = System.Text.Json.JsonSerializer
 @inject IJSRuntime JS
 @inject IDbContextFactory<SignContext> DbFactory
 
@@ -13,6 +15,10 @@
 <Button Type="@ButtonType.Primary" OnClick="@DataDownload">下载Json文件</Button>
 <Button Type="@ButtonType.Primary" OnClick="@CsvDownload">下载Csv文件</Button>
 @* 上传 *@
+
+<InputFile id="fileInput" OnChange="@UploadFiles" multiple/>
+
+
 <Button Type="@ButtonType.Primary" OnClick="@Flushed">刷新</Button>
 @if (DeleteModels.Count > 0)
 {
@@ -96,88 +102,6 @@
     </ActionColumn>
 </Table>
 
-@code {
-
-    private List<SignModel> DeleteModels { get; set; } = new();
-    private List<SignModel> Models { get; set; } = new();
-
-    protected override async Task OnParametersSetAsync()
-    {
-        await Flushed();
-        await base.OnParametersSetAsync();
-    }
-
-    private async Task DataDownload()
-    {
-        var options = new JsonSerializerOptions
-        {
-            Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
-        };
-        var jsonString = JsonSerializer.Serialize(Models, options);
-        var randomBinaryData = Encoding.UTF8.GetBytes(jsonString);
-
-        await JS.InvokeVoidAsync("jsSaveAsFile", "data.json", Convert.ToBase64String(randomBinaryData));
-    }
-
-    private async Task CsvDownload()
-    {
-        var jsonString = SignModel.GetCsv(Models);
-        var randomBinaryData = Encoding.UTF8.GetBytes(jsonString);
-
-        await JS.InvokeVoidAsync("jsSaveAsFile", "data.csv", Convert.ToBase64String(randomBinaryData));
-    }
-
-    private async Task Flushed()
-    {
-        var context = await DbFactory.CreateDbContextAsync();
-        Models = await context.Students.ToListAsync();
-        await context.DisposeAsync();
-    }
-
-    private async Task Delete(SignModel model)
-    {
-        var context = await DbFactory.CreateDbContextAsync();
-        context.Students.Remove(model);
-        await context.SaveChangesAsync();
-        Models.Remove(model);
-        DeleteModels.Add(model);
-        await context.DisposeAsync();
-    }
-
-    private async Task Recover()
-    {
-        var context = await DbFactory.CreateDbContextAsync();
-        foreach (var item in DeleteModels)
-        {
-            await context.Students.AddAsync(item);
-            Models.Add(item);
-        }
-        DeleteModels.Clear();
-        await context.SaveChangesAsync();
-        await context.DisposeAsync();
-    }
-
-}
-
-@code
-{
-    private bool Visible;
-    private SignModel ChangeModel { get; set; } = new();
-
-    private void CloseTable()
-    {
-        Visible = false;
-        ChangeModel = new SignModel();
-    }
-
-    private void OpenTable(SignModel model)
-    {
-        Visible = true;
-        ChangeModel = model;
-    }
-
-
-}
 
 @code
 {
@@ -214,6 +138,8 @@
     };
 
     private readonly string[] Genders = { "男", "女" };
+
+    private readonly string[] Identities = { };
 
     private async Task OnFinish()
     {
@@ -264,7 +190,104 @@
     private FormValidationRule[] AcademyRules => new FormValidationRule[] { new() { Required = true, Message = "学院没填!" } };
 
     private FormValidationRule[] PoliticalLandscapeRules => new FormValidationRule[] { new() { Required = true, Message = "政治面貌没填!" } };
+
 }
+
+@code {
+
+    private List<SignModel> DeleteModels { get; set; } = new();
+    private List<SignModel> Models { get; set; } = new();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await Flushed();
+        await base.OnParametersSetAsync();
+    }
+
+    private async Task DataDownload()
+    {
+        var options = new JsonSerializerOptions
+        {
+            Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
+        };
+        var jsonString = JsonSerializer.Serialize(Models, options);
+        var randomBinaryData = Encoding.UTF8.GetBytes(jsonString);
+
+        await JS.InvokeVoidAsync("jsSaveAsFile", "data.json", Convert.ToBase64String(randomBinaryData));
+    }
+
+    private async Task CsvDownload()
+    {
+        var jsonString = SignModel.GetCsv(Models);
+        var randomBinaryData = Encoding.UTF8.GetBytes(jsonString);
+
+        await JS.InvokeVoidAsync("jsSaveAsFile", "data.csv", Convert.ToBase64String(randomBinaryData));
+    }
+
+    private async Task Flushed()
+    {
+        var context = await DbFactory.CreateDbContextAsync();
+        Models = await context.Students.ToListAsync();
+        await context.DisposeAsync();
+    }
+
+    private async Task Delete(SignModel model)
+    {
+        var context = await DbFactory.CreateDbContextAsync();
+        context.Students.Remove(model);
+        await context.SaveChangesAsync();
+        Models.Remove(model);
+        DeleteModels.Add(model);
+        await context.DisposeAsync();
+    }
+
+
+    private async Task Recover()
+    {
+        var context = await DbFactory.CreateDbContextAsync();
+        foreach (var item in DeleteModels)
+        {
+            await context.Students.AddAsync(item);
+            Models.Add(item);
+        }
+        DeleteModels.Clear();
+        await context.SaveChangesAsync();
+        await context.DisposeAsync();
+    }
+
+}
+
+@code
+{
+    private bool Visible;
+    private SignModel ChangeModel { get; set; } = new();
+
+    private void CloseTable()
+    {
+        Visible = false;
+        ChangeModel = new SignModel();
+    }
+
+    private void OpenTable(SignModel model)
+    {
+        Visible = true;
+        ChangeModel = model;
+    }
+
+    private async Task UploadFiles(InputFileChangeEventArgs e)
+    {
+        var reader = new StreamReader(e.File.OpenReadStream());
+        var result = await reader.ReadLineAsync();
+        reader.Dispose();
+        if(string.IsNullOrEmpty(result))return;
+        var list = JsonConvert.DeserializeObject<List<SignModel>>(result);
+        var context = await DbFactory.CreateDbContextAsync();
+        if (list != null) await context.Students.AddRangeAsync(list);
+        await context.SaveChangesAsync();
+    }
+
+}
+
 
 <style>
     .item{

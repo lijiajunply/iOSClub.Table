@@ -1,6 +1,9 @@
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
+using iOSClub.Table.Auth;
 using iOSClub.Table.Data;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.WebEncoders;
 
@@ -11,11 +14,17 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddAntDesign();
 
+builder.Services.AddScoped<ProtectedSessionStorage>();
+builder.Services.AddScoped<AuthenticationStateProvider, Provider>();
+builder.Services.AddOptions();
+builder.Services.AddAuthorizationCore();
+
 if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddDbContextFactory<SignContext>(opt =>
         opt.UseSqlite(builder.Configuration.GetConnectionString("SQLite")));
-}else if (builder.Environment.IsProduction())
+}
+else if (builder.Environment.IsProduction())
 {
     builder.Services.AddDbContextFactory<SignContext>(opt =>
         opt.UseMySQL(builder.Configuration.GetConnectionString("MySQL")!));
@@ -47,6 +56,7 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<SignContext>();
+    context.Database.Migrate();
     context.Database.EnsureCreated();
     context.Dispose();
 }
