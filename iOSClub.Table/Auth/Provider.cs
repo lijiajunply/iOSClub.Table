@@ -19,18 +19,20 @@ public class Provider : AuthenticationStateProvider
     {
         try
         {
-            var userSessionStorageResult = await _sessionStorage.GetAsync<LoginModel>("UserSession");
-            var userSession = userSessionStorageResult.Success ? userSessionStorageResult.Value : null;
-            if (userSession == null)
+            var storageResult = await _sessionStorage.GetAsync<PermissionsModel>("Permission");
+            var permission = storageResult.Success ? storageResult.Value : null;
+            if (permission == null)
             {
                 return await Task.FromResult(new AuthenticationState(_anonymous));
             }
-
+    
             var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
             {
-                new Claim(ClaimTypes.Name, userSession.Name),
-                new Claim(ClaimTypes.Role, userSession.Id)
-            }, "customAuth"));
+                new(ClaimTypes.Name, permission.Name),
+                new(ClaimTypes.Role, permission.Identity),
+                new (ClaimTypes.NameIdentifier,permission.Id)
+            }, "Auth"));
+            
             return await Task.FromResult(new AuthenticationState(claimsPrincipal));
         }
         catch
@@ -39,24 +41,26 @@ public class Provider : AuthenticationStateProvider
         }
     }
 
-    public async Task UpdateAuthState(LoginModel? userSession)
+    public async Task UpdateAuthState(PermissionsModel? permission)
     {
         ClaimsPrincipal claimsPrincipal;
-        if (userSession is not null)
+        if (permission is not null)
         {
-            await _sessionStorage.SetAsync("UserSession", userSession);
+            await _sessionStorage.SetAsync("Permission", permission);
             claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
             {
-                new(ClaimTypes.Name, userSession.Name),
-                new(ClaimTypes.Role, userSession.Id)
+                new(ClaimTypes.Name, permission.Name),
+                new(ClaimTypes.Role, permission.Identity),
+                new (ClaimTypes.NameIdentifier,permission.Id)
             }));
         }
         else
         {
-            await _sessionStorage.DeleteAsync("UserSession");
+            await _sessionStorage.DeleteAsync("Permission");
             claimsPrincipal = _anonymous;
         }
 
         NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(claimsPrincipal)));
     }
+    
 }

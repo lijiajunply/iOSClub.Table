@@ -1,11 +1,7 @@
 ﻿@page "/QRCode"
-@inject IJSRuntime Js;
 @inject NavigationManager Nav;
 
 <PageTitle>加入我们！</PageTitle>
-
-<Button OnClick="@mc">MC</Button>
-<Button OnClick="@ios">iOS</Button>
 
 <Image Width="200px" Src="mc.jpg" OnClick="@mc"/>
 <Image Width="200px" Src="ios.jpg" OnClick="@ios"/>

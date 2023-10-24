@@ -4,15 +4,28 @@
 @inherits LayoutComponentBase
 
 
-<main>
-    <NavList NavLists="NavModels"/>
+<AuthorizeView Roles="Founder, President, TechnologyMinister, PracticalMinister, NewMediaMinister">
+    <ChildContent>
+        <main>
+            <NavList NavLists="NavModels"/>
 
-    <article class="main">
-        @Body
-    </article>
+            <article class="main">
+                @Body
+            </article>
 
-    <FooterList/>
-</main>
+            <FooterList/>
+        </main>
+    </ChildContent>
+    <NotAuthorized>
+        <main>
+            <article class="main">
+                <ReturnView/>
+            </article>
+            <FooterList/>
+        </main>
+    </NotAuthorized>
+</AuthorizeView>
+
 
 @code
 {

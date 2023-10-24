@@ -4,7 +4,7 @@
 
 <AntList DataSource="@EventModels" ItemLayout="@ListItemLayout.Vertical">
     <ChildContent Context="item">
-        <ListItem Extra="item.Extra" 
+        <ListItem Extra="item.Extra"
                   Actions="@(new[] { iconText(("start","156")), iconText(("like","156")), iconText(("message","2")) })">
             <ListItemMeta>
                 <TitleTemplate>
@@ -17,9 +17,9 @@
 </AntList>
 
 @code {
-    public List<EventModel> EventModels { get; set; } = new();
+    private List<EventModel> EventModels { get; set; } = new();
 
-    public RenderFragment<(string icon, string text)> iconText = context =>
+    public readonly RenderFragment<(string icon, string text)> iconText = context =>
         @<Template>
             <Space>
                 <SpaceItem>

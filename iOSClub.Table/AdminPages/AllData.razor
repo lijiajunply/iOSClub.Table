@@ -7,100 +7,110 @@
 @using System.Text.Unicode
 @using Newtonsoft.Json
 @using JsonSerializer = System.Text.Json.JsonSerializer
+@using System.Security.Claims
 @inject IJSRuntime JS
 @inject IDbContextFactory<SignContext> DbFactory
 
 <PageTitle>数据</PageTitle>
 
-<Button Type="@ButtonType.Primary" OnClick="@DataDownload">下载Json文件</Button>
-<Button Type="@ButtonType.Primary" OnClick="@CsvDownload">下载Csv文件</Button>
-@* 上传 *@
-
-<InputFile id="fileInput" OnChange="@UploadFiles" multiple/>
-
-
-<Button Type="@ButtonType.Primary" OnClick="@Flushed">刷新</Button>
-@if (DeleteModels.Count > 0)
+@if (isHasPro)
 {
-    <Button Type="@ButtonType.Primary" OnClick="@Recover">恢复</Button>
+    <Button Type="@ButtonType.Primary" OnClick="@DataDownload">下载Json文件</Button>
+    <Button Type="@ButtonType.Primary" OnClick="@CsvDownload">下载Csv文件</Button>
+    <InputFile id="fileInput" OnChange="@UploadFiles" multiple/>
+    <Button Type="@ButtonType.Primary" OnClick="@Flushed">刷新</Button>
+    @if (DeleteModels.Count > 0)
+    {
+        <Button Type="@ButtonType.Primary" OnClick="@Recover">恢复</Button>
+    }
+
+
+    <Table TItem="SignModel" DataSource="@Models">
+        <PropertyColumn Title="姓名" Property="c => c.UserName"/>
+        <PropertyColumn Title="学号" Property="c => c.Id"/>
+        <PropertyColumn Title="学院" Property="c => c.Academy"/>
+        <PropertyColumn Title="政治面貌" Property="c => c.PoliticalLandscape"/>
+        <PropertyColumn Title="性别" Property="c => c.Gender"/>
+        <PropertyColumn Title="专业班级" Property="c => c.ClassName"/>
+        <PropertyColumn Title="手机号码" Property="c => c.PhoneNum"/>
+        <ActionColumn Title="操作">
+            <Space>
+                <SpaceItem>
+                    <Button Danger OnClick="() => Delete(context)">删除</Button>
+                </SpaceItem>
+                <SpaceItem>
+                    <Button Danger OnClick="() => OpenTable(context)">更改</Button>
+                    <Drawer Closable="true" Width="720" Visible="Visible"
+                            Title='"更改"' OnClose="@CloseTable"
+                            Mask="false">
+                        <Template style="height:90%">
+
+                            <Form Model="ChangeModel"
+                                  Context="item"
+                                  Layout="vertical"
+                                  ValidateMode="@FormValidateMode.Rules"
+                                  OnFinish="OnFinish"
+                                  OnFinishFailed="OnFinishFailed">
+                                <FormItem Class="item" Label="姓名" Rules="@(UserNameRules)">
+                                    <Input @bind-Value="@item.UserName"/>
+                                </FormItem>
+                                <FormItem Class="item" Label="性别" Rules="GenderRules">
+                                    <select class="form-control" @bind="@item.Gender">
+                                        <option value="" selected disabled hidden></option>
+                                        @foreach (var a in Genders)
+                                        {
+                                            <option value="@a">@a</option>
+                                        }
+                                    </select>
+                                </FormItem>
+                                <FormItem Class="item" Label="学号" Rules="IdRules">
+                                    <Input @bind-Value="@item.Id">
+                                </FormItem>
+                                <FormItem Class="item" Label="学院" Rules="AcademyRules">
+                                    <select class="form-control" @bind="@item.Academy">
+                                        <option value="" selected disabled hidden></option>
+                                        @foreach (var a in Academies)
+                                        {
+                                            <option value="@a">@a</option>
+                                        }
+                                    </select>
+                                </FormItem>
+                                <FormItem Class="item" Label="政治面貌" Rules="PoliticalLandscapeRules">
+                                    <select class="form-control" @bind="@item.PoliticalLandscape">
+                                        <option value="" selected disabled hidden></option>
+                                        @foreach (var a in PoliticalLandscapes)
+                                        {
+                                            <option value="@a">@a</option>
+                                        }
+                                    </select>
+                                </FormItem>
+                                <FormItem Class="item" Label="专业班级" Rules="ClassNameRules">
+                                    <Input @bind-Value="@item.ClassName">
+                                </FormItem>
+                                <FormItem Class="item" Label="手机号码" Rules="PhoneNumRules">
+                                    <Input @bind-Value="@item.PhoneNum">
+                                </FormItem>
+
+                                <FormItem Class="item" WrapperColOffset="8" WrapperColSpan="16">
+                                    <Button Type="@ButtonType.Primary" HtmlType="submit">提交</Button>
+                                </FormItem>
+                            </Form>
+
+                        </Template>
+                    </Drawer>
+                </SpaceItem>
+            </Space>
+        </ActionColumn>
+    </Table>
 }
-<Table TItem="SignModel" DataSource="@Models">
-    <PropertyColumn Title="姓名" Property="c => c.UserName"/>
-    <PropertyColumn Title="学号" Property="c => c.Id"/>
-    <PropertyColumn Title="学院" Property="c => c.Academy"/>
-    <PropertyColumn Title="政治面貌" Property="c => c.PoliticalLandscape"/>
-    <PropertyColumn Title="性别" Property="c => c.Gender"/>
-    <PropertyColumn Title="专业班级" Property="c => c.ClassName"/>
-    <PropertyColumn Title="手机号码" Property="c => c.PhoneNum"/>
-    <ActionColumn Title="操作">
-        <Space>
-            <SpaceItem>
-                <Button Danger OnClick="() => Delete(context)">删除</Button>
-            </SpaceItem>
-            <SpaceItem>
-                <Button Danger OnClick="() => OpenTable(context)">更改</Button>
-                <Drawer Closable="true" Width="720" Visible="Visible"
-                        Title='"更改"' OnClose="@CloseTable"
-                        Mask="false">
-                    <Template style="height:90%">
+else
+{
+    <h1>
+        对不起，您没有权限!
+    </h1>
+}
 
-                        <Form Model="ChangeModel"
-                              Context="item"
-                              Layout="vertical"
-                              ValidateMode="@FormValidateMode.Rules"
-                              OnFinish="OnFinish"
-                              OnFinishFailed="OnFinishFailed">
-                            <FormItem Class="item" Label="姓名" Rules="@(UserNameRules)">
-                                <Input @bind-Value="@item.UserName"/>
-                            </FormItem>
-                            <FormItem Class="item" Label="性别" Rules="GenderRules">
-                                <select class="form-control" @bind="@item.Gender">
-                                    <option value="" selected disabled hidden></option>
-                                    @foreach (var a in Genders)
-                                    {
-                                        <option value="@a">@a</option>
-                                    }
-                                </select>
-                            </FormItem>
-                            <FormItem Class="item" Label="学号" Rules="IdRules">
-                                <Input @bind-Value="@item.Id">
-                            </FormItem>
-                            <FormItem Class="item" Label="学院" Rules="AcademyRules">
-                                <select class="form-control" @bind="@item.Academy">
-                                    <option value="" selected disabled hidden></option>
-                                    @foreach (var a in Academies)
-                                    {
-                                        <option value="@a">@a</option>
-                                    }
-                                </select>
-                            </FormItem>
-                            <FormItem Class="item" Label="政治面貌" Rules="PoliticalLandscapeRules">
-                                <select class="form-control" @bind="@item.PoliticalLandscape">
-                                    <option value="" selected disabled hidden></option>
-                                    @foreach (var a in PoliticalLandscapes)
-                                    {
-                                        <option value="@a">@a</option>
-                                    }
-                                </select>
-                            </FormItem>
-                            <FormItem Class="item" Label="专业班级" Rules="ClassNameRules">
-                                <Input @bind-Value="@item.ClassName">
-                            </FormItem>
-                            <FormItem Class="item" Label="手机号码" Rules="PhoneNumRules">
-                                <Input @bind-Value="@item.PhoneNum">
-                            </FormItem>
 
-                            <FormItem Class="item" WrapperColOffset="8" WrapperColSpan="16">
-                                <Button Type="@ButtonType.Primary" HtmlType="submit">提交</Button>
-                            </FormItem>
-                        </Form>
-
-                    </Template>
-                </Drawer>
-            </SpaceItem>
-        </Space>
-    </ActionColumn>
-</Table>
 
 
 @code
@@ -138,8 +148,6 @@
     };
 
     private readonly string[] Genders = { "男", "女" };
-
-    private readonly string[] Identities = { };
 
     private async Task OnFinish()
     {
@@ -255,6 +263,26 @@
         await context.DisposeAsync();
     }
 
+    private bool isHasPro;
+
+    [CascadingParameter]
+    private Task<AuthenticationState>? authenticationState { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (authenticationState is not null)
+        {
+            var authState = await authenticationState;
+            var user = authState?.User;
+
+            if (user?.Identity is not null && user.Identity.IsAuthenticated)
+            {
+                var first = user.Claims.First(x => x.Type == ClaimTypes.Role);
+                isHasPro = first.Value is "President" or "TechnologyMinister" or "PracticalMinister" or "NewMediaMinister";
+            }
+        }
+    }
+
 }
 
 @code
@@ -279,7 +307,7 @@
         var reader = new StreamReader(e.File.OpenReadStream());
         var result = await reader.ReadLineAsync();
         reader.Dispose();
-        if(string.IsNullOrEmpty(result))return;
+        if (string.IsNullOrEmpty(result)) return;
         var list = JsonConvert.DeserializeObject<List<SignModel>>(result);
         var context = await DbFactory.CreateDbContextAsync();
         if (list != null) await context.Students.AddRangeAsync(list);

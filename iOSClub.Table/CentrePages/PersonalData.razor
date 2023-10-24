@@ -1,0 +1,124 @@
+﻿@page "/PersonalData"
+@using iOSClub.Table.Data
+@using Microsoft.EntityFrameworkCore
+@inject IDbContextFactory<SignContext> DbFactory
+
+<PageTitle>社员信息</PageTitle>
+
+<PageHeader Ghost="false" Class="data">
+    <PageHeaderTitle>社员信息</PageHeaderTitle>
+    <PageHeaderExtra>
+        <Button>Operation</Button>
+        <Button>Operation</Button>
+        <Button Type="@ButtonType.Primary">Primary</Button>
+    </PageHeaderExtra>
+    <PageHeaderContent>
+        <Form Model="Member"
+              class="bg-login"
+              Layout="vertical"
+              ValidateMode="@FormValidateMode.Rules"
+              OnFinish="OnFinish"
+              OnFinishFailed="OnFinishFailed">
+            <FormItem Class="item" Label="姓名" Rules="@(SignModel.UserNameRules)">
+                <Input @bind-Value="@context.UserName"/>
+            </FormItem>
+            <FormItem Class="item" Label="性别" Rules="SignModel.GenderRules">
+                <select class="form-control" @bind="@context.Gender">
+                    <option value="" selected disabled hidden></option>
+                    @foreach (var item in SignModel.Genders)
+                    {
+                        <option value="@item">@item</option>
+                    }
+                </select>
+            </FormItem>
+            <FormItem Class="item" Label="学号" Rules="SignModel.IdRules">
+                <Input @bind-Value="@context.Id">
+            </FormItem>
+            <FormItem Class="item" Label="学院" Rules="SignModel.AcademyRules">
+                <select class="form-control" @bind="@context.Academy">
+                    <option value="" selected disabled hidden></option>
+                    @foreach (var item in SignModel.Academies)
+                    {
+                        <option value="@item">@item</option>
+                    }
+                </select>
+            </FormItem>
+            <FormItem Class="item" Label="政治面貌" Rules="SignModel.PoliticalLandscapeRules">
+                <select class="form-control" @bind="@context.PoliticalLandscape">
+                    <option value="" selected disabled hidden></option>
+                    @foreach (var item in SignModel.PoliticalLandscapes)
+                    {
+                        <option value="@item">@item</option>
+                    }
+                </select>
+            </FormItem>
+            <FormItem Class="item" Label="专业班级" Rules="SignModel.ClassNameRules">
+                <Input @bind-Value="@context.ClassName">
+            </FormItem>
+            <FormItem Class="item" Label="手机号码" Rules="SignModel.PhoneNumRules">
+                <Input @bind-Value="@context.PhoneNum">
+            </FormItem>
+
+            <FormItem Class="item" WrapperColOffset="8" WrapperColSpan="16">
+                <Button Type="@ButtonType.Primary" HtmlType="submit">提交</Button>
+            </FormItem>
+        </Form>
+    </PageHeaderContent>
+</PageHeader>
+
+@code {
+
+    [CascadingParameter]
+    private MemberModel Member { get; set; } = new();
+
+}
+
+@code
+{
+
+    private async Task OnFinish()
+    {
+        if (Loading)
+            return;
+        try
+        {
+            Loading = true;
+            await using var context = await DbFactory.CreateDbContextAsync();
+            var f = await context.Students.FirstOrDefaultAsync(x => x.Id == Member.Id);
+            if (f == null)
+                context.Students.Add(Member);
+            else
+            {
+                f.UserName = Member.UserName;
+                f.Academy = Member.Academy;
+                f.ClassName = Member.ClassName;
+                f.PhoneNum = Member.PhoneNum;
+                f.Gender = Member.Gender;
+                f.PoliticalLandscape = Member.PoliticalLandscape;
+            }
+            await context.SaveChangesAsync();
+        }
+        finally
+        {
+            Loading = false;
+        }
+    }
+
+    private bool Loading { get; set; }
+
+    private void OnFinishFailed()
+    {
+        Console.WriteLine("出问题了");
+        Loading = false;
+    }
+
+}
+
+<style>
+    .data{
+        overflow: visible;
+        border-radius: 10px;
+        scroll-behavior: auto;
+        margin: auto;
+    }
+</style>

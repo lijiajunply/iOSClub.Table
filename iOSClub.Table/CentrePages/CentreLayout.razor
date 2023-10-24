@@ -1,0 +1,152 @@
+﻿@layout MainLayout
+@inherits LayoutComponentBase
+@using iOSClub.Table.Components
+@using iOSClub.Table.Data
+@using System.Security.Claims
+@using Microsoft.EntityFrameworkCore
+@inject IDbContextFactory<SignContext> DbFactory
+
+<div>
+    <AuthorizeView>
+        <Authorized>
+            <header>
+                <h4 style="color: white;font-weight: bold;">Finder</h4>
+                
+            </header>
+
+            <CascadingValue Value="@Member">
+                <article class="main">
+                    @Body
+                </article>
+            </CascadingValue>
+
+            <footer>
+                <div class="dock">
+                    <ul>
+                        @* <li> *@
+                        @*     成员信息 *@
+                        @* </li> *@
+                        @* <li> *@
+                        @*     权限管理 *@
+                        @* </li> *@
+                        @foreach (var item in Models)
+                        {
+                            <li>
+                                <Image Src="@item.ContextUrl"/>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </footer>
+        </Authorized>
+        <Authorizing>
+            <p>正在进行身份验证，请稍等</p>
+        </Authorizing>
+        <NotAuthorized>
+            <ReturnView ReturnInfo="" FlushedUrl="/Centre"/>
+        </NotAuthorized>
+    </AuthorizeView>
+</div>
+
+@code
+{
+    private MemberModel Member { get; set; } = new();
+
+    private List<CentreModel> Models { get; set; } = new()
+    {
+        new CentreModel(){ToolStr = "身份信息",Url = "/PersonalData"}
+    };
+
+    [CascadingParameter]
+    private Task<AuthenticationState>? authenticationState { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        if (authenticationState is not null)
+        {
+            var authState = await authenticationState;
+            var user = authState?.User;
+
+            if (user?.Identity is not null && user.Identity.IsAuthenticated)
+            {
+                var name = user.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
+                var identity = user.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
+                var id = user.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+                if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(identity) || string.IsNullOrEmpty(id))
+                    return;
+                await using var context = await DbFactory.CreateDbContextAsync();
+                var model = await context.Students.FirstOrDefaultAsync(x => x.Id == id && x.UserName == name);
+                if (model == null) return;
+                Member = MemberModel.AutoCopy<SignModel, MemberModel>(model);
+                Member.Identity = identity;
+            }
+        }
+    }
+}
+
+<style>
+
+html,body{width:100%;height:100%;overflow:hidden;margin:0;}
+
+html{_height:auto;_padding:100px 0 50px;}
+
+footer {
+  padding-top: 15px;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  color: #333;
+  background: rgba(255, 255, 255, 0.4);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  height: 60px;
+  line-height: 60px;
+  position: fixed;
+}
+
+    footer .dock {
+        width: 60%;
+        height: 100%;
+        /*块级标签居中*/
+        margin: 0 auto;
+        border-top-right-radius: 5px;
+        border-top-left-radius: 5px;
+    }
+
+    footer .dock ul {
+        display: inline-block;
+    }
+
+    footer .dock ul li {
+        float: left;
+        margin: 0 13px;
+        /*设置动画的过渡效果*/
+        transition: all 0.25s linear;
+    }
+
+    footer .dock ul li img {
+        width: 50px;
+    }
+
+    /*动画*/
+    footer .dock ul li:hover {
+        /*设置动画的方向 从底部向中间*/
+        transform-origin: bottom center;
+        /*放大1.5倍*/
+        transform: scale(1.5);
+    }
+</style>
+
+@code
+{
+    public class CentreModel
+    {
+        public string Url { get; set; }
+        public string ContextUrl { get; set; }
+        public string ToolStr { get; set; }
+    }
+}
