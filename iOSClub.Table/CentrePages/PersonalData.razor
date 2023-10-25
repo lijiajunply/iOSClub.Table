@@ -6,16 +6,20 @@
 <PageTitle>社员信息</PageTitle>
 
 <PageHeader Ghost="false" Class="data">
-    <PageHeaderTitle>社员信息</PageHeaderTitle>
+    <PageHeaderTitle>
+        <header>
+            <i class="light" style="background-color: #fd6458;"></i>
+            <i class="light" style="background-color: #ffbf2b; margin-left: 8px;"></i>
+            <i class="light" style="background-color: #24cc3d; margin-left: 8px;"></i>
+        </header>
+    </PageHeaderTitle>
     <PageHeaderExtra>
-        <Button>Operation</Button>
-        <Button>Operation</Button>
-        <Button Type="@ButtonType.Primary">Primary</Button>
+        @* <Button>Operation</Button> *@
+        @* <Button>Operation</Button> *@
+        @* <Button Type="@ButtonType.Primary">Primary</Button> *@
     </PageHeaderExtra>
     <PageHeaderContent>
         <Form Model="Member"
-              class="bg-login"
-              Layout="vertical"
               ValidateMode="@FormValidateMode.Rules"
               OnFinish="OnFinish"
               OnFinishFailed="OnFinishFailed">
@@ -52,19 +56,54 @@
                     }
                 </select>
             </FormItem>
+
             <FormItem Class="item" Label="专业班级" Rules="SignModel.ClassNameRules">
                 <Input @bind-Value="@context.ClassName">
             </FormItem>
+
             <FormItem Class="item" Label="手机号码" Rules="SignModel.PhoneNumRules">
                 <Input @bind-Value="@context.PhoneNum">
             </FormItem>
 
             <FormItem Class="item" WrapperColOffset="8" WrapperColSpan="16">
-                <Button Type="@ButtonType.Primary" HtmlType="submit">提交</Button>
+                <Button Type="@ButtonType.Primary" HtmlType="submit">更改</Button>
             </FormItem>
         </Form>
     </PageHeaderContent>
 </PageHeader>
+
+
+<Modal Title="@("更改信息")"
+       Visible="@_visible"
+       OnOk="@HandleOk"
+       OnCancel="@HandleCancel"
+       OkText="@("确认")"
+       CancelText="@("取消")"
+       ConfirmLoading="@_confirmLoading">
+    确定提交?
+</Modal>
+
+@code{
+    bool _visible;
+    bool _confirmLoading;
+
+
+    private async Task HandleOk(MouseEventArgs e)
+    {
+        _confirmLoading = true;
+        StateHasChanged();
+        await Done();
+        _visible = false;
+        _confirmLoading = false;
+    }
+
+    private void HandleCancel(MouseEventArgs e)
+    {
+        Console.WriteLine("Clicked cancel button");
+        _visible = false;
+    }
+
+}
 
 @code {
 
@@ -76,7 +115,12 @@
 @code
 {
 
-    private async Task OnFinish()
+    private void OnFinish()
+    {
+        _visible = true;
+    }
+
+    private async Task Done()
     {
         if (Loading)
             return;
@@ -121,4 +165,59 @@
         scroll-behavior: auto;
         margin: auto;
     }
+</style>
+
+<style>
+    .item{
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    
+    .form-control {
+        display: block;
+        width: 100%;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;
+        background-color: #fff;
+        background-image: none;
+        /*border: 1px #ccc;*/
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+        -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    }
+   
+   option{
+        display: block;
+        width: 100%;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;
+   }
+   
+</style>
+
+<style >
+    
+	.light {
+       
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+	
+	header{
+	    overflow: hidden;
+        /* 防止子元素超出边界 */
+        display: flex;
+        scroll-snap-align: end;
+	}
 </style>

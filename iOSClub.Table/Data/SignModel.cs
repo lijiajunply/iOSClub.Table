@@ -23,11 +23,14 @@ public class SignModel
         StringBuilder builder = new StringBuilder("姓名,学号,性别,学院,政治面貌,专业班级,电话号码");
         foreach (var model in models)
         {
-            builder.Append("\n"+model);
+            builder.Append("\n" + model);
         }
+
         return builder.ToString();
     }
-    
+
+    #region Table
+
     public static readonly string[] Academies =
     {
         "信息与控制工程学院",
@@ -61,18 +64,29 @@ public class SignModel
     };
 
     public static readonly string[] Genders = { "男", "女" };
-    
-    public static FormValidationRule[] UserNameRules => new FormValidationRule[] { new() { Pattern = @"^[\u4E00-\u9FA5A-Za-z\s]+(·[\u4E00-\u9FA5A-Za-z]+)*$", Message = "姓名出错!", Required = true } };
 
-    public static FormValidationRule[] IdRules => new FormValidationRule[] { new() { Len = 10, Message = "学号出错!", Pattern = "(19|20|21|22|23)([0-9]{8})", Required = true } };
+    public static FormValidationRule[] UserNameRules => new FormValidationRule[]
+    {
+        new() { Pattern = @"^[\u4E00-\u9FA5A-Za-z\s]+(·[\u4E00-\u9FA5A-Za-z]+)*$", Message = "姓名出错!", Required = true }
+    };
 
-    public static FormValidationRule[] PhoneNumRules => new FormValidationRule[] { new() { Len = 11, Pattern = "^1\\d{10}$", Message = "手机号不正确!", Required = true } };
+    public static FormValidationRule[] IdRules => new FormValidationRule[]
+        { new() { Len = 10, Message = "学号出错!", Pattern = "(19|20|21|22|23)([0-9]{8})", Required = true } };
 
-    public static FormValidationRule[] ClassNameRules => new FormValidationRule[] { new() { Pattern = @"[\u4e00-\u9fa5]+[0-9]{4}", Message = "班级姓名出错!", Required = true } };
+    public static FormValidationRule[] PhoneNumRules => new FormValidationRule[]
+        { new() { Len = 11, Pattern = "^1\\d{10}$", Message = "手机号不正确!", Required = true } };
 
-    public static FormValidationRule[] GenderRules => new FormValidationRule[] { new() { Required = true, Message = "性别没填!" } };
+    public static FormValidationRule[] ClassNameRules => new FormValidationRule[]
+        { new() { Pattern = @"[\u4e00-\u9fa5]+[0-9]{4}", Message = "班级姓名出错!", Required = true } };
 
-    public static FormValidationRule[] AcademyRules => new FormValidationRule[] { new() { Required = true, Message = "学院没填!" } };
+    public static FormValidationRule[] GenderRules => new FormValidationRule[]
+        { new() { Required = true, Message = "性别没填!" } };
 
-    public static FormValidationRule[] PoliticalLandscapeRules => new FormValidationRule[] { new() { Required = true, Message = "政治面貌没填!" } };
+    public static FormValidationRule[] AcademyRules => new FormValidationRule[]
+        { new() { Required = true, Message = "学院没填!" } };
+
+    public static FormValidationRule[] PoliticalLandscapeRules => new FormValidationRule[]
+        { new() { Required = true, Message = "政治面貌没填!" } };
+
+    #endregion
 }

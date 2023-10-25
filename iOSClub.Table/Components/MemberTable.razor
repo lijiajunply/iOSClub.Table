@@ -1,0 +1,155 @@
+﻿@using iOSClub.Table.Data
+@using Microsoft.EntityFrameworkCore
+@inject IJSRuntime JS
+@inject IDbContextFactory<SignContext> DbFactory
+
+<Form Model="ChangeModel"
+      Layout="@Layout"
+      Class="@Class"
+      ValidateMode="@FormValidateMode.Rules"
+      OnFinish="OnFinish"
+      OnFinishFailed="OnFinishFailed">
+    <FormItem Class="item" Label="姓名" Rules="@(SignModel.UserNameRules)">
+        <Input @bind-Value="@context.UserName"/>
+    </FormItem>
+    <FormItem Class="item" Label="性别" Rules="SignModel.GenderRules">
+        <select class="form-control" @bind="@context.Gender">
+            <option value="" selected disabled hidden></option>
+            @foreach (var a in SignModel.Genders)
+            {
+                <option value="@a">@a</option>
+            }
+        </select>
+    </FormItem>
+    <FormItem Class="item" Label="学号" Rules="SignModel.IdRules">
+        <Input @bind-Value="@context.Id">
+    </FormItem>
+    <FormItem Class="item" Label="学院" Rules="SignModel.AcademyRules">
+        <select class="form-control" @bind="@context.Academy">
+            <option value="" selected disabled hidden></option>
+            @foreach (var a in SignModel.Academies)
+            {
+                <option value="@a">@a</option>
+            }
+        </select>
+    </FormItem>
+    <FormItem Class="item" Label="政治面貌" Rules="SignModel.PoliticalLandscapeRules">
+        <select class="form-control" @bind="@context.PoliticalLandscape">
+            <option value="" selected disabled hidden></option>
+            @foreach (var a in SignModel.PoliticalLandscapes)
+            {
+                <option value="@a">@a</option>
+            }
+        </select>
+    </FormItem>
+    <FormItem Class="item" Label="专业班级" Rules="SignModel.ClassNameRules">
+        <Input @bind-Value="@context.ClassName">
+    </FormItem>
+    <FormItem Class="item" Label="手机号码" Rules="SignModel.PhoneNumRules">
+        <Input @bind-Value="@context.PhoneNum">
+    </FormItem>
+
+    @if (context is MemberModel model)
+    {
+        <FormItem Class="item" Label="身份">
+            @MemberModel.IdentityDictionary[model.Identity]
+        </FormItem>
+    }
+    
+    <GridRow >
+        
+    </GridRow>
+    
+    <FormItem Class="item" WrapperColOffset="8" WrapperColSpan="16">
+        <Button Type="@ButtonType.Primary" HtmlType="submit">提交</Button>
+    </FormItem>
+</Form>
+
+@code {
+
+    private async Task OnFinish()
+    {
+        CallBack();
+        if (Loading)
+            return;
+        try
+        {
+            Loading = true;
+            await using var context = await DbFactory.CreateDbContextAsync();
+            var f = await context.Students.FirstOrDefaultAsync(x => x.Id == ChangeModel.Id);
+
+            if (f == null) return;
+
+            f.UserName = ChangeModel.UserName;
+            f.Academy = ChangeModel.Academy;
+            f.ClassName = ChangeModel.ClassName;
+            f.PhoneNum = ChangeModel.PhoneNum;
+            f.Gender = ChangeModel.Gender;
+            f.PoliticalLandscape = ChangeModel.PoliticalLandscape;
+
+            await context.SaveChangesAsync();
+        }
+        finally
+        {
+            Loading = false;
+        }
+    }
+
+    private bool Loading { get; set; }
+
+    private void OnFinishFailed()
+    {
+        Console.WriteLine("出问题了");
+        Loading = false;
+    }
+
+    [Parameter]
+    public SignModel ChangeModel { get; set; } = new();
+
+    [Parameter]
+    public Action CallBack { get; set; } = () => { };
+
+    [Parameter]
+    public string Class { get; set; } = "";
+
+    [Parameter]
+    public string Layout { get; set; } = "vertical";
+
+}
+
+<style>
+    .item{
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    
+    .form-control {
+        display: block;
+        width: 100%;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;
+        background-color: #fff;
+        background-image: none;
+        border: 1px #ccc;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+        -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    }
+   
+   option{
+        display: block;
+        width: 100%;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;
+   }
+   
+</style>
