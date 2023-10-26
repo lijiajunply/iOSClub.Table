@@ -7,8 +7,11 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.WebEncoders;
+using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
+
 
 // 将服务添加到容器
 builder.Services.AddRazorPages();
@@ -41,12 +44,12 @@ builder.Services.AddAuthentication(options =>
 if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddDbContextFactory<SignContext>(opt =>
-        opt.UseSqlite(builder.Configuration.GetConnectionString("SQLite")));
+        opt.UseSqlite(configuration.GetConnectionString("SQLite")));
 }
 else if (builder.Environment.IsProduction())
 {
     builder.Services.AddDbContextFactory<SignContext>(opt =>
-        opt.UseMySQL(builder.Configuration.GetConnectionString("MySQL")!));
+        opt.UseMySQL(configuration.GetConnectionString("MySQL")!));
 }
 
 // 跨域
@@ -81,24 +84,9 @@ using (var scope = app.Services.CreateScope())
     context.Database.EnsureCreated();
     if (!context.Staffs.Any())
     {
-        context.Staffs.Add(new PermissionsModel
-        {
-            Id = "1906020412", Identity = "Founder", Name = "韩晨超"
-        });
-    }
-
-    if (!context.Students.Any())
-    {
-        context.Students.Add(new SignModel()
-        {
-            UserName = "韩晨超",
-            Academy = "",
-            ClassName = "",
-            Gender = "男",
-            Id = "1906020412",
-            PhoneNum = "",
-            PoliticalLandscape = ""
-        });
+        var model = JsonConvert.DeserializeObject<PermissionsModel>(configuration.GetConnectionString("Founder")!);
+        if (model != null)
+            context.Staffs.Add(model);
     }
 
     context.SaveChanges();

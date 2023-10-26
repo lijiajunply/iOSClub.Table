@@ -62,6 +62,14 @@
     }
 }
 
+<Drawer Closable="true" Width="720" Visible="Visible"
+        Title='"更改"' OnClose="@CloseTable"
+        Mask="false">
+    <Template style="height:90%">
+        <MemberTable ChangeModel="ChangeModel"/>
+    </Template>
+</Drawer>
+
 @if (isHasPro)
 {
     <PageHeader Ghost="false" Class="data">
@@ -73,17 +81,25 @@
             </header>
         </PageHeaderTitle>
         <PageHeaderExtra>
-            <header>
-                <Button Type="@ButtonType.Primary" OnClick="@FileDownload">下载文件</Button>
-                <Upload Name="files">
-                    <label class="ant-btn" for="fileInput">上传Json数据</label>
-                </Upload>
-                <Button Type="@ButtonType.Primary" OnClick="@Flushed">刷新</Button>
-                @if (DeleteModels.Count > 0)
-                {
-                    <Button Type="@ButtonType.Primary" OnClick="@Recover">恢复</Button>
-                }
-            </header>
+            <Space>
+                <SpaceItem>
+                    <Button Type="@ButtonType.Primary" OnClick="@FileDownload">下载文件</Button>
+                </SpaceItem>
+                <SpaceItem>
+                    <Upload Name="files">
+                        <label class="ant-btn" for="fileInput">上传Json数据</label>
+                    </Upload>
+                </SpaceItem>
+                <SpaceItem>
+                    <Button Type="@ButtonType.Primary" OnClick="@Flushed">刷新</Button>
+                </SpaceItem>
+                <SpaceItem>
+                    @if (DeleteModels.Count > 0)
+                    {
+                        <Button Type="@ButtonType.Primary" OnClick="@Recover">恢复</Button>
+                    }
+                </SpaceItem>
+            </Space>
         </PageHeaderExtra>
         <PageHeaderContent>
             <GridRow>
@@ -92,7 +108,7 @@
                     <Space>
                         <SpaceItem>
                             <Select DataSource="@SearchItems"
-                            		@bind-Value="@SearchItem">
+                                    @bind-Value="@SearchItem">
                             </Select>
                         </SpaceItem>
                         <SpaceItem>
@@ -118,13 +134,6 @@
                         </SpaceItem>
                         <SpaceItem>
                             <Button Danger OnClick="() => OpenTable(context)">更改</Button>
-                            <Drawer Closable="true" Width="720" Visible="Visible"
-                                    Title='"更改"' OnClose="@CloseTable"
-                                    Mask="false">
-                                <Template style="height:90%">
-                                    <MemberTable ChangeModel="ChangeModel"/>
-                                </Template>
-                            </Drawer>
                         </SpaceItem>
                     </Space>
                 </ActionColumn>
