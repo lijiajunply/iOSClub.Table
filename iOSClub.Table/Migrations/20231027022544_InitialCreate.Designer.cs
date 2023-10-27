@@ -10,8 +10,8 @@ using iOSClub.Table.Data;
 namespace iOSClub.Table.Migrations
 {
     [DbContext(typeof(SignContext))]
-    [Migration("20231018113043_Initial")]
-    partial class Initial
+    [Migration("20231027022544_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,7 +21,11 @@ namespace iOSClub.Table.Migrations
 
             modelBuilder.Entity("iOSClub.Table.Data.PermissionsModel", b =>
                 {
+                    b.Property<string>("Key")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Id")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Identity")
@@ -32,14 +36,14 @@ namespace iOSClub.Table.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                    b.HasKey("Key");
 
                     b.ToTable("Staffs", (string)null);
                 });
 
             modelBuilder.Entity("iOSClub.Table.Data.SignModel", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<string>("Key")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Academy")
@@ -51,6 +55,10 @@ namespace iOSClub.Table.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Id")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -66,7 +74,7 @@ namespace iOSClub.Table.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                    b.HasKey("Key");
 
                     b.ToTable("Students", (string)null);
                 });

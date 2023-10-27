@@ -10,8 +10,8 @@ using iOSClub.Table.Data;
 namespace iOSClub.Table.Migrations
 {
     [DbContext(typeof(SignContext))]
-    [Migration("20231018113540_AddId")]
-    partial class AddId
+    [Migration("20231027023232_RemoveKey")]
+    partial class RemoveKey
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

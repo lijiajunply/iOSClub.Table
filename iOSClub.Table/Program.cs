@@ -84,9 +84,13 @@ using (var scope = app.Services.CreateScope())
     context.Database.EnsureCreated();
     if (!context.Staffs.Any())
     {
-        var model = JsonConvert.DeserializeObject<PermissionsModel>(configuration.GetConnectionString("Founder")!);
-        if (model != null)
-            context.Staffs.Add(model);
+        var model = new PermissionsModel()
+        {
+            Id = "1906020412",
+            Identity = "Founder",
+            Name = "韩晨超"
+        };
+        context.Staffs.Add(model);
     }
 
     context.SaveChanges();
