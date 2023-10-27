@@ -1,12 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace iOSClub.Table.Data;
 
+[Keyless]
 public class PermissionsModel
 {
-    [Key]
-    [MaxLength(255)]
-    public int Key { get; set; }
     public string Id { get; set; }
     public string Name { get; set; }
     

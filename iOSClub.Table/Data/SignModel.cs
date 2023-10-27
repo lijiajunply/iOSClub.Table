@@ -1,14 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.Text;
 using AntDesign;
+using Microsoft.EntityFrameworkCore;
 
 namespace iOSClub.Table.Data;
 
+[Keyless]
 public class SignModel
 {
-    [Key]
-    [MaxLength(255)]
-    public int Key { get; set; }
     public string UserName { get; set; }
     public string Id { get; set; }
     public string Academy { get; set; }
