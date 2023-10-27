@@ -7,6 +7,7 @@ namespace iOSClub.Table.Data;
 public class SignModel
 {
     [Key]
+    [MaxLength(255)]
     public int Key { get; set; }
     public string UserName { get; set; }
     public string Id { get; set; }
