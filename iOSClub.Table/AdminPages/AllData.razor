@@ -9,6 +9,7 @@
 @using Newtonsoft.Json
 @using JsonSerializer = System.Text.Json.JsonSerializer
 @using System.Security.Claims
+@using System.IO
 @inject IJSRuntime JS
 @inject IDbContextFactory<SignContext> DbFactory
 
@@ -57,7 +58,6 @@
     {
         var jsonString = SignModel.GetCsv(Models);
         var data = Encoding.UTF8.GetBytes(jsonString);
-
         await Download("data.csv", data);
     }
 }
@@ -273,14 +273,14 @@ else
             if (!await context.Students.AnyAsync(x => x.UserId == model.UserId && x.UserName == model.UserName))
                 await context.Students.AddAsync(model);
         await context.SaveChangesAsync();
+        Models = await context.Students.ToListAsync();
+        await context.DisposeAsync();
     }
 
     private static List<SignModel> GetList(string result)
     {
-        var list = JsonConvert.DeserializeObject<List<SignModel>>(result)!;
-        if (list.Exists(model => !string.IsNullOrEmpty(model.UserId))) return list;
         var oldList = JsonConvert.DeserializeObject<List<OldSignModel>>(result)!;
-        return oldList.Select(oldModel => oldModel.To()).ToList();
+        return oldList.Any(x => string.IsNullOrEmpty(x.Id)) ? JsonConvert.DeserializeObject<List<SignModel>>(result)! : oldList.Select(oldModel => oldModel.To()).ToList();
     }
 
     private void FileDownload()

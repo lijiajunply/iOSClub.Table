@@ -7,6 +7,7 @@ public class SignContext : DbContext
     public SignContext(DbContextOptions<SignContext> options)
         : base(options)
     {
+        Database.OpenConnection();
         Database.EnsureCreated();
     }
 

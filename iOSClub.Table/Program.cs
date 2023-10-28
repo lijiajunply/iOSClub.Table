@@ -1,11 +1,17 @@
+using System.Linq;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 using iOSClub.Table.Auth;
 using iOSClub.Table.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.WebEncoders;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -80,6 +86,7 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<SignContext>();
     context.Database.Migrate();
+    context.Database.EnsureCreated();
     if (!context.Staffs.Any())
     {
         var model = new PermissionsModel()

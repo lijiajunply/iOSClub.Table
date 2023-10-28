@@ -1,6 +1,6 @@
 ﻿namespace iOSClub.Table.Data;
 
-public abstract class OldSignModel
+public class OldSignModel
 {
     public string UserName { get; set; }
     public string Id { get; set; }
@@ -21,6 +21,4 @@ public abstract class OldSignModel
             PoliticalLandscape = PoliticalLandscape,
             UserId = Id
         };
-
-    
 }
