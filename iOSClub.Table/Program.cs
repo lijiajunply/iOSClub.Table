@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
@@ -9,6 +10,8 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -85,17 +88,25 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<SignContext>();
-    context.Database.Migrate();
-    context.Database.EnsureCreated();
-    if (!context.Staffs.Any())
+    try
     {
-        var model = new PermissionsModel()
+        context.Database.Migrate();
+        context.Database.EnsureCreated();
+        if (!context.Staffs.Any())
         {
-            UserId = "1906020412",
-            Identity = "Founder",
-            Name = "韩晨超"
-        };
-        context.Staffs.Add(model);
+            var model = new PermissionsModel()
+            {
+                UserId = "1906020412",
+                Identity = "Founder",
+                Name = "韩晨超"
+            };
+            context.Staffs.Add(model);
+        }
+    }
+    catch
+    {
+        var databaseCreator = (RelationalDatabaseCreator)context.Database.GetService<IDatabaseCreator>();
+        databaseCreator.CreateTables();
     }
 
     context.SaveChanges();
