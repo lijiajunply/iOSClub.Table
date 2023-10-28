@@ -79,8 +79,7 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<SignContext>();
-    await context.Database.MigrateAsync();
-    await context.Database.EnsureCreatedAsync();
+    context.Database.Migrate();
     if (!context.Staffs.Any())
     {
         var model = new PermissionsModel()

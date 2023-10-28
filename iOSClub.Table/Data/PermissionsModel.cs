@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace iOSClub.Table.Data;
 
-[Table("Staffs")]
 public class PermissionsModel
 {
     [Key]
