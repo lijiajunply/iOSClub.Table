@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using AntDesign;
 
@@ -10,7 +11,7 @@ public class SignModel
     public string UserName { get; set; }
     
     [Key]
-    [MaxLength(256)]
+    [Column(TypeName = "varchar(256)")]
     public string UserId { get; set; }
     public string Academy { get; set; }
     public string PoliticalLandscape { get; set; }

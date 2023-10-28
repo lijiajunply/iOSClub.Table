@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace iOSClub.Table.Data;
 
 public class PermissionsModel
 {
     [Key]
-    [MaxLength(256)]
+    [Column(TypeName = "varchar(256)")]
     public string UserId { get; set; }
     public string Name { get; set; }
     
