@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.WebEncoders;
-using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -80,8 +79,8 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<SignContext>();
-    context.Database.Migrate();
-    context.Database.EnsureCreated();
+    await context.Database.MigrateAsync();
+    await context.Database.EnsureCreatedAsync();
     if (!context.Staffs.Any())
     {
         var model = new PermissionsModel()

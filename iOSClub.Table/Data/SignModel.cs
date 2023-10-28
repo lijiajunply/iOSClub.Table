@@ -5,6 +5,7 @@ using AntDesign;
 
 namespace iOSClub.Table.Data;
 
+[Table("Students")]
 public class SignModel
 {
     
