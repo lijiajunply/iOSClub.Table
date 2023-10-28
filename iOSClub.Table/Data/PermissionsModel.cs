@@ -5,7 +5,7 @@ namespace iOSClub.Table.Data;
 public class PermissionsModel
 {
     [Key]
-    public int Key { get; set; }
+    [MaxLength(256)]
     public string UserId { get; set; }
     public string Name { get; set; }
     

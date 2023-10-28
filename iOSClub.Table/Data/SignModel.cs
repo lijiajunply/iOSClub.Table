@@ -6,10 +6,11 @@ namespace iOSClub.Table.Data;
 
 public class SignModel
 {
-    [Key]
-    public int Key { get; set; }
     
     public string UserName { get; set; }
+    
+    [Key]
+    [MaxLength(256)]
     public string UserId { get; set; }
     public string Academy { get; set; }
     public string PoliticalLandscape { get; set; }
