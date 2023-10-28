@@ -1,5 +1,4 @@
 ﻿@page "/Login"
-@using iOSClub.Table.Components
 @using iOSClub.Table.Data
 @using iOSClub.Table.Auth
 @using Microsoft.EntityFrameworkCore
@@ -10,6 +9,7 @@
 
 <PageTitle>登录</PageTitle>
 
+<link href="css/InputBox.css" rel="stylesheet"/>
 
 <GridRow Class="table" type="flex" justify="center">
     <Form Model="Model" Layout="vertical"
@@ -18,10 +18,16 @@
           class="bg-login">
         <h2>登录</h2>
         <FormItem Class="item">
-            <InputBox @bind-Model="@context.Name" Name="name" DisplayText="姓名" InputType="text"/>
+            <div class="input-box">
+                <input @bind="@context.Name" required=""/>
+                <label>姓名</label>
+            </div>
         </FormItem>
         <FormItem Class="item">
-            <InputBox @bind-Model="@context.Id" Name="id" DisplayText="学号" InputType="text"/>
+            <div class="input-box">
+                <input @bind="@context.Id" required=""/>
+                <label>学号</label>
+            </div>
         </FormItem>
         <FormItem Class="item">
             <Button Type="@ButtonType.Primary" HtmlType="submit">提交</Button>
@@ -39,7 +45,7 @@
 {
     [CascadingParameter]
     private Task<AuthenticationState>? authenticationState { get; set; }
-    
+
     public LoginModel Model { get; set; } = new();
 
     private async Task Submit()
@@ -51,7 +57,7 @@
         }
 
         await using var context = await DbFactory.CreateDbContextAsync();
-        
+
         var peo = await context.Staffs.FirstOrDefaultAsync(x => x.UserId == Model.Id && x.Name == Model.Name);
 
         var identity = "Member";
@@ -66,12 +72,12 @@
                 return;
             }
         }
-        
+
         var provider = (Provider)authStateProvider;
         await provider.UpdateAuthState(new PermissionsModel(Model, identity));
 
         await _message.Info("登陆成功!");
-        navigation.NavigateTo("/Centre",true);
+        navigation.NavigateTo("/Centre", true);
     }
 
     private void OnFinishFailed()
