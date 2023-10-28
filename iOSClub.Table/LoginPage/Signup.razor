@@ -35,7 +35,7 @@ else
             </select>
         </FormItem>
         <FormItem Class="item" Label="学号" LabelStyle="color: #f5f5f7;" Rules="SignModel.IdRules">
-            <Input @bind-Value="@context.Id">
+            <Input @bind-Value="@context.UserId">
         </FormItem>
         <FormItem Class="item" Label="学院" LabelStyle="color: #f5f5f7;" Rules="SignModel.AcademyRules">
             <select class="form-control" @bind="@context.Academy">
@@ -99,7 +99,7 @@ else
         {
             Loading = true;
             await using var context = await DbFactory.CreateDbContextAsync();
-            var f = await context.Students.FirstOrDefaultAsync(x => x.Id == Model.Id);
+            var f = await context.Students.FirstOrDefaultAsync(x => x.UserId == Model.UserId);
             if (f == null)
                 context.Students.Add(Model);
             else

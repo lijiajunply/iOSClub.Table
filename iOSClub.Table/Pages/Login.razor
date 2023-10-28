@@ -52,13 +52,13 @@
 
         await using var context = await DbFactory.CreateDbContextAsync();
         
-        var peo = await context.Staffs.FirstOrDefaultAsync(x => x.Id == Model.Id && x.Name == Model.Name);
+        var peo = await context.Staffs.FirstOrDefaultAsync(x => x.UserId == Model.Id && x.Name == Model.Name);
 
         var identity = "Member";
         if (peo != null) identity = peo.Identity;
         else
         {
-            var signModel = await context.Students.FirstOrDefaultAsync(x => x.Id == Model.Id && x.UserName == Model.Name);
+            var signModel = await context.Students.FirstOrDefaultAsync(x => x.UserId == Model.Id && x.UserName == Model.Name);
 
             if (signModel == null)
             {

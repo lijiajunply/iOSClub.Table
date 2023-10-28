@@ -85,7 +85,7 @@ using (var scope = app.Services.CreateScope())
     {
         var model = new PermissionsModel()
         {
-            Id = "1906020412",
+            UserId = "1906020412",
             Identity = "Founder",
             Name = "韩晨超"
         };

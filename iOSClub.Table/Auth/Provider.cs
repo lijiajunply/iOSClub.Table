@@ -30,7 +30,7 @@ public class Provider : AuthenticationStateProvider
             {
                 new(ClaimTypes.Name, permission.Name),
                 new(ClaimTypes.Role, permission.Identity),
-                new (ClaimTypes.NameIdentifier,permission.Id)
+                new (ClaimTypes.NameIdentifier,permission.UserId)
             }, "Auth"));
             
             return await Task.FromResult(new AuthenticationState(claimsPrincipal));
@@ -51,7 +51,7 @@ public class Provider : AuthenticationStateProvider
             {
                 new(ClaimTypes.Name, permission.Name),
                 new(ClaimTypes.Role, permission.Identity),
-                new (ClaimTypes.NameIdentifier,permission.Id)
+                new (ClaimTypes.NameIdentifier,permission.UserId)
             }));
         }
         else

@@ -72,7 +72,7 @@
                 if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(identity) || string.IsNullOrEmpty(id))
                     return;
                 await using var context = await DbFactory.CreateDbContextAsync();
-                var model = await context.Students.FirstOrDefaultAsync(x => x.Id == id && x.UserName == name);
+                var model = await context.Students.FirstOrDefaultAsync(x => x.UserId == id && x.UserName == name);
                 if (model == null)
                 {
                     Models.Clear();

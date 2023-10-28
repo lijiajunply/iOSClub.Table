@@ -22,7 +22,7 @@
         </select>
     </FormItem>
     <FormItem Class="item" Label="学号" Rules="SignModel.IdRules">
-        <Input @bind-Value="@context.Id">
+        <Input @bind-Value="@context.UserId">
     </FormItem>
     <FormItem Class="item" Label="学院" Rules="SignModel.AcademyRules">
         <select class="form-control" @bind="@context.Academy">
@@ -76,7 +76,7 @@
         {
             Loading = true;
             await using var context = await DbFactory.CreateDbContextAsync();
-            var f = await context.Students.FirstOrDefaultAsync(x => x.Id == ChangeModel.Id);
+            var f = await context.Students.FirstOrDefaultAsync(x => x.UserId == ChangeModel.UserId);
 
             if (f == null) return;
 

@@ -121,7 +121,7 @@
 
             <Table TItem="SignModel" DataSource="@Models">
                 <PropertyColumn Title="姓名" Property="c => c.UserName"/>
-                <PropertyColumn Title="学号" Property="c => c.Id"/>
+                <PropertyColumn Title="学号" Property="c => c.UserId"/>
                 <PropertyColumn Title="学院" Property="c => c.Academy"/>
                 <PropertyColumn Title="政治面貌" Property="c => c.PoliticalLandscape"/>
                 <PropertyColumn Title="性别" Property="c => c.Gender"/>
@@ -173,7 +173,7 @@ else
         Models = SearchItem switch
         {
             "姓名" => await context.Students.Where(x => x.UserName.StartsWith(_searchValue)).ToListAsync(),
-            "学号" => await context.Students.Where(x => x.Id.StartsWith(_searchValue)).ToListAsync(),
+            "学号" => await context.Students.Where(x => x.UserId.StartsWith(_searchValue)).ToListAsync(),
             "学院" => await context.Students.Where(x => x.Academy.StartsWith(_searchValue)).ToListAsync(),
             _ => Models
             };
@@ -267,13 +267,20 @@ else
         var result = await reader.ReadLineAsync();
         reader.Dispose();
         if (string.IsNullOrEmpty(result)) return;
-        var list = JsonConvert.DeserializeObject<List<SignModel>>(result);
+        var list = GetList(result);
         var context = await DbFactory.CreateDbContextAsync();
-        if (list != null)
-            foreach (var model in list)
-                if (!await context.Students.AnyAsync(x => x.Id == model.Id && x.UserName == model.UserName))
-                    await context.Students.AddAsync(model);
+        foreach (var model in list)
+            if (!await context.Students.AnyAsync(x => x.UserId == model.UserId && x.UserName == model.UserName))
+                await context.Students.AddAsync(model);
         await context.SaveChangesAsync();
+    }
+
+    private static List<SignModel> GetList(string result)
+    {
+        var list = JsonConvert.DeserializeObject<List<SignModel>>(result)!;
+        if (list.Exists(model => !string.IsNullOrEmpty(model.UserId))) return list;
+        var oldList = JsonConvert.DeserializeObject<List<OldSignModel>>(result)!;
+        return oldList.Select(oldModel => oldModel.To()).ToList();
     }
 
     private void FileDownload()

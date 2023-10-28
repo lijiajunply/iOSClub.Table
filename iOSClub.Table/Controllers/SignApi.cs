@@ -51,7 +51,7 @@ public class SignApi : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> PutSignModel(string id, SignModel signModel)
     {
-        if (id != signModel.Id)
+        if (id != signModel.UserId)
         {
             return BadRequest();
         }
@@ -92,7 +92,7 @@ public class SignApi : ControllerBase
         }
         catch (DbUpdateException)
         {
-            if (SignModelExists(signModel.Id))
+            if (SignModelExists(signModel.UserId))
             {
                 return Conflict();
             }
@@ -100,7 +100,7 @@ public class SignApi : ControllerBase
             throw;
         }
 
-        return CreatedAtAction("GetSignModel", new { id = signModel.Id }, signModel);
+        return CreatedAtAction("GetSignModel", new { id = signModel.UserId }, signModel);
     }
 
     // DELETE: api/SignApi/5
@@ -126,6 +126,6 @@ public class SignApi : ControllerBase
 
     private bool SignModelExists(string id)
     {
-        return (_context.Students?.Any(e => e.Id == id)).GetValueOrDefault();
+        return (_context.Students?.Any(e => e.UserId == id)).GetValueOrDefault();
     }
 }

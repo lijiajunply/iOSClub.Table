@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
 
 namespace iOSClub.Table.Data;
 
-[Keyless]
 public class PermissionsModel
 {
-    public string Id { get; set; }
+    [Key]
+    public int Key { get; set; }
+    public string UserId { get; set; }
     public string Name { get; set; }
     
     /// <summary>
@@ -25,7 +25,7 @@ public class PermissionsModel
 
     public PermissionsModel(LoginModel model,string identity = "Member")
     {
-        Id = model.Id;
+        UserId = model.Id;
         Name = model.Name;
         Identity = identity;
     }

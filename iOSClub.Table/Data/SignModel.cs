@@ -1,14 +1,16 @@
-﻿using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text;
 using AntDesign;
-using Microsoft.EntityFrameworkCore;
 
 namespace iOSClub.Table.Data;
 
-[Keyless]
 public class SignModel
 {
+    [Key]
+    public int Key { get; set; }
+    
     public string UserName { get; set; }
-    public string Id { get; set; }
+    public string UserId { get; set; }
     public string Academy { get; set; }
     public string PoliticalLandscape { get; set; }
     public string Gender { get; set; }
@@ -17,7 +19,7 @@ public class SignModel
 
     public override string ToString()
     {
-        return $"{UserName},{Id},{Gender},{Academy},{PoliticalLandscape},{ClassName},{PhoneNum}";
+        return $"{UserName},{UserId},{Gender},{Academy},{PoliticalLandscape},{ClassName},{PhoneNum}";
     }
 
     public static string GetCsv(List<SignModel> models)
