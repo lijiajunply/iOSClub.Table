@@ -92,6 +92,15 @@ using (var scope = app.Services.CreateScope())
     {
         context.Database.Migrate();
         context.Database.EnsureCreated();
+    }
+    catch
+    {
+        var databaseCreator = (RelationalDatabaseCreator)context.Database.GetService<IDatabaseCreator>();
+        databaseCreator.CreateTables();
+        context.Database.Migrate();
+    }
+    finally
+    {
         if (!context.Staffs.Any())
         {
             var model = new PermissionsModel()
@@ -102,11 +111,6 @@ using (var scope = app.Services.CreateScope())
             };
             context.Staffs.Add(model);
         }
-    }
-    catch
-    {
-        var databaseCreator = (RelationalDatabaseCreator)context.Database.GetService<IDatabaseCreator>();
-        databaseCreator.CreateTables();
     }
 
     context.SaveChanges();
