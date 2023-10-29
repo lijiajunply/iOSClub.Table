@@ -8,7 +8,6 @@
 @using System.Text.Unicode
 @using Newtonsoft.Json
 @using JsonSerializer = System.Text.Json.JsonSerializer
-@using System.Security.Claims
 @using System.IO
 @inject IJSRuntime JS
 @inject IDbContextFactory<SignContext> DbFactory
@@ -70,83 +69,74 @@
     </Template>
 </Drawer>
 
-@if (isHasPro)
-{
-    <PageHeader Ghost="false" Class="data">
-        <PageHeaderTitle>
-            <header>
-                <i class="light" style="background-color: #fd6458;"></i>
-                <i class="light" style="background-color: #ffbf2b; margin-left: 8px;"></i>
-                <i class="light" style="background-color: #24cc3d; margin-left: 8px;"></i>
-            </header>
-        </PageHeaderTitle>
-        <PageHeaderExtra>
-            <Space>
-                <SpaceItem>
-                    <Button Type="@ButtonType.Primary" OnClick="@FileDownload">下载文件</Button>
-                </SpaceItem>
-                <SpaceItem>
-                    <Upload Name="files">
-                        <label class="ant-btn" for="fileInput">上传Json数据</label>
-                    </Upload>
-                </SpaceItem>
-                <SpaceItem>
-                    <Button Type="@ButtonType.Primary" OnClick="@Flushed">刷新</Button>
-                </SpaceItem>
-                <SpaceItem>
-                    @if (DeleteModels.Count > 0)
-                    {
-                        <Button Type="@ButtonType.Primary" OnClick="@Recover">恢复</Button>
-                    }
-                </SpaceItem>
-            </Space>
-        </PageHeaderExtra>
-        <PageHeaderContent>
-            <GridRow>
-                <GridCol Span="8"/>
-                <GridCol Span="8">
-                    <Space>
-                        <SpaceItem>
-                            <Select DataSource="@SearchItems"
-                                    @bind-Value="@SearchItem">
-                            </Select>
-                        </SpaceItem>
-                        <SpaceItem>
-                            <Search Placeholder="请输入搜索项" AllowClear EnterButton="@("搜索")" @bind-Value="@SearchValue" Size="large"/>
-                        </SpaceItem>
-                    </Space>
-                </GridCol>
-                <GridCol Span="8"/>
-            </GridRow>
+<PageHeader Ghost="false" Class="data">
+    <PageHeaderTitle>
+        <header>
+            <i class="light" style="background-color: #fd6458;"></i>
+            <i class="light" style="background-color: #ffbf2b; margin-left: 8px;"></i>
+            <i class="light" style="background-color: #24cc3d; margin-left: 8px;"></i>
+        </header>
+    </PageHeaderTitle>
+    <PageHeaderExtra>
+        <Space>
+            <SpaceItem>
+                <Button Type="@ButtonType.Primary" OnClick="@FileDownload">下载文件</Button>
+            </SpaceItem>
+            <SpaceItem>
+                <Upload Name="files">
+                    <label class="ant-btn" for="fileInput">上传Json数据</label>
+                </Upload>
+            </SpaceItem>
+            <SpaceItem>
+                <Button Type="@ButtonType.Primary" OnClick="@Flushed">刷新</Button>
+            </SpaceItem>
+            <SpaceItem>
+                @if (DeleteModels.Count > 0)
+                {
+                    <Button Type="@ButtonType.Primary" OnClick="@Recover">恢复</Button>
+                }
+            </SpaceItem>
+        </Space>
+    </PageHeaderExtra>
+    <PageHeaderContent>
+        <GridRow>
+            <GridCol Span="8"/>
+            <GridCol Span="8">
+                <Space>
+                    <SpaceItem>
+                        <Select DataSource="@SearchItems"
+                                @bind-Value="@SearchItem">
+                        </Select>
+                    </SpaceItem>
+                    <SpaceItem>
+                        <Search Placeholder="请输入搜索项" AllowClear EnterButton="@("搜索")" @bind-Value="@SearchValue" Size="large"/>
+                    </SpaceItem>
+                </Space>
+            </GridCol>
+            <GridCol Span="8"/>
+        </GridRow>
 
-            <Table TItem="SignModel" DataSource="@Models">
-                <PropertyColumn Title="姓名" Property="c => c.UserName"/>
-                <PropertyColumn Title="学号" Property="c => c.UserId"/>
-                <PropertyColumn Title="学院" Property="c => c.Academy"/>
-                <PropertyColumn Title="政治面貌" Property="c => c.PoliticalLandscape"/>
-                <PropertyColumn Title="性别" Property="c => c.Gender"/>
-                <PropertyColumn Title="专业班级" Property="c => c.ClassName"/>
-                <PropertyColumn Title="手机号码" Property="c => c.PhoneNum"/>
-                <ActionColumn Title="操作">
-                    <Space>
-                        <SpaceItem>
-                            <Button Danger OnClick="() => Delete(context)">删除</Button>
-                        </SpaceItem>
-                        <SpaceItem>
-                            <Button Danger OnClick="() => OpenTable(context)">更改</Button>
-                        </SpaceItem>
-                    </Space>
-                </ActionColumn>
-            </Table>
-        </PageHeaderContent>
-    </PageHeader>
-}
-else
-{
-    <h1>
-        对不起，您没有权限!
-    </h1>
-}
+        <Table TItem="SignModel" DataSource="@Models">
+            <PropertyColumn Title="姓名" Property="c => c.UserName"/>
+            <PropertyColumn Title="学号" Property="c => c.UserId"/>
+            <PropertyColumn Title="学院" Property="c => c.Academy"/>
+            <PropertyColumn Title="政治面貌" Property="c => c.PoliticalLandscape"/>
+            <PropertyColumn Title="性别" Property="c => c.Gender"/>
+            <PropertyColumn Title="专业班级" Property="c => c.ClassName"/>
+            <PropertyColumn Title="手机号码" Property="c => c.PhoneNum"/>
+            <ActionColumn Title="操作">
+                <Space>
+                    <SpaceItem>
+                        <Button Danger OnClick="() => Delete(context)">删除</Button>
+                    </SpaceItem>
+                    <SpaceItem>
+                        <Button Danger OnClick="() => OpenTable(context)">更改</Button>
+                    </SpaceItem>
+                </Space>
+            </ActionColumn>
+        </Table>
+    </PageHeaderContent>
+</PageHeader>
 
 
 @code {
@@ -181,7 +171,7 @@ else
         await context.DisposeAsync();
     }
 
-    private List<SignModel> DeleteModels { get; set; } = new();
+    private List<SignModel> DeleteModels { get; } = new();
     private List<SignModel> Models { get; set; } = new();
 
     protected override async Task OnParametersSetAsync()
@@ -194,7 +184,8 @@ else
     private async Task Flushed()
     {
         var context = await DbFactory.CreateDbContextAsync();
-        Models = await context.Students.ToListAsync();
+        Models = await context.Students.FromSql($"SELECT * FROM Students")
+            .ToListAsync();
         await context.DisposeAsync();
     }
 
@@ -222,26 +213,6 @@ else
         await context.DisposeAsync();
     }
 
-    private bool isHasPro;
-
-    [CascadingParameter]
-    private Task<AuthenticationState>? authenticationState { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        if (authenticationState is not null)
-        {
-            var authState = await authenticationState;
-            var user = authState?.User;
-
-            if (user?.Identity is not null && user.Identity.IsAuthenticated)
-            {
-                var first = user.Claims.First(x => x.Type == ClaimTypes.Role);
-                isHasPro = first.Value is "President" or "TechnologyMinister" or "PracticalMinister" or "NewMediaMinister" or "Founder";
-            }
-        }
-    }
-
 }
 
 @code
@@ -264,16 +235,18 @@ else
     private async Task UploadFiles(InputFileChangeEventArgs e)
     {
         var reader = new StreamReader(e.File.OpenReadStream());
-        var result = await reader.ReadLineAsync();
+        var result = await reader.ReadToEndAsync();
         reader.Dispose();
         if (string.IsNullOrEmpty(result)) return;
         var list = GetList(result);
         var context = await DbFactory.CreateDbContextAsync();
+    //await context.Students.AddRangeAsync(list);
         foreach (var model in list)
-            if (!await context.Students.AnyAsync(x => x.UserId == model.UserId && x.UserName == model.UserName))
+            if (!await context.Students.AnyAsync(x => x.UserId == model.UserId))
                 await context.Students.AddAsync(model);
         await context.SaveChangesAsync();
-        Models = await context.Students.ToListAsync();
+        Models = await context.Students.FromSql($"SELECT * FROM Students")
+            .ToListAsync();
         await context.DisposeAsync();
     }
 
@@ -283,17 +256,11 @@ else
         return oldList.Any(x => string.IsNullOrEmpty(x.Id)) ? JsonConvert.DeserializeObject<List<SignModel>>(result)! : oldList.Select(oldModel => oldModel.To()).ToList();
     }
 
-    private void FileDownload()
-    {
-        _visible = true;
-    }
+    private void FileDownload() => _visible = true;
 
     private bool _visible;
 
-    private void HandleCancel()
-    {
-        _visible = false;
-    }
+    private void HandleCancel() => _visible = false;
 }
 
 <style>

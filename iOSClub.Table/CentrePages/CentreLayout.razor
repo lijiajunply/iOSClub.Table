@@ -48,9 +48,9 @@
 {
     private MemberModel Member { get; set; } = new();
 
-    private List<CentreModel> Models { get; set; } = new()
+    private List<CentreModel> Models { get; } = new()
     {
-        new CentreModel() { ToolStr = "身份信息", Url = "/PersonalData", ContextUrl = "Centre/personal.png" }
+        new CentreModel { ToolStr = "身份信息", Url = "/PersonalData", ContextUrl = "Centre/personal.png" }
     };
 
     [CascadingParameter]
@@ -62,7 +62,7 @@
         if (authenticationState is not null)
         {
             var authState = await authenticationState;
-            var user = authState?.User;
+            var user = authState.User;
 
             if (user?.Identity is not null && user.Identity.IsAuthenticated)
             {
@@ -77,11 +77,11 @@
                 {
                     Models.Clear();
                     if (identity == "Founder")
-                        Models.Add(new CentreModel() { ToolStr = "超级用户", Url = "Admin", ContextUrl = "Centre/root.jpg" });
+                        Models.Add(new CentreModel { ToolStr = "超级用户", Url = "Admin", ContextUrl = "Centre/root.jpg" });
                     return;
                 }
-                if (identity != "PracticalMember" || identity != "NewMediaMember" || identity != "Member")
-                    Models.Add(new CentreModel() { ToolStr = "超级用户", Url = "Admin", ContextUrl = "root.jpg" });
+                if (identity is not ("PracticalMember" and "NewMediaMember" and "Member"))
+                    Models.Add(new CentreModel { ToolStr = "超级用户", Url = "Admin", ContextUrl = "root.jpg" });
                 Member = MemberModel.AutoCopy<SignModel, MemberModel>(model);
                 Member.Identity = identity;
             }

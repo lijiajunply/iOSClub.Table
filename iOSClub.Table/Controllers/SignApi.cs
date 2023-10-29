@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using iOSClub.Table.Data;
@@ -22,7 +19,7 @@ public class SignApi : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<SignModel>>> GetStudents()
     {
-        if (_context.Students == null)
+        if (_context.Students == null!)
         {
             return NotFound();
         }
@@ -34,7 +31,7 @@ public class SignApi : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<SignModel>> GetSignModel(string id)
     {
-        if (_context.Students == null)
+        if (_context.Students == null!)
         {
             return NotFound();
         }
@@ -50,7 +47,7 @@ public class SignApi : ControllerBase
     }
 
     // PUT: api/SignApi/5
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    // To protect from over posting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
     public async Task<IActionResult> PutSignModel(string id, SignModel signModel)
     {
@@ -83,7 +80,7 @@ public class SignApi : ControllerBase
     [HttpPost]
     public async Task<ActionResult<SignModel>> PostSignModel(SignModel signModel)
     {
-        if (_context.Students == null)
+        if (_context.Students == null!)
         {
             return Problem("Entity set 'SignContext.Students'  is null.");
         }
@@ -110,7 +107,7 @@ public class SignApi : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteSignModel(string id)
     {
-        if (_context.Students == null)
+        if (_context.Students == null!)
         {
             return NotFound();
         }
@@ -129,6 +126,6 @@ public class SignApi : ControllerBase
 
     private bool SignModelExists(string id)
     {
-        return (_context.Students?.Any(e => e.UserId == id)).GetValueOrDefault();
+        return _context.Students.Any(e => e.UserId == id);
     }
 }

@@ -17,7 +17,7 @@
 </AntList>
 
 @code {
-    private List<EventModel> EventModels { get; set; } = new();
+    private List<EventModel> EventModels => new();
 
     public readonly RenderFragment<(string icon, string text)> iconText = context =>
         @<Template>

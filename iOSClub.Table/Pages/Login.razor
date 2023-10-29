@@ -46,7 +46,7 @@
     [CascadingParameter]
     private Task<AuthenticationState>? authenticationState { get; set; }
 
-    public LoginModel Model { get; set; } = new();
+    public LoginModel Model { get; } = new();
 
     private async Task Submit()
     {
@@ -91,7 +91,7 @@
         if (authenticationState is not null)
         {
             var authState = await authenticationState;
-            var user = authState?.User;
+            var user = authState.User;
 
             if (user?.Identity is not null && user.Identity.IsAuthenticated)
             {

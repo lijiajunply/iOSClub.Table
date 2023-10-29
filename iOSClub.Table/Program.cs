@@ -96,7 +96,7 @@ using (var scope = app.Services.CreateScope())
     {
         if (!context.Staffs.Any())
         {
-            var model = new PermissionsModel()
+            var model = new PermissionsModel
             {
                 UserId = "1906020412",
                 Identity = "Founder",

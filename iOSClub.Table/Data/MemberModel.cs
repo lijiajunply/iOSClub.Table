@@ -15,7 +15,7 @@ public class MemberModel : SignModel
     /// </summary>
     public string Identity { get; set; } = "Member";
 
-    public static Dictionary<string, string> IdentityDictionary = new()
+    public static readonly Dictionary<string, string> IdentityDictionary = new()
     {
         { "Founder", "创始人" },
         { "President", "社长,副社长,秘书长" },
