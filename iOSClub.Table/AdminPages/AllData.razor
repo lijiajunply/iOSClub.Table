@@ -240,12 +240,15 @@
         if (string.IsNullOrEmpty(result)) return;
         var list = GetList(result);
         var context = await DbFactory.CreateDbContextAsync();
-    //await context.Students.AddRangeAsync(list);
-        foreach (var model in list)
-            if (!await context.Students.AnyAsync(x => x.UserId == model.UserId))
-                await context.Students.AddAsync(model);
-        await context.SaveChangesAsync();
-        Models = await context.Students.FromSql($"SELECT * FROM Students")
+
+        for (var i = 0; i < list.Count; i++)
+        {
+            if (!await context.Students.AsNoTracking().AnyAsync(x => x.UserId == list[i].UserId))
+                await context.Students.AddAsync(list[i]);
+            await context.SaveChangesAsync();
+        }
+        
+        Models = await context.Students.FromSql($"SELECT * FROM Students").AsNoTracking()
             .ToListAsync();
         await context.DisposeAsync();
     }

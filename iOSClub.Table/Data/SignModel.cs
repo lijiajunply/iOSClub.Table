@@ -7,12 +7,12 @@ namespace iOSClub.Table.Data;
 
 public class SignModel
 {
-    
     public string UserName { get; set; }
-    
+
     [Key]
     [Column(TypeName = "varchar(256)")]
     public string UserId { get; set; }
+
     public string Academy { get; set; }
     public string PoliticalLandscape { get; set; }
     public string Gender { get; set; }
@@ -34,6 +34,13 @@ public class SignModel
 
         return builder.ToString();
     }
+
+    public string INSERT()
+        => "INSERT INTO Students(UserName,UserId,Academy,PoliticalLandscape,Gender,ClassName,PhoneNum)";
+
+    public string VALUES()
+        => $"VALUES{UserName},{UserId},{Academy},{PoliticalLandscape},{Gender},{ClassName},{PhoneNum}";
+
 
     #region Table
 

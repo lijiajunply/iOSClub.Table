@@ -34,6 +34,8 @@
     <ItemGroup>
         <None Include="wwwroot\Index.css"/>
         <None Remove="Data.db" />
+        <None Remove="Data.db-shm" />
+        <None Remove="Data.db-wal" />
     </ItemGroup>
 
     <ItemGroup>
