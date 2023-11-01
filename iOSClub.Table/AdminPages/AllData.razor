@@ -9,6 +9,7 @@
 @using Newtonsoft.Json
 @using JsonSerializer = System.Text.Json.JsonSerializer
 @using System.IO
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
 @inject IJSRuntime JS
 @inject IDbContextFactory<SignContext> DbFactory
 
@@ -65,7 +66,7 @@
         Title='"更改"' OnClose="@CloseTable"
         Mask="false">
     <Template style="height:90%">
-        <MemberTable ChangeModel="ChangeModel"/>
+        <MemberTable CallBack="() => Visible = false" ChangeModel="ChangeModel"/>
     </Template>
 </Drawer>
 
@@ -88,6 +89,9 @@
                 </Upload>
             </SpaceItem>
             <SpaceItem>
+                <Button Type="@ButtonType.Primary" OnClick="@RemoveAll">删除所有数据</Button>
+            </SpaceItem>
+            <SpaceItem>
                 <Button Type="@ButtonType.Primary" OnClick="@Flushed">刷新</Button>
             </SpaceItem>
             <SpaceItem>
@@ -104,12 +108,19 @@
             <GridCol Span="8">
                 <Space>
                     <SpaceItem>
-                        <Select DataSource="@SearchItems"
-                                @bind-Value="@SearchItem">
-                        </Select>
+                        @* <Select DataSource="@SearchItems" *@
+                        @*         @bind-Value="@SearchItem"> *@
+                        @* </Select> *@
+                        <select class="form-control" @bind="@SearchItem">
+                            <option value="" selected disabled hidden></option>
+                            @foreach (var item in SearchItems)
+                            {
+                                <option value="@item">@item</option>
+                            }
+                        </select>
                     </SpaceItem>
                     <SpaceItem>
-                        <Search Placeholder="请输入搜索项" AllowClear EnterButton="@("搜索")" @bind-Value="@SearchValue" Size="large"/>
+                        <Search Placeholder="请输入搜索项" EnterButton="@("搜索")" @bind-Value="@SearchValue" Size="large"/>
                     </SpaceItem>
                 </Space>
             </GridCol>
@@ -184,8 +195,7 @@
     private async Task Flushed()
     {
         var context = await DbFactory.CreateDbContextAsync();
-        Models = await context.Students.FromSql($"SELECT * FROM Students")
-            .ToListAsync();
+        Models = await context.Students.ToListAsync();
         await context.DisposeAsync();
     }
 
@@ -243,13 +253,13 @@
 
         for (var i = 0; i < list.Count; i++)
         {
-            if (!await context.Students.AsNoTracking().AnyAsync(x => x.UserId == list[i].UserId))
+            if (!await context.Students.AsNoTracking().
+                AnyAsync(x => x.UserId.Replace(" ", "") == list[i].UserId.Replace(" ", "")))
                 await context.Students.AddAsync(list[i]);
             await context.SaveChangesAsync();
         }
-        
-        Models = await context.Students.FromSql($"SELECT * FROM Students").AsNoTracking()
-            .ToListAsync();
+
+        Models = await context.Students.ToListAsync();
         await context.DisposeAsync();
     }
 
@@ -264,6 +274,15 @@
     private bool _visible;
 
     private void HandleCancel() => _visible = false;
+
+    private async Task RemoveAll()
+    {
+        var context = await DbFactory.CreateDbContextAsync();
+        context.Students.RemoveRange(Models);
+        await context.SaveChangesAsync();
+        Models = await context.Students.FromSql($"select * from Students").ToListAsync();
+        await context.DisposeAsync();
+    }
 }
 
 <style>

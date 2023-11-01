@@ -69,7 +69,6 @@
 
     private async Task OnFinish()
     {
-        CallBack();
         if (Loading)
             return;
         try
@@ -92,6 +91,7 @@
         finally
         {
             Loading = false;
+            CallBack();
         }
     }
 
@@ -101,6 +101,7 @@
     {
         Console.WriteLine("出问题了");
         Loading = false;
+        CallBack();
     }
 
     [Parameter]
