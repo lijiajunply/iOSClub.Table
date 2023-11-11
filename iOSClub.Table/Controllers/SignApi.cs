@@ -1,6 +1,6 @@
+using iOSClub.Share.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using iOSClub.Table.Data;
 
 namespace iOSClub.Table.Controllers;
 

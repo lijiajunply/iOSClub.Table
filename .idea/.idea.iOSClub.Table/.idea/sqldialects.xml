@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/iOSClub.Share/Data/SignModel.cs" dialect="AZURE" />
     <file url="file://$PROJECT_DIR$/iOSClub.Table/AdminPages/AllData.razor" dialect="MySQL" />
-    <file url="file://$PROJECT_DIR$/iOSClub.Table/Data/SignModel.cs" dialect="AZURE" />
     <file url="PROJECT" dialect="SQLite" />
   </component>
   <component name="SqlResolveMappings">
     <file url="file://$PROJECT_DIR$/iOSClub.Table/AdminPages/AllData.razor" scope="" />
-    <file url="file://$PROJECT_DIR$/iOSClub.Table/Data/SignModel.cs" scope="" />
   </component>
 </project>

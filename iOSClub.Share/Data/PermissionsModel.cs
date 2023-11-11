@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace iOSClub.Table.Data;
+namespace iOSClub.Share.Data;
 
 public class PermissionsModel
 {

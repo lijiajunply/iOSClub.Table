@@ -1,6 +1,7 @@
 ﻿@page "/Signup/{Text?}"
 @using Microsoft.EntityFrameworkCore
-@using iOSClub.Table.Data
+@using iOSClub.Table.Record
+@using iOSClub.Share.Data
 @inject IDbContextFactory<SignContext> DbFactory
 @inject NavigationManager NavigationManager
 @inject IJSRuntime Js;
@@ -22,43 +23,43 @@ else
           OnFinish="OnFinish"
           OnFinishFailed="OnFinishFailed">
         <h2 style="color: #f5f5f7;">注册</h2>
-        <FormItem Class="item" Label="姓名" LabelStyle="color: #f5f5f7;" Rules="@(SignModel.UserNameRules)">
+        <FormItem Class="item" Label="姓名" LabelStyle="color: #f5f5f7;" Rules="@(SignRecord.UserNameRules)">
             <Input @bind-Value="@context.UserName"/>
         </FormItem>
-        <FormItem Class="item" Label="性别" LabelStyle="color: #f5f5f7;" Rules="SignModel.GenderRules">
+        <FormItem Class="item" Label="性别" LabelStyle="color: #f5f5f7;" Rules="SignRecord.GenderRules">
             <select class="form-control" @bind="@context.Gender">
                 <option value="" selected disabled hidden></option>
-                @foreach (var item in SignModel.Genders)
+                @foreach (var item in SignRecord.Genders)
                 {
                     <option value="@item">@item</option>
                 }
             </select>
         </FormItem>
-        <FormItem Class="item" Label="学号" LabelStyle="color: #f5f5f7;" Rules="SignModel.IdRules">
+        <FormItem Class="item" Label="学号" LabelStyle="color: #f5f5f7;" Rules="SignRecord.IdRules">
             <Input @bind-Value="@context.UserId">
         </FormItem>
-        <FormItem Class="item" Label="学院" LabelStyle="color: #f5f5f7;" Rules="SignModel.AcademyRules">
+        <FormItem Class="item" Label="学院" LabelStyle="color: #f5f5f7;" Rules="SignRecord.AcademyRules">
             <select class="form-control" @bind="@context.Academy">
                 <option value="" selected disabled hidden></option>
-                @foreach (var item in SignModel.Academies)
+                @foreach (var item in SignRecord.Academies)
                 {
                     <option value="@item">@item</option>
                 }
             </select>
         </FormItem>
-        <FormItem Class="item" Label="政治面貌" LabelStyle="color: #f5f5f7;" Rules="SignModel.PoliticalLandscapeRules">
+        <FormItem Class="item" Label="政治面貌" LabelStyle="color: #f5f5f7;" Rules="SignRecord.PoliticalLandscapeRules">
             <select class="form-control" @bind="@context.PoliticalLandscape">
                 <option value="" selected disabled hidden></option>
-                @foreach (var item in SignModel.PoliticalLandscapes)
+                @foreach (var item in SignRecord.PoliticalLandscapes)
                 {
                     <option value="@item">@item</option>
                 }
             </select>
         </FormItem>
-        <FormItem Class="item" Label="专业班级" LabelStyle="color: #f5f5f7;" Rules="SignModel.ClassNameRules">
+        <FormItem Class="item" Label="专业班级" LabelStyle="color: #f5f5f7;" Rules="SignRecord.ClassNameRules">
             <Input @bind-Value="@context.ClassName">
         </FormItem>
-        <FormItem Class="item" Label="手机号码" LabelStyle="color: #f5f5f7;" Rules="SignModel.PhoneNumRules">
+        <FormItem Class="item" Label="手机号码" LabelStyle="color: #f5f5f7;" Rules="SignRecord.PhoneNumRules">
             <Input @bind-Value="@context.PhoneNum">
         </FormItem>
 

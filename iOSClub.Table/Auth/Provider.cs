@@ -1,5 +1,5 @@
 ﻿using System.Security.Claims;
-using iOSClub.Table.Data;
+using iOSClub.Share.Data;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 

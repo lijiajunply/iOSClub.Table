@@ -1,6 +1,5 @@
 ﻿@page "/AllData"
 @using Microsoft.EntityFrameworkCore
-@using iOSClub.Table.Data
 @using iOSClub.Table.Components
 @using System.Text.Json
 @using System.Text
@@ -9,7 +8,7 @@
 @using Newtonsoft.Json
 @using JsonSerializer = System.Text.Json.JsonSerializer
 @using System.IO
-@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@using iOSClub.Share.Data
 @inject IJSRuntime JS
 @inject IDbContextFactory<SignContext> DbFactory
 
@@ -251,11 +250,11 @@
         var list = GetList(result);
         var context = await DbFactory.CreateDbContextAsync();
 
-        for (var i = 0; i < list.Count; i++)
+        foreach (var model in list)
         {
             if (!await context.Students.AsNoTracking().
-                AnyAsync(x => x.UserId.Replace(" ", "") == list[i].UserId.Replace(" ", "")))
-                await context.Students.AddAsync(list[i]);
+                AnyAsync(x => x.UserId.Replace(" ", "") == model.UserId.Replace(" ", "")))
+                await context.Students.AddAsync(model.Standardization());
             await context.SaveChangesAsync();
         }
 

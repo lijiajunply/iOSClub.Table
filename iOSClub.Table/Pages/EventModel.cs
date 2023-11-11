@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace iOSClub.Table.Data;
+namespace iOSClub.Table.Pages;
 
 public class EventModel
 {

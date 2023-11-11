@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iOSClub.Table", "iOSClub.Table\iOSClub.Table.csproj", "{6F7EF52A-04B3-4C01-AE70-F2D3F1ACFBE8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iOSClub.Api", "iOSClub.Api\iOSClub.Api.csproj", "{E13133CE-B2E4-476A-A60D-EAE9E8C86124}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iOSClub.Share", "iOSClub.Share\iOSClub.Share.csproj", "{CCD10A0E-7A0D-4B46-988D-234C6EF8BD64}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +16,13 @@ Global
 		{6F7EF52A-04B3-4C01-AE70-F2D3F1ACFBE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F7EF52A-04B3-4C01-AE70-F2D3F1ACFBE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F7EF52A-04B3-4C01-AE70-F2D3F1ACFBE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E13133CE-B2E4-476A-A60D-EAE9E8C86124}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E13133CE-B2E4-476A-A60D-EAE9E8C86124}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E13133CE-B2E4-476A-A60D-EAE9E8C86124}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E13133CE-B2E4-476A-A60D-EAE9E8C86124}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCD10A0E-7A0D-4B46-988D-234C6EF8BD64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCD10A0E-7A0D-4B46-988D-234C6EF8BD64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCD10A0E-7A0D-4B46-988D-234C6EF8BD64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCD10A0E-7A0D-4B46-988D-234C6EF8BD64}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,47 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
-using AntDesign;
+﻿using AntDesign;
 
-namespace iOSClub.Table.Data;
+namespace iOSClub.Table.Record;
 
-public class SignModel
+public class SignRecord
 {
-    public string UserName { get; set; }
-
-    [Key]
-    [Column(TypeName = "varchar(256)")]
-    public string UserId { get; set; }
-
-    public string Academy { get; set; }
-    public string PoliticalLandscape { get; set; }
-    public string Gender { get; set; }
-    public string ClassName { get; set; }
-    public string PhoneNum { get; set; }
-
-    public override string ToString()
-    {
-        return $"{UserName},{UserId},{Gender},{Academy},{PoliticalLandscape},{ClassName},{PhoneNum}";
-    }
-
-    public static string GetCsv(List<SignModel> models)
-    {
-        StringBuilder builder = new StringBuilder("姓名,学号,性别,学院,政治面貌,专业班级,电话号码");
-        foreach (var model in models)
-        {
-            builder.Append("\n" + model);
-        }
-
-        return builder.ToString();
-    }
-
-    public string INSERT()
-        => "INSERT INTO Students(UserName,UserId,Academy,PoliticalLandscape,Gender,ClassName,PhoneNum)";
-
-    public string VALUES()
-        => $"VALUES{UserName},{UserId},{Academy},{PoliticalLandscape},{Gender},{ClassName},{PhoneNum}";
-
-
     #region Table
 
     public static readonly string[] Academies =
@@ -90,7 +52,7 @@ public class SignModel
         { new() { Len = 11, Pattern = "^1\\d{10}$", Message = "手机号不正确!", Required = true } };
 
     public static FormValidationRule[] ClassNameRules => new FormValidationRule[]
-        { new() { Pattern = @"[\u4e00-\u9fa5]+[0-9]{4}", Message = "班级姓名出错!", Required = true } };
+        { new() { Pattern = @"[\u4e00-\u9fa5]+[0-9]{4}(.*)", Message = "班级姓名出错!", Required = true } };
 
     public static FormValidationRule[] GenderRules => new FormValidationRule[]
         { new() { Required = true, Message = "性别没填!" } };
