@@ -45,4 +45,13 @@ public class MemberModel : SignModel
 
         return child;
     }
+    
+    public MemberModel(){}
+
+    public MemberModel(PermissionsModel model)
+    {
+        Identity = model.Identity;
+        UserId = model.UserId;
+        UserName = model.Name;
+    }
 }
