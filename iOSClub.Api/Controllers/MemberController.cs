@@ -7,13 +7,13 @@ namespace iOSClub.Api.Controllers;
 
 [Route("api/[controller]/[action]")]
 [ApiController]
-public class SignApi : ControllerBase
+public class MemberController : ControllerBase
 {
     private readonly JwtHelper _jwtHelper;
     private readonly SignContext _context;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public SignApi(SignContext context, JwtHelper jwtHelper, IHttpContextAccessor httpContextAccessor)
+    public MemberController(SignContext context, JwtHelper jwtHelper, IHttpContextAccessor httpContextAccessor)
     {
         _context = context;
         _jwtHelper = jwtHelper;
@@ -110,39 +110,6 @@ public class SignApi : ControllerBase
         }
 
         return NoContent();
-    }
-
-    [TokenActionFilter]
-    [Authorize(Roles = "Founder, President, TechnologyMinister, PracticalMinister, NewMediaMinister")]
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(string id)
-    {
-        if (_context.Students == null!)
-            return NotFound();
-
-        var memberModel = await _context.Students.FindAsync(id);
-
-        if (memberModel == null)
-            return NotFound();
-
-        _context.Students.Remove(memberModel);
-        await _context.SaveChangesAsync();
-
-        return NoContent();
-    }
-
-    [TokenActionFilter]
-    [Authorize(Roles = "Founder, President, TechnologyMinister, PracticalMinister, NewMediaMinister")]
-    [HttpGet]
-    public async Task<List<MemberModel>> GetAllData()
-    {
-        var list = await _context.Students.ToListAsync();
-        var newList = new List<MemberModel>();
-
-        list.ForEach(Action);
-        return newList;
-
-        async void Action(SignModel x) => newList.Add(await FromSignToMember(x));
     }
 
     #endregion
