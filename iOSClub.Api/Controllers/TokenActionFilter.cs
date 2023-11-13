@@ -30,7 +30,7 @@ public static class TokenHelper
             var claimId = claimsPrincipal?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.PrimarySid);
             var claimName = claimsPrincipal?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
             var claimRole = claimsPrincipal?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
-            if (claimId.IsNull() || claimName.IsNull() || claimRole.IsNull())
+            if (string.IsNullOrEmpty(claimName!.Value) || string.IsNullOrEmpty(claimId!.Value) || string.IsNullOrEmpty(claimRole!.Value))
             {
                 return null;
             }

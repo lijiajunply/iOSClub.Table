@@ -64,9 +64,6 @@ public class MemberController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<string>> Login(LoginModel loginModel)
     {
-        if (_context.Students == null!)
-            return NotFound();
-
         var peo = await _context.Staffs.FirstOrDefaultAsync(x =>
             x.UserId == loginModel.Id && x.Name == loginModel.Name);
 
