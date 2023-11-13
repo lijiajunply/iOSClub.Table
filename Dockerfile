@@ -5,16 +5,16 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["iOSClub.Table/iOSClub.Table.csproj", "iOSClub.Table/"]
-RUN dotnet restore "iOSClub.Table/iOSClub.Table.csproj"
+COPY ["iOSClub.Api/iOSClub.Api.csproj", "iOSClub.Api/"]
+RUN dotnet restore "iOSClub.Api/iOSClub.Api.csproj"
 COPY . .
-WORKDIR "/src/iOSClub.Table"
-RUN dotnet build "iOSClub.Table.csproj" -c Release -o /app/build
+WORKDIR "/src/iOSClub.Api"
+RUN dotnet build "iOSClub.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "iOSClub.Table.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "iOSClub.Api.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS final
+FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "iOSClub.Table.dll"]
+ENTRYPOINT ["dotnet", "iOSClub.Api.dll"]
