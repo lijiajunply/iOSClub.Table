@@ -88,11 +88,10 @@ public class MemberController : ControllerBase
     public async Task<IActionResult> Update(string id, MemberModel memberModel)
     {
         if (id != memberModel.UserId)
-        {
             return BadRequest();
-        }
 
-        _context.Entry(memberModel).State = EntityState.Modified;
+        var model = (SignModel)memberModel;
+        _context.Entry(model).State = EntityState.Modified;
 
         try
         {
@@ -106,7 +105,7 @@ public class MemberController : ControllerBase
             throw;
         }
 
-        return NoContent();
+        return Ok();
     }
 
     #endregion
@@ -114,13 +113,5 @@ public class MemberController : ControllerBase
     private async Task<bool> MemberModelExists(string id)
     {
         return await _context.Students.AnyAsync(e => e.UserId == id);
-    }
-
-    private async Task<MemberModel> FromSignToMember(SignModel model)
-    {
-        var member = MemberModel.AutoCopy<SignModel, MemberModel>(model);
-        var m = await _context.Staffs.FirstOrDefaultAsync(x => x.UserId == model.UserId && x.Name == model.UserName);
-        if (m != null) member.Identity = m.Identity;
-        return member;
     }
 }

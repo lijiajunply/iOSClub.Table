@@ -9,10 +9,9 @@ public class TokenActionFilter : ActionFilterAttribute
 {
     public override void OnActionExecuting(ActionExecutingContext context)
     {
-        var test = context.HttpContext.Request.Path;
-        string? bearer = context.HttpContext.Request.Headers["Authorization"].FirstOrDefault();
+        var bearer = context.HttpContext.Request.Headers["Authorization"].FirstOrDefault();
         if (string.IsNullOrEmpty(bearer) || !bearer.Contains("Bearer")) return;
-        string[] jwt = bearer.Split(' ');
+        var jwt = bearer.Split(' ');
         var tokenObj = new JwtSecurityToken(jwt[1]);
 
         var claimsIdentity = new ClaimsIdentity(tokenObj.Claims);
@@ -30,10 +29,8 @@ public static class TokenHelper
             var claimId = claimsPrincipal?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.PrimarySid);
             var claimName = claimsPrincipal?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
             var claimRole = claimsPrincipal?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
-            if (string.IsNullOrEmpty(claimName!.Value) || string.IsNullOrEmpty(claimId!.Value) || string.IsNullOrEmpty(claimRole!.Value))
-            {
+            if (claimId.IsNull() || claimName.IsNull() || claimRole.IsNull())
                 return null;
-            }
 
             return new MemberModel()
             {
@@ -49,5 +46,5 @@ public static class TokenHelper
     }
 
     private static bool IsNull(this Claim? claim)
-        => claim == null || !string.IsNullOrEmpty(claim.Value);
+        => claim == null || string.IsNullOrEmpty(claim.Value);
 }

@@ -56,13 +56,12 @@ public class PresidentController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult> Update([FromBody] MemberModel model)
+    public async Task<ActionResult> Update([FromBody] MemberModel memberModel)
     {
-        if (_context.Students == null!)
-        {
+        if (await _context.Students.AnyAsync())
             return NotFound();
-        }
         
+        var model = (SignModel)memberModel;
         _context.Entry(model).State = EntityState.Modified;
 
         try
