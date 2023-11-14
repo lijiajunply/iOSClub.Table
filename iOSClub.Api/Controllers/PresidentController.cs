@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using iOSClub.Share.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Protocol;
 
 namespace iOSClub.Api.Controllers;
 
@@ -44,13 +46,14 @@ public class PresidentController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<List<MemberModel>> GetAllData()
+    public async Task<string> GetAllData()
     {
         var list = await _context.Students.ToListAsync();
         var newList = new List<MemberModel>();
 
         list.ForEach(Action);
-        return newList;
+        var str = newList.ToJson();
+        return string.IsNullOrEmpty(str) ? "{}" : Compress(str);
 
         async void Action(SignModel x) => newList.Add(await FromSignToMember(x));
     }
@@ -86,5 +89,31 @@ public class PresidentController : ControllerBase
         if (m != null) member.Identity = m.Identity;
         return member;
     }
+    
+    /// <summary>
+    /// 压缩Json字符串
+    /// </summary>
+    /// <param name="json">需要压缩的json串</param>
+    /// <returns></returns>
+    private static string Compress(string json)
+    {
+        var sb = new StringBuilder();
+        using (var reader = new StringReader(json))
+        {
+            int ch;
+            var lastCh = -1;
+            var isQuoteStart = false;
+            while ((ch = reader.Read()) > -1)
+            {
+                if ((char)lastCh != '\\' && (char)ch == '\"')
+                    isQuoteStart = !isQuoteStart;
+                if (!char.IsWhiteSpace((char)ch) || isQuoteStart)
+                    sb.Append((char)ch);
+                lastCh = ch;
+            }
+        }
+        return sb.ToString();
+    }
+
 
 }
