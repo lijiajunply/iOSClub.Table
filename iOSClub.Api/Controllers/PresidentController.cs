@@ -46,7 +46,7 @@ public class PresidentController : ControllerBase
         var list = await _context.Students.FromSql($"select * from Students").ToListAsync();
 
         var str = list.ToJson();
-        return string.IsNullOrEmpty(str) ? "{}" : Compress(str);
+        return string.IsNullOrEmpty(str) ? "{}" : GZipServer.CompressString(str);
     }
 
     [HttpPost]
