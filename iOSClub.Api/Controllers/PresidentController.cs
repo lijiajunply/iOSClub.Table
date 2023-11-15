@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using iOSClub.Share.Data;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol;
@@ -48,14 +43,10 @@ public class PresidentController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<string>> GetAllData()
     {
-        var list = await _context.Students.ToListAsync();
-        var newList = new List<MemberModel>();
+        var list = await _context.Students.FromSql($"select * from Students").ToListAsync();
 
-        list.ForEach(Action);
-        var str = newList.ToJson();
+        var str = list.ToJson();
         return string.IsNullOrEmpty(str) ? "{}" : Compress(str);
-
-        async void Action(SignModel x) => newList.Add(await FromSignToMember(x));
     }
 
     [HttpPost]
