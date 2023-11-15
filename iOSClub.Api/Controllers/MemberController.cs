@@ -35,9 +35,6 @@ public class MemberController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<string>> SignUp(SignModel model)
     {
-        if (DateTime.Today.Month != 10)
-            return NotFound();
-
         if (_context.Students == null!)
         {
             return Problem("Entity set 'MemberContext.Students'  is null.");

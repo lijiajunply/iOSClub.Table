@@ -46,7 +46,7 @@ public class PresidentController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<string> GetAllData()
+    public async Task<ActionResult<string>> GetAllData()
     {
         var list = await _context.Students.ToListAsync();
         var newList = new List<MemberModel>();
