@@ -25,13 +25,21 @@ public class MemberController : ControllerBase
     [TokenActionFilter]
     [Authorize]
     [HttpGet]
-    public ActionResult<MemberModel> GetData()
+    public async Task<ActionResult<SignModel>> GetData()
     {
         var member = _httpContextAccessor.HttpContext?.User.GetUser();
         if (member == null) return NotFound();
-        return member;
+        var model =
+            await _context.Students.FirstOrDefaultAsync(x =>
+                x.UserId == member.UserId && x.UserName == member.UserName);
+        if (model == null)
+            return await _context.Staffs.AnyAsync(x => x.UserId == member.UserId || x.Name == member.UserName)
+                ? member
+                : NotFound();
+
+        return model;
     }
-    
+
     [HttpPost]
     public async Task<ActionResult<string>> SignUp(SignModel model)
     {
@@ -82,12 +90,11 @@ public class MemberController : ControllerBase
     [TokenActionFilter]
     [Authorize]
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(string id, MemberModel memberModel)
+    public async Task<IActionResult> Update(string id, SignModel model)
     {
-        if (id != memberModel.UserId)
-            return BadRequest();
+        if (id != model.UserId)
+            return NotFound();
 
-        var model = (SignModel)memberModel;
         _context.Entry(model).State = EntityState.Modified;
 
         try

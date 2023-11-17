@@ -16,7 +16,7 @@ public class PresidentController : ControllerBase
     private readonly SignContext _context;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public PresidentController(SignContext context,IHttpContextAccessor httpContextAccessor)
+    public PresidentController(SignContext context, IHttpContextAccessor httpContextAccessor)
     {
         _context = context;
         _httpContextAccessor = httpContextAccessor;
@@ -46,16 +46,22 @@ public class PresidentController : ControllerBase
         var list = await _context.Students.FromSql($"select * from Students").ToListAsync();
 
         var str = list.ToJson();
-        return string.IsNullOrEmpty(str) ? "{}" : GZipServer.CompressString(str);
+        return string.IsNullOrEmpty(str) ? GZipServer.CompressString("[]") : GZipServer.CompressString(str);
     }
 
     [HttpPost]
-    public async Task<ActionResult> Update([FromBody] MemberModel memberModel)
+    public async Task<ActionResult<string>> GetMemberIdentity(LoginModel model)
+    {
+        var m = await _context.Staffs.FirstOrDefaultAsync(x => x.UserId == model.Id && x.Name == model.Name);
+        return m == null ? "Member" : m.Identity;
+    }
+
+    [HttpPost]
+    public async Task<ActionResult> Update([FromBody] SignModel model)
     {
         if (await _context.Students.AnyAsync())
             return NotFound();
         
-        var model = (SignModel)memberModel;
         _context.Entry(model).State = EntityState.Modified;
 
         try
@@ -64,13 +70,35 @@ public class PresidentController : ControllerBase
         }
         catch (DbUpdateConcurrencyException)
         {
-            var a = await _context.Students.AnyAsync(x => x.Equals(model));
-            if (!a)
+            if (!await _context.Students.AnyAsync(x => x.Equals(model)))
                 return NotFound();
             throw;
         }
 
-        return NoContent();
+        return Ok();
+    }
+    
+    [HttpPost]
+    public async Task<ActionResult> UpdateIdentity([FromBody] PermissionsModel model)
+    {
+        
+        if (await _context.Staffs.AnyAsync())
+            return NotFound();
+        
+        _context.Entry(model).State = EntityState.Modified;
+        
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!await _context.Staffs.AnyAsync(x => x.Equals(model)))
+                return NotFound();
+            throw;
+        }
+
+        return Ok();
     }
 
     private async Task<MemberModel> FromSignToMember(SignModel model)
@@ -80,31 +108,4 @@ public class PresidentController : ControllerBase
         if (m != null) member.Identity = m.Identity;
         return member;
     }
-    
-    /// <summary>
-    /// 压缩Json字符串
-    /// </summary>
-    /// <param name="json">需要压缩的json串</param>
-    /// <returns></returns>
-    private static string Compress(string json)
-    {
-        var sb = new StringBuilder();
-        using (var reader = new StringReader(json))
-        {
-            int ch;
-            var lastCh = -1;
-            var isQuoteStart = false;
-            while ((ch = reader.Read()) > -1)
-            {
-                if ((char)lastCh != '\\' && (char)ch == '\"')
-                    isQuoteStart = !isQuoteStart;
-                if (!char.IsWhiteSpace((char)ch) || isQuoteStart)
-                    sb.Append((char)ch);
-                lastCh = ch;
-            }
-        }
-        return sb.ToString();
-    }
-
-
 }

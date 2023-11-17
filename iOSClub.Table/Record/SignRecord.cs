@@ -2,7 +2,7 @@
 
 namespace iOSClub.Table.Record;
 
-public class SignRecord
+public static class SignRecord
 {
     #region Table
 
