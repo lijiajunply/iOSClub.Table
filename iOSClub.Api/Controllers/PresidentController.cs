@@ -1,8 +1,8 @@
-using System.Text;
 using iOSClub.Share.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using NuGet.Protocol;
 
 namespace iOSClub.Api.Controllers;
@@ -22,6 +22,8 @@ public class PresidentController : ControllerBase
         _httpContextAccessor = httpContextAccessor;
     }
 
+    #region Update And Delete
+
     // GET: api/Member
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(string id)
@@ -40,6 +42,70 @@ public class PresidentController : ControllerBase
         return NoContent();
     }
 
+    [HttpPost]
+    public async Task<ActionResult> Update([FromBody] SignModel model)
+    {
+        if (await _context.Students.AnyAsync())
+            return NotFound();
+
+        _context.Entry(model).State = EntityState.Modified;
+
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!await _context.Students.AnyAsync(x => x.Equals(model)))
+                return NotFound();
+            throw;
+        }
+
+        return Ok();
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<bool>> AddJsonData([FromBody] string s)
+    {
+        var list = JsonConvert.DeserializeObject<List<SignModel>>(GZipServer.DecompressString(s));
+        if (list == null) return false;
+        foreach (var model in list)
+        {
+            if (!await _context.Students.AsNoTracking()
+                    .AnyAsync(x => x.UserId.Replace(" ", "") == model.UserId.Replace(" ", "")))
+                await _context.Students.AddAsync(model.Standardization());
+            await _context.SaveChangesAsync();
+        }
+
+        return true;
+    }
+
+    [HttpPost]
+    public async Task<ActionResult> UpdateIdentity([FromBody] PermissionsModel model)
+    {
+        if (await _context.Staffs.AnyAsync())
+            return NotFound();
+
+        _context.Entry(model).State = EntityState.Added;
+
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!await _context.Staffs.AnyAsync(x => x.Equals(model)))
+                return NotFound();
+            throw;
+        }
+
+        return Ok();
+    }
+
+    #endregion
+
+    #region GetData
+
     [HttpGet]
     public async Task<ActionResult<string>> GetAllData()
     {
@@ -56,56 +122,13 @@ public class PresidentController : ControllerBase
         return m == null ? "Member" : m.Identity;
     }
 
-    [HttpPost]
-    public async Task<ActionResult> Update([FromBody] SignModel model)
-    {
-        if (await _context.Students.AnyAsync())
-            return NotFound();
-        
-        _context.Entry(model).State = EntityState.Modified;
-
-        try
-        {
-            await _context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!await _context.Students.AnyAsync(x => x.Equals(model)))
-                return NotFound();
-            throw;
-        }
-
-        return Ok();
-    }
+    #endregion
     
-    [HttpPost]
-    public async Task<ActionResult> UpdateIdentity([FromBody] PermissionsModel model)
-    {
-        
-        if (await _context.Staffs.AnyAsync())
-            return NotFound();
-        
-        _context.Entry(model).State = EntityState.Modified;
-        
-        try
-        {
-            await _context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!await _context.Staffs.AnyAsync(x => x.Equals(model)))
-                return NotFound();
-            throw;
-        }
-
-        return Ok();
-    }
-
-    private async Task<MemberModel> FromSignToMember(SignModel model)
-    {
-        var member = MemberModel.AutoCopy<SignModel, MemberModel>(model);
-        var m = await _context.Staffs.FirstOrDefaultAsync(x => x.UserId == model.UserId && x.Name == model.UserName);
-        if (m != null) member.Identity = m.Identity;
-        return member;
-    }
+    // private async Task<MemberModel> FromSignToMember(SignModel model)
+    // {
+    //     var member = MemberModel.AutoCopy<SignModel, MemberModel>(model);
+    //     var m = await _context.Staffs.FirstOrDefaultAsync(x => x.UserId == model.UserId && x.Name == model.UserName);
+    //     if (m != null) member.Identity = m.Identity;
+    //     return member;
+    // }
 }
