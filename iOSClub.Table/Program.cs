@@ -81,29 +81,15 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<SignContext>();
-    try
+    if (!context.Staffs.Any())
     {
-        context.Database.Migrate();
-        context.Database.EnsureCreated();
-    }
-    catch
-    {
-        var databaseCreator = (RelationalDatabaseCreator)context.Database.GetService<IDatabaseCreator>();
-        databaseCreator.CreateTables();
-        context.Database.Migrate();
-    }
-    finally
-    {
-        if (!context.Staffs.Any())
+        var model = new PermissionsModel
         {
-            var model = new PermissionsModel
-            {
-                UserId = "1906020412",
-                Identity = "Founder",
-                Name = "韩晨超"
-            };
-            context.Staffs.Add(model);
-        }
+            UserId = "1906020412",
+            Identity = "Founder",
+            Name = "韩晨超"
+        };
+        context.Staffs.Add(model);
     }
 
     context.SaveChanges();

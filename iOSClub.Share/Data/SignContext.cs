@@ -8,7 +8,9 @@ public sealed class SignContext : DbContext
     public SignContext(DbContextOptions<SignContext> options)
         : base(options)
     {
-        
+        Students = Set<SignModel>();
+        Staffs = Set<PermissionsModel>();
+        Events = Set<EventModel>();
     }
 
     public DbSet<SignModel> Students { get; init; }
