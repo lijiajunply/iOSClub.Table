@@ -107,9 +107,6 @@
             <GridCol Span="8">
                 <Space>
                     <SpaceItem>
-                        @* <Select DataSource="@SearchItems" *@
-                        @*         @bind-Value="@SearchItem"> *@
-                        @* </Select> *@
                         <select class="form-control" @bind="@SearchItem">
                             <option value="" selected disabled hidden></option>
                             @foreach (var item in SearchItems)
@@ -137,10 +134,10 @@
             <ActionColumn Title="操作">
                 <Space>
                     <SpaceItem>
-                        <Button Danger OnClick="() => Delete(context)">删除</Button>
+                        <Button Danger OnClick="@(() => Delete(context))">删除</Button>
                     </SpaceItem>
                     <SpaceItem>
-                        <Button Danger OnClick="() => OpenTable(context)">更改</Button>
+                        <Button Danger OnClick="@(() => OpenTable(context))">更改</Button>
                     </SpaceItem>
                 </Space>
             </ActionColumn>
