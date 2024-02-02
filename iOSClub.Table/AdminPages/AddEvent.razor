@@ -74,9 +74,9 @@
                 if (await context.Events.AsNoTracking().AnyAsync(x => x.Link.Replace(" ", "") == model.Link.Replace(" ", "")))
                     continue;
             await context.Events.AddAsync(model);
-            await context.SaveChangesAsync();
         }
 
+        await context.SaveChangesAsync();
         Models = await context.Events.ToListAsync();
         await context.DisposeAsync();
         StateHasChanged();
