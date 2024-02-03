@@ -1,6 +1,5 @@
 ﻿@page "/AllData"
 @using Microsoft.EntityFrameworkCore
-@using iOSClub.Table.Components
 @using System.Text.Json
 @using System.Text
 @using System.Text.Encodings.Web
@@ -9,6 +8,7 @@
 @using JsonSerializer = System.Text.Json.JsonSerializer
 @using System.IO
 @using iOSClub.Share.Data
+@using System.Diagnostics.CodeAnalysis
 @inject IJSRuntime JS
 @inject IDbContextFactory<SignContext> DbFactory
 
@@ -20,6 +20,9 @@
        OnCancel="@HandleCancel"
        Footer="null">
     <Space>
+        <SpaceItem>
+            <Spin size="large" Style="@RunningStyle"/>
+        </SpaceItem>
         <SpaceItem>
             <Button Type="@ButtonType.Primary" OnClick="@CsvDownload">下载Csv文件</Button>
         </SpaceItem>
@@ -35,6 +38,18 @@
 
 @code
 {
+    private string _runningStyle = "visibility: hidden";
+
+    private string RunningStyle
+    {
+        get => _runningStyle;
+        set
+        {
+            _runningStyle = value;
+            StateHasChanged();
+        }
+    }
+
     private async Task JsonDownload()
     {
         var options = new JsonSerializerOptions
@@ -49,8 +64,10 @@
 
     private async Task Download(string fileName, byte[] data)
     {
+        RunningStyle = "";
         await JS.InvokeVoidAsync("jsSaveAsFile", fileName, Convert.ToBase64String(data));
         HandleCancel();
+        RunningStyle = "visibility: hidden";
     }
 
     private async Task CsvDownload()
@@ -69,15 +86,8 @@
     </Template>
 </Drawer>
 
-<PageHeader Ghost="false" Class="data">
-    <PageHeaderTitle>
-        <header>
-            <i class="light" style="background-color: #fd6458;"></i>
-            <i class="light" style="background-color: #ffbf2b; margin-left: 8px;"></i>
-            <i class="light" style="background-color: #24cc3d; margin-left: 8px;"></i>
-        </header>
-    </PageHeaderTitle>
-    <PageHeaderExtra>
+<PageView>
+    <Extra>
         <Space>
             <SpaceItem>
                 <Button Type="@ButtonType.Primary" OnClick="@FileDownload">下载文件</Button>
@@ -100,8 +110,8 @@
                 }
             </SpaceItem>
         </Space>
-    </PageHeaderExtra>
-    <PageHeaderContent>
+    </Extra>
+    <Context>
         <GridRow>
             <GridCol Span="8"/>
             <GridCol Span="8">
@@ -142,9 +152,8 @@
                 </Space>
             </ActionColumn>
         </Table>
-    </PageHeaderContent>
-</PageHeader>
-
+    </Context>
+</PageView>
 
 @code {
 
@@ -173,7 +182,7 @@
             "学号" => await context.Students.Where(x => x.UserId.StartsWith(_searchValue)).ToListAsync(),
             "学院" => await context.Students.Where(x => x.Academy.StartsWith(_searchValue)).ToListAsync(),
             _ => Models
-            };
+        };
 
         await context.DisposeAsync();
     }
@@ -214,6 +223,7 @@
             await context.Students.AddAsync(item);
             Models.Add(item);
         }
+
         DeleteModels.Clear();
         await context.SaveChangesAsync();
         await context.DisposeAsync();
@@ -238,6 +248,7 @@
         ChangeModel = model;
     }
 
+    [SuppressMessage("ReSharper.DPA", "DPA0005: Database issues")]
     private async Task UploadFiles(InputFileChangeEventArgs e)
     {
         var reader = new StreamReader(e.File.OpenReadStream());
@@ -247,16 +258,17 @@
         var list = GetList(result);
         var context = await DbFactory.CreateDbContextAsync();
 
+        RunningStyle = "";
         foreach (var model in list)
         {
-            if (!await context.Students.AsNoTracking().
-                AnyAsync(x => x.UserId.Replace(" ", "") == model.UserId.Replace(" ", "")))
+            if (!await context.Students.AsNoTracking().AnyAsync(x => x.UserId.Replace(" ", "") == model.UserId.Replace(" ", "")))
                 await context.Students.AddAsync(model.Standardization());
             await context.SaveChangesAsync();
         }
 
         Models = await context.Students.ToListAsync();
         await context.DisposeAsync();
+        RunningStyle = "visibility: hidden";
     }
 
     private static List<SignModel> GetList(string result)
@@ -280,28 +292,3 @@
         await context.DisposeAsync();
     }
 }
-
-<style>
-    .data{
-        overflow: visible;
-        border-radius: 10px;
-        scroll-behavior: auto;
-        margin-top: 10px;
-        margin-bottom: 10px;
-        
-    }
-    .light {
-       
-      display: inline-block;
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-    }
-	
-	header{
-	    overflow: hidden;
-        /* 防止子元素超出边界 */
-        display: flex;
-        scroll-snap-align: end;
-	}
-</style>

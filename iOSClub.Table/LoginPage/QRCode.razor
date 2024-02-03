@@ -9,7 +9,7 @@
         @foreach (var item in Org)
         {
             <GridCol Span="6">
-                <Image Width="200px" Src="@item.path" Alt="@item.name" OnClick="@(() => Click(item))"/>
+                <Image Width="200px" Src="@($"/other/{item.path}")" Alt="@item.name" OnClick="@(() => Click(item))"/>
             </GridCol>
         }
     </GridRow>

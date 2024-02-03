@@ -6,21 +6,22 @@
 <PageTitle>社团活动</PageTitle>
 
 <meta name="referrer" content="never">
-<br/>
-@for (var index = Models.Length - 1; index >= 0; index--)
+
+@for (var index = Models.Length - 1 - 5*(Index - 1); index > G(); index--)
 {
     var index1 = index;
     var item = Models[index1];
 
+    <br/>
     <GridRow Class="container">
         @if (index1 % 2 == 0)
         {
             <GridCol Span="12">
                 <div class="div">
                     <a href="@item.Link" target="_blank">
-                        <h1>@item.Title</h1>
+                        <h2>@item.Title</h2>
+                        <p>@item.Digest</p>
                     </a>
-                    <p>@item.Digest</p>
                 </div>
             </GridCol>
             <GridCol Span="12">
@@ -35,25 +36,43 @@
             <GridCol Span="12">
                 <div class="div">
                     <a href="@item.Link" target="_blank">
-                        <h1>@item.Title</h1>
+                        <h2>@item.Title</h2>
+                        <p>@item.Digest</p>
                     </a>
-                    <p>@item.Digest</p>
                 </div>
             </GridCol>
         }
     </GridRow>
-    <br/>
 }
+
+@if (Models.Length > 5)
+{
+    <Pagination Style="text-align: center" OnChange="@Callback" PageSize="5" Total="@Models.Length"/>
+}
+<br/>
 
 @code {
 
+    private int Index { get; set; } = 1;
     private EventModel[] Models { get; set; } = Array.Empty<EventModel>();
 
+    private int G()
+    {
+        var i = Models.Length - 1 - 5 * Index;
+        return i < 0 ? -1 : i;
+    }
+    
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         await using var context = await DbFactory.CreateDbContextAsync();
         Models = await context.Events.ToArrayAsync();
+    }
+
+    private void Callback(PaginationEventArgs obj)
+    {
+        Index = obj.Page;
+        StateHasChanged();
     }
 
 }
@@ -72,6 +91,12 @@
     
       animation: fade-in 1s ease-in-out;
     }
+    
+    h2 {
+      color: #f5f5f7;
+      animation: fade-in 1s ease-in-out;
+    }
+    
     .div{
       margin: 10px;  
     }

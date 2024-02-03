@@ -14,34 +14,25 @@
 
 @code {
 
-    [Parameter]
-    public string FlushedUrl { get; set; } = "";
-    
-    [Parameter]
-    public string ReturnInfo { get; set; } = "未登录!正在为您跳转到登陆界面";
+    [Parameter] public string FlushedUrl { get; set; } = "";
 
-    [Parameter]
-    public string ReturnUrl { get; set; } = "/Login";
+    [Parameter] public string ReturnInfo { get; set; } = "未登录!正在为您跳转到登陆界面";
+
+    [Parameter] public string ReturnUrl { get; set; } = "/Login";
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
-        if(string.IsNullOrEmpty(ReturnInfo))return;
+        if (string.IsNullOrEmpty(ReturnInfo)) return;
         if (firstRender)
         {
-            await _message.Info(ReturnInfo,3);
+            await _message.Info(ReturnInfo, 3);
             navigation.NavigateTo(ReturnUrl);
         }
     }
 
-    public void GoBackToLogin()
-    {
-        navigation.NavigateTo("/Login");
-    }
+    private void GoBackToLogin() => navigation.NavigateTo("/Login");
 
-    private void Flushed()
-    {
-        navigation.NavigateTo(FlushedUrl,true);
-    }
+    private void Flushed() => navigation.NavigateTo(FlushedUrl, true);
 
 }

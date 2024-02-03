@@ -6,43 +6,41 @@
 @using Microsoft.EntityFrameworkCore
 @inject IDbContextFactory<SignContext> DbFactory
 
-<div>
-    <AuthorizeView>
-        <Authorized>
-            <header>
-                <h4 style="color: white;font-weight: bold;">XAUAT iOS Club</h4>
-                @* <NavLink Match="NavLinkMatch.All" href="/"></NavLink> *@
-            </header>
+<AuthorizeView>
+    <Authorized>
+        <header>
+            <h4 style="color: white;font-weight: bold;">XAUAT iOS Club</h4>
+            @* <NavLink Match="NavLinkMatch.All" href="/"></NavLink> *@
+        </header>
 
-            <CascadingValue Value="@Member">
-                <article class="main">
-                    @Body
-                </article>
-            </CascadingValue>
+        <CascadingValue Value="@Member">
+            <article class="main">
+                @Body
+            </article>
+        </CascadingValue>
 
-            <footer>
-                <div class="dock">
-                    <ul>
-                        @foreach (var item in Models)
-                        {
-                            <li title="@item.ToolStr">
-                                <NavLink href="@item.Url" Match="NavLinkMatch.All">
-                                    <img src="@item.ContextUrl" alt=""/>
-                                </NavLink>
-                            </li>
-                        }
-                    </ul>
-                </div>
-            </footer>
-        </Authorized>
-        <Authorizing>
-            <p>正在进行身份验证，请稍等</p>
-        </Authorizing>
-        <NotAuthorized>
-            <ReturnView ReturnInfo="" FlushedUrl="/Centre"/>
-        </NotAuthorized>
-    </AuthorizeView>
-</div>
+        <footer>
+            <div class="dock">
+                <ul>
+                    @foreach (var item in Models)
+                    {
+                        <li title="@item.ToolStr">
+                            <NavLink href="@item.Url" Match="NavLinkMatch.All">
+                                <img src="@item.ContextUrl" alt=""/>
+                            </NavLink>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </footer>
+    </Authorized>
+    <Authorizing>
+        <p>正在进行身份验证，请稍等</p>
+    </Authorizing>
+    <NotAuthorized>
+        <ReturnView ReturnInfo="" FlushedUrl="/Centre"/>
+    </NotAuthorized>
+</AuthorizeView>
 
 @code
 {
@@ -53,8 +51,7 @@
         new CentreModel { ToolStr = "身份信息", Url = "/PersonalData", ContextUrl = "Centre/personal.png" }
     };
 
-    [CascadingParameter]
-    private Task<AuthenticationState>? authenticationState { get; set; }
+    [CascadingParameter] private Task<AuthenticationState>? authenticationState { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -64,7 +61,7 @@
             var authState = await authenticationState;
             var user = authState.User;
 
-            if (user?.Identity is not null && user.Identity.IsAuthenticated)
+            if (user.Identity is not null && user.Identity.IsAuthenticated)
             {
                 var name = user.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
                 var identity = user.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
@@ -80,6 +77,7 @@
                         Models.Add(new CentreModel { ToolStr = "超级用户", Url = "Admin", ContextUrl = "Centre/root.jpg" });
                     return;
                 }
+
                 if (identity is not ("PracticalMember" and "NewMediaMember" and "Member"))
                     Models.Add(new CentreModel { ToolStr = "超级用户", Url = "Admin", ContextUrl = "root.jpg" });
                 Member = MemberModel.AutoCopy<SignModel, MemberModel>(model);

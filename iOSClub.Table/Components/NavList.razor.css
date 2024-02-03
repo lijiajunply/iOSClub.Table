@@ -1,0 +1,14 @@
+@media screen and (max-width: 768px) {
+    .navbar-expand {
+        display: none;
+    }
+    
+    .nav-menu{
+        
+    }
+
+    .collapse {
+        /* Never collapse the sidebar for wide screens */
+        display: flex;
+    }
+}

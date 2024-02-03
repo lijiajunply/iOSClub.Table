@@ -22,61 +22,19 @@
 
 <div id="blazor-error-ui">
     <environment include="Staging,Production">
-        An error has occurred. This application may no longer respond until reloaded.
+        发生错误。此应用程序在重新加载之前可能不再响应。
     </environment>
     <environment include="Development">
-        An unhandled exception has occurred. See browser dev tools for details.
+        发生了一个未处理的异常。详细信息请参见浏览器开发工具。
     </environment>
-    <a href="" class="reload">Reload</a>
+    <a href="" class="reload">重新加载</a>
     <a class="dismiss">🗙</a>
 </div>
 
 <script src="_content/AntDesign/js/ant-design-blazor.js"></script>
-<script src="_framework/blazor.server.js"></script>
-<script>
-function jsSaveAsFile(filename, byteBase64) 
-{
-    const link = document.createElement('a');
-    link.download = filename;
-    link.href = "data:application/octet-stream;base64," + byteBase64;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-}
-</script>
+<script src="_framework/blazor.server.js" autostart="false"></script>
+<script src="JS/boot.js"></script>
+<script src="JS/site.js"></script>
 
-<script>
-function ShowDock(){
-    document.getElementById("icon-container").onmousemove = e => {
-        e.currentTarget.querySelectorAll("li").forEach((li) => {
-            // 计算每个图标中点横坐标: centroid
-            const centroid = li.offsetLeft + li.offsetWidth / 2;
-            // 根据鼠标与图标中点的横坐标偏移量计算当前的--scale
-            li.style.setProperty("--scale", curve(e.clientX - centroid));
-        });
-    };
-    
-    document.getElementById("icon-container").onmouseleave = e => {
-        e.currentTarget.querySelectorAll("li").forEach((li) => {
-            // 鼠标移开，放大倍数归1
-            li.style.setProperty("--scale", 1);
-        });
-    };
-}
-</script>
-<script>
-function isWeiXin(){
-    const ua = navigator.userAgent
-    return !!/MicroMessenger/i.test(ua)
-}
-function isPhone(){
-    const u = navigator.userAgent;
-    const isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
-    const isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-    alert('是否是Android：'+isAndroid);
-    alert('是否是iOS：'+isiOS);
-    return isAndroid || isiOS;
-}
-</script>
 </body>
 </html>

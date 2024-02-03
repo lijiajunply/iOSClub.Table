@@ -46,7 +46,7 @@ public class SignRecord
     };
 
     public static FormValidationRule[] IdRules => new FormValidationRule[]
-        { new() { Len = 10, Message = "学号出错!", Pattern = "(20|21|22|23|24)([0-9]{8})", Required = true } };
+        { new() { Len = 10, Message = "学号出错!", Pattern = "(19|20|21|22|23|24)([0-9]{8})", Required = true } };
 
     public static FormValidationRule[] PhoneNumRules => new FormValidationRule[]
         { new() { Len = 11, Pattern = "^1\\d{10}$", Message = "手机号不正确!", Required = true } };
