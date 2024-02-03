@@ -11,7 +11,6 @@ using Microsoft.Extensions.WebEncoders;
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
-
 // 将服务添加到容器
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
@@ -48,7 +47,7 @@ if (builder.Environment.IsDevelopment())
 else if (builder.Environment.IsProduction())
 {
     builder.Services.AddDbContextFactory<SignContext>(opt =>
-        opt.UseMySQL(configuration.GetConnectionString("MySQL")!));
+        opt.UseNpgsql(configuration.GetConnectionString("Postgresql")!));
 }
 
 // 跨域

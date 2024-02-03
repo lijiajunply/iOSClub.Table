@@ -76,7 +76,8 @@
             await context.Events.AddAsync(model);
         }
 
-        await context.SaveChangesAsync(); Models = await context.Events.ToListAsync();
+        await context.SaveChangesAsync(); 
+        Models = await context.Events.ToListAsync();
         await context.DisposeAsync();
         StateHasChanged();
     }
