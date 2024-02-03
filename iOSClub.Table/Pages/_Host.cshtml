@@ -14,7 +14,7 @@
     <link href="iOSClub.Table.styles.css" rel="stylesheet"/>
     <link rel="icon" type="image/png" href="iOS_Club_LOGO.png"/>
     <link href="_content/AntDesign/css/ant-design-blazor.css" rel="stylesheet">
-    <title></title>
+    <title>西安建筑科技大学iOS众创空间俱乐部官网</title>
     <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered"/>
 </head>
 <body>
@@ -68,6 +68,14 @@ function ShowDock(){
 function isWeiXin(){
     const ua = navigator.userAgent
     return !!/MicroMessenger/i.test(ua)
+}
+function isPhone(){
+    const u = navigator.userAgent;
+    const isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+    const isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+    alert('是否是Android：'+isAndroid);
+    alert('是否是iOS：'+isiOS);
+    return isAndroid || isiOS;
 }
 </script>
 </body>

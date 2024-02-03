@@ -6,13 +6,10 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.WebEncoders;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
-
 
 // 将服务添加到容器
 builder.Services.AddRazorPages();
@@ -50,7 +47,7 @@ if (builder.Environment.IsDevelopment())
 else if (builder.Environment.IsProduction())
 {
     builder.Services.AddDbContextFactory<SignContext>(opt =>
-        opt.UseMySQL(configuration.GetConnectionString("MySQL")!));
+        opt.UseNpgsql(configuration.GetConnectionString("Postgresql")!));
 }
 
 // 跨域
@@ -81,29 +78,15 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<SignContext>();
-    try
+    if (!context.Staffs.Any())
     {
-        context.Database.Migrate();
-        context.Database.EnsureCreated();
-    }
-    catch
-    {
-        var databaseCreator = (RelationalDatabaseCreator)context.Database.GetService<IDatabaseCreator>();
-        databaseCreator.CreateTables();
-        context.Database.Migrate();
-    }
-    finally
-    {
-        if (!context.Staffs.Any())
+        var model = new PermissionsModel
         {
-            var model = new PermissionsModel
-            {
-                UserId = "1906020412",
-                Identity = "Founder",
-                Name = "韩晨超"
-            };
-            context.Staffs.Add(model);
-        }
+            UserId = "1906020412",
+            Identity = "Founder",
+            Name = "韩晨超"
+        };
+        context.Staffs.Add(model);
     }
 
     context.SaveChanges();

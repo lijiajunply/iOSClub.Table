@@ -3,21 +3,40 @@
 
 <PageTitle>加入我们！</PageTitle>
 
-<Image Width="200px" Src="mc.jpg" OnClick="@mc"/>
-<Image Width="200px" Src="ios.jpg" OnClick="@ios"/>
+<div class="main">
+    <h1 style="color: #f5f5f7;">或者你也可以看看这些组织</h1>
+    <GridRow>
+        @foreach (var item in Org)
+        {
+            <GridCol Span="6">
+                <Image Width="200px" Src="@item.path" Alt="@item.name" OnClick="@(() => Click(item))"/>
+            </GridCol>
+        }
+    </GridRow>
+</div>
+
 
 @code {
 
-    private void mc()
-    {
-        Nav.NavigateTo("mqqapi://card/show_pslcard?src_type=internal&version=1&uin=853274331&card_type=group&source=external",true);
-        Nav.NavigateTo("https://qm.qq.com/cgi-bin/qm/qr?authKey=dKKuK8qFSXMJmu2qVesTehHfr173W998ccLh6Rkr2%2FtGFBD2ivWJtkq1eAOZmce5&k=jxdgKwU77LtRUQgdwA3vS1CaatGvcbDB&noverify=0",true);
-    }
+    record OrgRecord(string name, string path, string qqApi, string https);
 
-    private void ios()
+    private static readonly OrgRecord[] Org =
     {
-        Nav.NavigateTo("mqqapi://card/show_pslcard?src_type=internal&version=1&uin=952954710&card_type=group&source=external");
-        Nav.NavigateTo("https://qm.qq.com/cgi-bin/qm/qr?authKey=MUNgIj%2B1gnkiI175qAQla6EcR44Fa0APCv%2FLo1a7YIlYgpeg76Q%2BGYMoedb8gGHU&k=HvhhArSc7tzuySOhXsnmZ6RgLcWkzXgu&noverify=0");
+        new("西安建筑科技大学仙剑世界协会", "mc.jpg",
+            "mqqapi://card/show_pslcard?src_type=internal&version=1&uin=853274331&card_type=group&source=external",
+            "https://qm.qq.com/cgi-bin/qm/qr?authKey=dKKuK8qFSXMJmu2qVesTehHfr173W998ccLh6Rkr2%2FtGFBD2ivWJtkq1eAOZmce5&k=jxdgKwU77LtRUQgdwA3vS1CaatGvcbDB&noverify=0"),
+        new("西安建筑科技大学iOS众创空间俱乐部", "ios.jpg",
+            "mqqapi://card/show_pslcard?src_type=internal&version=1&uin=952954710&card_type=group&source=external",
+            "https://qm.qq.com/cgi-bin/qm/qr?authKey=MUNgIj%2B1gnkiI175qAQla6EcR44Fa0APCv%2FLo1a7YIlYgpeg76Q%2BGYMoedb8gGHU&k=HvhhArSc7tzuySOhXsnmZ6RgLcWkzXgu&noverify=0"),
+        new("西建大花粉俱乐部", "huawei.jpg", "", ""),
+        new("西建大小米俱乐部", "xiaomi.jpg", "", "")
+    };
+
+    private void Click(OrgRecord orgRecord)
+    {
+        if (string.IsNullOrEmpty(orgRecord.qqApi) || string.IsNullOrEmpty(orgRecord.https)) return;
+        Nav.NavigateTo(orgRecord.qqApi, true);
+        Nav.NavigateTo(orgRecord.https, true);
     }
 
 }
