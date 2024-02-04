@@ -14,6 +14,9 @@ header {
 
 .header{
     color: #f5f5f7;
+    p{
+        color: #191c1f;
+    }
     /* 添加圆角 */
     overflow: hidden;
     /* 防止子元素超出边界 */
