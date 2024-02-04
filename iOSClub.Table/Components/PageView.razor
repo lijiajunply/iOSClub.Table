@@ -1,48 +1,50 @@
-﻿<PageHeader Ghost="false" Class="data">
-    <PageHeaderTitle>
+﻿<div class="data">
+    <header class="header">
         <header>
             <i class="light" style="background-color: #fd6458;"></i>
             <i class="light" style="background-color: #ffbf2b; margin-left: 8px;"></i>
             <i class="light" style="background-color: #24cc3d; margin-left: 8px;"></i>
         </header>
-    </PageHeaderTitle>
-    <PageHeaderExtra>
-        @Extra
-    </PageHeaderExtra>
-    <PageHeaderContent>
+        <nav class="navbar">
+            @Extra
+        </nav>
+    </header>
+    <main class="context">
         @Context
-    </PageHeaderContent>
-</PageHeader>
+    </main>
+</div>
+
+@* <PageHeader Ghost="false" Class="data"> *@
+@*     <PageHeaderTitle> *@
+@*         <header> *@
+@*             <i class="light" style="background-color: #fd6458;"></i> *@
+@*             <i class="light" style="background-color: #ffbf2b; margin-left: 8px;"></i> *@
+@*             <i class="light" style="background-color: #24cc3d; margin-left: 8px;"></i> *@
+@*         </header> *@
+@*     </PageHeaderTitle> *@
+@*     <PageHeaderExtra> *@
+@*         @Extra *@
+@*     </PageHeaderExtra> *@
+@*     <PageHeaderContent> *@
+@*         <div class="context"> *@
+@*             @Context *@
+@*         </div> *@
+@*     </PageHeaderContent> *@
+@* </PageHeader> *@
 
 @code {
-    [Parameter]
-    public RenderFragment? Extra { get; set; }
-    
-    [Parameter]
-    public RenderFragment? Context { get; set; }
+    [Parameter] public RenderFragment? Extra { get; set; }
+
+    [Parameter] public RenderFragment? Context { get; set; }
 }
 
 <style>
-    .data{
-        overflow: visible;
+    .data {
         border-radius: 10px;
-        scroll-behavior: auto;
+        /*scroll-behavior: auto;*/
         margin-top: 10px;
         margin-bottom: 10px;
-        
+        /*overflow:auto;*/
+       background-color: white;
     }
-    .light {
-       
-      display: inline-block;
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-    }
-	
-	header{
-	    overflow: hidden;
-        /* 防止子元素超出边界 */
-        display: flex;
-        scroll-snap-align: end;
-	}
 </style>

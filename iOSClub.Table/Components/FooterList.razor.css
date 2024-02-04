@@ -1,0 +1,32 @@
+﻿footer {
+    padding-top: 15px;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    color: #f5f5f5;
+    background: rgba(255, 255, 255, 0.4);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+}
+
+.footer-container {
+    padding-bottom: 10px;
+}
+
+.footer-p {
+    all: revert;
+    font-size: 18px;
+}
+
+a {
+    color: #fff;
+    align-items: center;
+    justify-content: space-between;
+}
+
+a:hover {
+    text-decoration: underline;
+}

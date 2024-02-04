@@ -1,6 +1,5 @@
 ﻿@layout MainLayout
 @inherits LayoutComponentBase
-@using iOSClub.Table.Components
 @using System.Security.Claims
 @using iOSClub.Share.Data
 @using Microsoft.EntityFrameworkCore
@@ -13,11 +12,11 @@
             @* <NavLink Match="NavLinkMatch.All" href="/"></NavLink> *@
         </header>
 
-        <CascadingValue Value="@Member">
-            <article class="main">
+        <article class="main">
+            <CascadingValue Value="@Member">
                 @Body
-            </article>
-        </CascadingValue>
+            </CascadingValue>
+        </article>
 
         <footer>
             <div class="dock">

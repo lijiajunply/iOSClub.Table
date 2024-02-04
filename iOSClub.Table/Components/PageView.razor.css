@@ -1,0 +1,28 @@
+﻿.light {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+header {
+    overflow: hidden;
+    /* 防止子元素超出边界 */
+    display: flex;
+    scroll-snap-align: end;
+}
+
+.header{
+    padding: 20px;
+}
+
+.context{
+    overflow-y: scroll;
+    margin: 10px;
+}
+
+@media screen and (max-width: 768px)  {
+    .data{
+        border-radius : 0;
+    }
+}

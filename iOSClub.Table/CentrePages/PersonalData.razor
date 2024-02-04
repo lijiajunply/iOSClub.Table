@@ -6,18 +6,11 @@
 
 <PageTitle>社员信息</PageTitle>
 
-<PageHeader Ghost="false" Class="data">
-    <PageHeaderTitle>
-        <header>
-            <i class="light" style="background-color: #fd6458;"></i>
-            <i class="light" style="background-color: #ffbf2b; margin-left: 8px;"></i>
-            <i class="light" style="background-color: #24cc3d; margin-left: 8px;"></i>
-        </header>
-    </PageHeaderTitle>
-    <PageHeaderExtra>
+<PageView>
+    <Extra>
         当前身份:@MemberModel.IdentityDictionary[Member.Identity]
-    </PageHeaderExtra>
-    <PageHeaderContent>
+    </Extra>
+    <Context>
         <Form Model="Member"
               ValidateMode="@FormValidateMode.Rules"
               OnFinish="OnFinish"
@@ -64,13 +57,12 @@
                 <Input @bind-Value="@context.PhoneNum">
             </FormItem>
 
-            <FormItem Class="item" WrapperColOffset="8" WrapperColSpan="16">
+            <FormItem Style="text-align: center">
                 <Button Type="@ButtonType.Primary" HtmlType="submit">更改</Button>
             </FormItem>
         </Form>
-    </PageHeaderContent>
-</PageHeader>
-
+    </Context>
+</PageView>
 
 <Modal Title="@("更改信息")"
        Visible="@_visible"
@@ -106,8 +98,7 @@
 
 @code {
 
-    [CascadingParameter]
-    private MemberModel Member { get; set; } = new();
+    [CascadingParameter] private MemberModel Member { get; set; } = new();
 
 }
 
@@ -139,6 +130,7 @@
                 f.Gender = Member.Gender;
                 f.PoliticalLandscape = Member.PoliticalLandscape;
             }
+
             await context.SaveChangesAsync();
         }
         finally
@@ -156,15 +148,6 @@
     }
 
 }
-
-<style>
-    .data{
-        overflow: visible;
-        border-radius: 10px;
-        scroll-behavior: auto;
-        margin: auto;
-    }
-</style>
 
 <style>
     .item{
@@ -201,22 +184,4 @@
         color: #555;
    }
    
-</style>
-
-<style >
-    
-	.light {
-       
-      display: inline-block;
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-    }
-	
-	header{
-	    overflow: hidden;
-        /* 防止子元素超出边界 */
-        display: flex;
-        scroll-snap-align: end;
-	}
 </style>
