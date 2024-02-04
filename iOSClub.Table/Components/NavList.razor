@@ -1,5 +1,5 @@
 ﻿@using iOSClub.Share.Data
-<div class="header">
+<div class="header-box">
     <h1 class="logo">XAUAT iOS Club</h1>
     <nav class="navbar-expand @NavMenuCssClass">
         <ul class="nav-menu">
@@ -37,5 +37,24 @@
     
     a:hover {
         text-decoration: underline;
+    }
+    
+    .header-box {
+        padding-left: 10px;
+        padding-right: 10px;
+        color: #333;
+        border-radius: 10px;
+        /* 添加圆角 */
+        overflow: hidden;
+        /* 防止子元素超出边界 */
+        display: flex;
+        scroll-snap-align: end;
+        align-items: center;
+        justify-content: space-between;
+        text-align: center;
+        background: rgba(255, 255, 255, 0.3);
+        -webkit-backdrop-filter: blur(20px);
+        backdrop-filter: blur(20px);
+        box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.3);
     }
 </style>

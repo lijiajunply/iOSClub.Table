@@ -2,11 +2,11 @@
     .navbar-expand {
         display: none;
     }
-    
-    .nav-menu{
-        
-    }
 
+    .header-box{
+        border-radius: 0;
+    }
+    
     .collapse {
         /* Never collapse the sidebar for wide screens */
         display: flex;
