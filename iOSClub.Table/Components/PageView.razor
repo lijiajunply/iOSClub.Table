@@ -14,24 +14,6 @@
     </main>
 </div>
 
-@* <PageHeader Ghost="false" Class="data"> *@
-@*     <PageHeaderTitle> *@
-@*         <header> *@
-@*             <i class="light" style="background-color: #fd6458;"></i> *@
-@*             <i class="light" style="background-color: #ffbf2b; margin-left: 8px;"></i> *@
-@*             <i class="light" style="background-color: #24cc3d; margin-left: 8px;"></i> *@
-@*         </header> *@
-@*     </PageHeaderTitle> *@
-@*     <PageHeaderExtra> *@
-@*         @Extra *@
-@*     </PageHeaderExtra> *@
-@*     <PageHeaderContent> *@
-@*         <div class="context"> *@
-@*             @Context *@
-@*         </div> *@
-@*     </PageHeaderContent> *@
-@* </PageHeader> *@
-
 @code {
     [Parameter] public RenderFragment? Extra { get; set; }
 
@@ -45,6 +27,6 @@
         margin-top: 10px;
         margin-bottom: 10px;
         /*overflow:auto;*/
-       background-color: white;
+        background-color: white;
     }
 </style>
