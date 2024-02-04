@@ -7,16 +7,16 @@
 
 <AuthorizeView>
     <Authorized>
-        <header>
+        <header class="page-header">
             <h4 style="color: white;font-weight: bold;">XAUAT iOS Club</h4>
             @* <NavLink Match="NavLinkMatch.All" href="/"></NavLink> *@
         </header>
 
-        <article class="main">
+        <div class="main">
             <CascadingValue Value="@Member">
                 @Body
             </CascadingValue>
-        </article>
+        </div>
 
         <footer>
             <div class="dock">
@@ -93,23 +93,21 @@ html,body{width:100%;height:100%;overflow:hidden;margin:0;}
 html{_height:auto;_padding:100px 0 50px;}
 
 footer {
-  left: 0;
-  bottom: 0;
   width: 100%;
+  /*transform: translateX(-50%);*/
+  /*bottom: 0;*/
   text-align: center;
   color: #333;
   background: rgba(255, 255, 255, 0.4);
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
   box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
-  height: 60px;
-  line-height: 60px;
-  position: fixed;
+  border-radius: 10px 10px 0;
+  height: 8%;
+  line-height: 9vh;
 }
 
     footer .dock {
-        width: 60%;
         height: 100%;
         /*块级标签居中*/
         margin: 0 auto;
@@ -123,15 +121,14 @@ footer {
 
     footer .dock ul li {
         float: left;
-        margin: 0 13px;
+        margin: 0 2vh;
         color: transparent;
         /*设置动画的过渡效果*/
         transition: all 0.25s linear;
     }
 
     footer .dock ul li img {
-        width: 50px;
-        border-radius: 10px;
+        width: 6vh;
     }
 
     /*动画*/
@@ -140,6 +137,19 @@ footer {
         transform-origin: bottom center;
         /*放大1.5倍*/
         transform: scale(1.5);
+    }
+    
+    .main{
+    all: revert;
+    min-height: 0;
+    margin: 1% 0;
+    height: 83%;
+    max-height: 84vh;
+    overflow-y: clip;
+    }
+    
+    .page-header{
+        height: 6%;
     }
 </style>
 
