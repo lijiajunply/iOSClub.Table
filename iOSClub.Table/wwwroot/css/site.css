@@ -11,6 +11,10 @@ h1:focus {
     outline: none;
 }
 
+::-webkit-scrollbar {
+    display: none;
+}
+
 a, .btn-link {
     color: #0071c1;
 }
