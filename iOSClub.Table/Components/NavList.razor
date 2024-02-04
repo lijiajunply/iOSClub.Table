@@ -1,41 +1,50 @@
 ﻿@using iOSClub.Share.Data
 <div class="header-box">
     <h1 class="logo">XAUAT iOS Club</h1>
-    <nav class="navbar-expand @NavMenuCssClass">
+    <nav class="navbar-expand">
         <ul class="nav-menu">
             @foreach (var item in NavLists)
             {
-                <NavLink class="nav-item" href="@item.Url" Match="NavLinkMatch.All">@item.Name</NavLink>
+                <NavLink class="header-nav-item" href="@item.Url" Match="NavLinkMatch.All">@item.Name</NavLink>
             }
         </ul>
     </nav>
-    @* <div> *@
-    @*     <Icon OnClick="@ToggleNavMenu" Type="menu" Theme="outline"/> *@
-    @* </div> *@
+    <div class="phone-menu-btn">
+        <Icon Type="menu" OnClick="@open" Theme="outline"/>
+    </div>
 </div>
+
+<Drawer MaskClosable="true" Visible="visible" Closable="false" OnClose="@close" Width="160" Placement="right">
+    @foreach (var item in NavLists)
+    {
+        <p @onclick="@close">
+            <NavLink class="nav-item" href="@item.Url" Match="NavLinkMatch.All">@item.Name</NavLink>
+        </p>
+    }
+</Drawer>
 
 @code {
     [Parameter] public List<NavModel> NavLists { get; set; } = new();
+    bool visible = false;
 
-    private bool collapseNavMenu;
-
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
+    void open()
     {
-        collapseNavMenu = !collapseNavMenu;
+        visible = true;
     }
+
+    void close() => visible = false;
 
 }
 
 <style>
-    a {
+    .header-nav-item {
+        font-size: 18px;
         color: #f5f5f7;
         align-items: center;
         justify-content: space-between;
     }
     
-    a:hover {
+    .header-nav-item:hover {
         text-decoration: underline;
     }
     
