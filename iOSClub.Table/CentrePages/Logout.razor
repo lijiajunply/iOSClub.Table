@@ -1,5 +1,18 @@
 ﻿@page "/Logout"
+@using iOSClub.Table.Auth
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider authStateProvider
+@inject MessageService MessageService
 
 @code {
-    
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        var provider = (Provider)authStateProvider;
+        await provider.UpdateAuthState(null);
+        await MessageService.Success("您已注销");
+        NavigationManager.NavigateTo("");
+    }
+
 }
