@@ -6,17 +6,17 @@ namespace iOSClub.Share.Data;
 
 public class SignModel
 {
-    public string UserName { get; set; }
+    [Column(TypeName = "varchar(50)")] public string UserName { get; set; } = "";
 
     [Key]
-    [Column(TypeName = "varchar(256)")]
-    public string UserId { get; set; }
+    [Column(TypeName = "varchar(10)")]
+    public string UserId { get; set; } = "";
 
-    public string Academy { get; set; }
-    public string PoliticalLandscape { get; set; }
-    public string Gender { get; set; }
-    public string ClassName { get; set; }
-    public string PhoneNum { get; set; }
+    [Column(TypeName = "varchar(50)")] public string Academy { get; set; } = "";
+    [Column(TypeName = "varchar(10)")] public string PoliticalLandscape { get; set; } = "";
+    [Column(TypeName = "varchar(2)")] public string Gender { get; set; } = "";
+    [Column(TypeName = "varchar(20)")] public string ClassName { get; set; } = "";
+    [Column(TypeName = "varchar(11)")] public string PhoneNum { get; set; } = "";
 
     public override string ToString()
     {
@@ -28,17 +28,13 @@ public class SignModel
         UserId = UserId.Replace(" ", "");
         return this;
     }
-    
+
     public static string GetCsv(List<SignModel> models)
     {
-        StringBuilder builder = new StringBuilder("姓名,学号,性别,学院,政治面貌,专业班级,电话号码");
+        var builder = new StringBuilder("姓名,学号,性别,学院,政治面貌,专业班级,电话号码");
         foreach (var model in models)
-        {
             builder.Append("\n" + model);
-        }
 
         return builder.ToString();
     }
-
-    
 }

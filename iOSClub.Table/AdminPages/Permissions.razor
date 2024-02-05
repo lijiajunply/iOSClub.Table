@@ -1,14 +1,143 @@
 ﻿@page "/Permissions"
 @using iOSClub.Share.Data
 @using Microsoft.EntityFrameworkCore
+@using System.Text.Json
+@using System.Text.Encodings.Web
+@using System.Text.Unicode
+@using System.Text
+@using Newtonsoft.Json
+@using JsonSerializer = System.Text.Json.JsonSerializer
+@inject IJSRuntime JS
 @inject IDbContextFactory<SignContext> DbFactory
 
 <PageTitle>权限管理</PageTitle>
 
-<PageView>
-    
+<InputFile id="fileInput" OnChange="@UploadFiles" hidden multiple/>
+
+<PageView Style="min-height: 100vh">
+    <Extra>
+        <Space>
+            <SpaceItem>
+                <Button Type="@ButtonType.Primary" OnClick="@FileDownload">下载文件</Button>
+            </SpaceItem>
+            <SpaceItem>
+                <Upload Name="files">
+                    <label class="ant-btn" for="fileInput">上传Json数据</label>
+                </Upload>
+            </SpaceItem>
+        </Space>
+    </Extra>
+    <Context>
+        <Tabs TabPosition="TabPosition.Left" Size="TabSize.Large">
+            <TabPane Key="1" Tab="社长/副社长/秘书长">
+                
+            </TabPane>
+            <TabPane Key="2" Tab="科技部">
+
+            </TabPane>
+            <TabPane Key="3" Tab="交流实践部">
+
+            </TabPane>
+            <TabPane Key="4" Tab="新媒体部">
+
+            </TabPane>
+
+        </Tabs>
+    </Context>
 </PageView>
 
 @code {
-    
+
+    private List<PermissionsModel> President { get; set; } = new();
+    private List<PermissionsModel> TechnologyMinister { get; set; } = new();
+    private List<PermissionsModel> PracticalMinister { get; set; } = new();
+    private List<PermissionsModel> NewMediaMinister { get; set; } = new();
+    private List<PermissionsModel> TechnologyMember { get; set; } = new();
+    private List<PermissionsModel> PracticalMember { get; set; } = new();
+    private List<PermissionsModel> NewMediaMember { get; set; } = new();
+
+    private async Task FileDownload()
+    {
+        var staffsList = new StaffsList()
+        {
+            President = President,
+            TechnologyMinister = TechnologyMinister,
+            PracticalMinister = PracticalMinister,
+            NewMediaMinister = NewMediaMinister,
+            TechnologyMember = TechnologyMember,
+            PracticalMember = PracticalMember,
+            NewMediaMember = NewMediaMember
+        };
+        var options = new JsonSerializerOptions
+        {
+            Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
+        };
+        var jsonString = JsonSerializer.Serialize(staffsList, options);
+        var data = Encoding.UTF8.GetBytes(jsonString);
+        await Download("staff.json", data);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await using var context = await DbFactory.CreateDbContextAsync();
+        await Update(context);
+    }
+
+    private async Task Update(SignContext context)
+    {
+        President = await context.Staffs.Where(x => x.Identity == "President").ToListAsync();
+        TechnologyMinister = await context.Staffs.Where(x => x.Identity == "TechnologyMinister").ToListAsync();
+        PracticalMinister = await context.Staffs.Where(x => x.Identity == "PracticalMinister").ToListAsync();
+        NewMediaMinister = await context.Staffs.Where(x => x.Identity == "NewMediaMinister").ToListAsync();
+        TechnologyMember = await context.Staffs.Where(x => x.Identity == "TechnologyMember").ToListAsync();
+        PracticalMember = await context.Staffs.Where(x => x.Identity == "PracticalMember").ToListAsync();
+        NewMediaMember = await context.Staffs.Where(x => x.Identity == "NewMediaMember").ToListAsync();
+    }
+
+    private async Task Update(SignContext context, StaffsList list)
+    {
+        await context.Staffs.AddRangeAsync(list.President);
+        await context.Staffs.AddRangeAsync(list.TechnologyMinister);
+        await context.Staffs.AddRangeAsync(list.PracticalMinister);
+        await context.Staffs.AddRangeAsync(list.NewMediaMinister);
+        await context.Staffs.AddRangeAsync(list.TechnologyMember);
+        await context.Staffs.AddRangeAsync(list.PracticalMember);
+        await context.Staffs.AddRangeAsync(list.NewMediaMember);
+    }
+
+    private async Task UploadFiles(InputFileChangeEventArgs e)
+    {
+        var reader = new StreamReader(e.File.OpenReadStream());
+        var result = await reader.ReadToEndAsync();
+        reader.Dispose();
+        if (string.IsNullOrEmpty(result)) return;
+        var context = await DbFactory.CreateDbContextAsync();
+
+        var list = JsonConvert.DeserializeObject<StaffsList>(result)!;
+        await Update(context, list);
+
+        await context.SaveChangesAsync();
+        await Update(context);
+        await context.DisposeAsync();
+        StateHasChanged();
+    }
+
+    private async Task Download(string fileName, byte[] data)
+    {
+        await JS.InvokeVoidAsync("jsSaveAsFile", fileName, Convert.ToBase64String(data));
+    }
+
+    [Serializable]
+    class StaffsList
+    {
+        public List<PermissionsModel> President { get; init; } = new();
+        public List<PermissionsModel> TechnologyMinister { get; init; } = new();
+        public List<PermissionsModel> PracticalMinister { get; init; } = new();
+        public List<PermissionsModel> NewMediaMinister { get; init; } = new();
+        public List<PermissionsModel> TechnologyMember { get; init; } = new();
+        public List<PermissionsModel> PracticalMember { get; init; } = new();
+        public List<PermissionsModel> NewMediaMember { get; init; } = new();
+    }
+
 }

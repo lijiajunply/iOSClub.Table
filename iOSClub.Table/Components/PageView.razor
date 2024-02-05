@@ -1,4 +1,4 @@
-﻿<div class="data">
+﻿<div class="data @Class" style="@Style">
     <header class="header">
         <header>
             <i class="light" style="background-color: #fd6458;"></i>
@@ -18,6 +18,10 @@
     [Parameter] public RenderFragment? Extra { get; set; }
 
     [Parameter] public RenderFragment? Context { get; set; }
+    
+    [Parameter] public string? Class { get; set; }
+    
+    [Parameter] public string? Style { get; set; }
 }
 
 <style>

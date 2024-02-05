@@ -6,7 +6,7 @@ using iOSClub.Share.Data;
 
 #nullable disable
 
-namespace iOSClub.Table.Migrations
+namespace iOSClub.Share.Migrations
 {
     [DbContext(typeof(SignContext))]
     partial class SignContextModelSnapshot : ModelSnapshot
@@ -23,15 +23,15 @@ namespace iOSClub.Table.Migrations
 
                     b.Property<string>("Cover")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("varchar(256)");
 
                     b.Property<string>("Digest")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("varchar(256)");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("varchar(256)");
 
                     b.HasKey("Link");
 
@@ -45,11 +45,11 @@ namespace iOSClub.Table.Migrations
 
                     b.Property<string>("Identity")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("varchar(20)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("varchar(50)");
 
                     b.HasKey("UserId");
 
@@ -59,31 +59,31 @@ namespace iOSClub.Table.Migrations
             modelBuilder.Entity("iOSClub.Share.Data.SignModel", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("varchar(10)");
 
                     b.Property<string>("Academy")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("ClassName")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("varchar(20)");
 
                     b.Property<string>("Gender")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("varchar(2)");
 
                     b.Property<string>("PhoneNum")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("varchar(11)");
 
                     b.Property<string>("PoliticalLandscape")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("varchar(10)");
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("varchar(50)");
 
                     b.HasKey("UserId");
 

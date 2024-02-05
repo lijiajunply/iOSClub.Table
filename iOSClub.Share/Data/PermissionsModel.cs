@@ -7,24 +7,32 @@ public class PermissionsModel
 {
     [Key]
     [Column(TypeName = "varchar(256)")]
-    public string UserId { get; set; }
-    public string Name { get; set; }
-    
+    public string UserId { get; init; } = "";
+
+    [Column(TypeName = "varchar(50)")] public string Name { get; init; } = "";
+
     /// <summary>
     /// Founder : 创始人
     /// President : 社长,副社长,秘书长
     /// TechnologyMinister : 科技部部长/副部长
     /// PracticalMinister : 实践交流部部长/副部长
-    /// PracticalMember : 实践交流部成员
     /// NewMediaMinister : 新媒体部部长/副部长
+    /// TechnologyMember : 科技部成员
+    /// PracticalMember : 实践交流部成员
     /// NewMediaMember : 新媒体部成员
     /// Member : 普通成员
     /// </summary>
-    public string Identity { get; set; } = "Member";
+    /// 
+    [Column(TypeName = "varchar(20)")]
+    public string Identity { get; init; } = "Member";
     
-    public PermissionsModel(){}
+    // [Column(TypeName = "varchar(30)")]
+    // public string? Tag { get; init; }
 
-    public PermissionsModel(LoginModel model,string identity = "Member")
+    public PermissionsModel()
+    { }
+
+    public PermissionsModel(LoginModel model, string identity = "Member")
     {
         UserId = model.Id;
         Name = model.Name;

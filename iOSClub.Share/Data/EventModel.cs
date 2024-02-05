@@ -5,10 +5,13 @@ namespace iOSClub.Share.Data;
 
 public class EventModel
 {
-    public string Title { get; set; }
+    [Column(TypeName = "varchar(256)")] public string Title { get; init; } = "";
+
     [Key]
     [Column(TypeName = "varchar(256)")]
-    public string Link { get; set; }
-    public string Cover { get; set; }
-    public string Digest { get; set; }
+    public string Link { get; init; } = "";
+
+    [Column(TypeName = "varchar(256)")] public string Cover { get; init; } = "";
+
+    [Column(TypeName = "varchar(256)")] public string Digest { get; init; } = "";
 }

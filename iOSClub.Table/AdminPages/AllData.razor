@@ -190,17 +190,17 @@
     private List<SignModel> DeleteModels { get; } = new();
     private List<SignModel> Models { get; set; } = new();
 
-    protected override async Task OnParametersSetAsync()
+    protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
         await Flushed();
-        await base.OnParametersSetAsync();
     }
 
 
     private async Task Flushed()
     {
         var context = await DbFactory.CreateDbContextAsync();
-        Models = await context.Students.ToListAsync();
+        Models = await context.Students.FromSql($"select * from Students").ToListAsync();
         await context.DisposeAsync();
     }
 
@@ -261,11 +261,18 @@
         RunningStyle = "";
         foreach (var model in list)
         {
-            if (!await context.Students.AsNoTracking().AnyAsync(x => x.UserId.Replace(" ", "") == model.UserId.Replace(" ", "")))
+            //if (!await context.Students.AsNoTracking().AnyAsync(x => x.UserId.Replace(" ", "") == model.UserId.Replace(" ", "")))
+            try
+            {
                 await context.Students.AddAsync(model.Standardization());
+            }
+            catch
+            {
+                continue;
+            }
             await context.SaveChangesAsync();
         }
-
+        
         Models = await context.Students.ToListAsync();
         await context.DisposeAsync();
         RunningStyle = "visibility: hidden";

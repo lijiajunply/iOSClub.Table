@@ -81,7 +81,7 @@
                     return;
                 }
 
-                if (identity is not ("PracticalMember" and "NewMediaMember" and "Member"))
+                if (identity != "PracticalMember" && identity != "NewMediaMember" && identity != "Member" && identity != "TechnologyMember")
                     Models.Add(new CentreModel { ToolStr = "超级用户", Url = "Admin", ContextUrl = "root.jpg" });
                 Member = MemberModel.AutoCopy<SignModel, MemberModel>(model);
                 Member.Identity = identity;

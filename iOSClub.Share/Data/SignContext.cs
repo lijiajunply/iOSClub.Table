@@ -8,11 +8,20 @@ public sealed class SignContext : DbContext
     public SignContext(DbContextOptions<SignContext> options)
         : base(options)
     {
-        Database.EnsureCreated();
-        //Database.Migrate();
-        Students = Set<SignModel>();
-        Staffs = Set<PermissionsModel>();
-        Events = Set<EventModel>();
+        try
+        {
+            Database.Migrate();
+        }
+        catch(Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
+        finally
+        {
+            Students = Set<SignModel>();
+            Staffs = Set<PermissionsModel>();
+            Events = Set<EventModel>();
+        }
     }
 
     public DbSet<SignModel> Students { get; init; }
