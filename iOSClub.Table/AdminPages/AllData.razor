@@ -200,7 +200,7 @@
     private async Task Flushed()
     {
         var context = await DbFactory.CreateDbContextAsync();
-        Models = await context.Students.FromSql($"select * from Students").ToListAsync();
+        Models = await context.Students.ToListAsync();
         await context.DisposeAsync();
     }
 
