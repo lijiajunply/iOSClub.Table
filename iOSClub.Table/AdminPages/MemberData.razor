@@ -1,4 +1,4 @@
-﻿@page "/AllData"
+﻿@page "/Admin/MemberData"
 @using Microsoft.EntityFrameworkCore
 @using System.Text.Json
 @using System.Text
@@ -12,7 +12,7 @@
 @inject IJSRuntime JS
 @inject IDbContextFactory<SignContext> DbFactory
 
-<PageTitle>数据</PageTitle>
+<PageTitle>成员数据</PageTitle>
 
 <InputFile id="fileInput" OnChange="@UploadFiles" hidden multiple/>
 <Modal Title="@("Title")"
@@ -295,7 +295,7 @@
         var context = await DbFactory.CreateDbContextAsync();
         context.Students.RemoveRange(Models);
         await context.SaveChangesAsync();
-        Models = await context.Students.FromSql($"select * from Students").ToListAsync();
+        Models = await context.Students.ToListAsync();
         await context.DisposeAsync();
     }
 }

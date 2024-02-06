@@ -41,7 +41,15 @@
         <p>正在进行身份验证，请稍等</p>
     </Authorizing>
     <NotAuthorized>
-        <ReturnView ReturnInfo="" FlushedUrl="/Centre"/>
+        <header class="page-header">
+            <h4 style="color: #f5f5f7;font-weight: bold;">XAUAT iOS Club</h4>
+        </header>
+
+        <div class="main">
+            <ReturnView ReturnInfo="" FlushedUrl="/Centre"/>
+        </div>
+
+        <footer></footer>
     </NotAuthorized>
 </AuthorizeView>
 
@@ -51,7 +59,7 @@
 
     private List<CentreModel> Models { get; } = new()
     {
-        new CentreModel { ToolStr = "身份信息", Url = "/PersonalData", ContextUrl = "Centre/personal.png" }
+        new CentreModel { ToolStr = "身份信息", Url = "/Centre/PersonalData", ContextUrl = "Centre/personal.png" }
     };
 
     [CascadingParameter] private Task<AuthenticationState>? authenticationState { get; set; }
@@ -82,7 +90,7 @@
                 }
 
                 if (identity != "PracticalMember" && identity != "NewMediaMember" && identity != "Member" && identity != "TechnologyMember")
-                    Models.Add(new CentreModel { ToolStr = "超级用户", Url = "Admin", ContextUrl = "root.jpg" });
+                    Models.Add(new CentreModel { ToolStr = "超级用户", Url = "Admin", ContextUrl = "Centre/root.jpg" });
                 Member = MemberModel.AutoCopy<SignModel, MemberModel>(model);
                 Member.Identity = identity;
             }
