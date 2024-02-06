@@ -5,13 +5,10 @@
             <FocusOnNavigate RouteData="@routeData" Selector="h1"/>
         </Found>
         <NotFound>
-            <PageTitle>Not found</PageTitle>
-            <LayoutView Layout="@typeof(MainLayout)">
-                <p role="alert">Sorry, there's nothing at this address.</p>
-            </LayoutView>
+            <PageTitle>西安建筑科技大学iOS众创空间俱乐部官网</PageTitle>
+            <LayoutView Layout="@typeof(NotFoundLayout)"/>
         </NotFound>
     </Router>
 </CascadingAuthenticationState>
-
 
 <AntContainer/>

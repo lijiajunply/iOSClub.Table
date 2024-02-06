@@ -118,7 +118,6 @@
                 <Space>
                     <SpaceItem>
                         <select class="form-control" @bind="@SearchItem">
-                            <option value="" selected disabled hidden></option>
                             @foreach (var item in SearchItems)
                             {
                                 <option value="@item">@item</option>
@@ -130,7 +129,13 @@
                     </SpaceItem>
                 </Space>
             </GridCol>
-            <GridCol Span="8"/>
+            <GridCol Span="8">
+                <Statistic Title="当前成员" Value="@Total" TValue="int">
+                    <PrefixTemplate>
+                        <Icon Type="team" Theme="outline"/>
+                    </PrefixTemplate>
+                </Statistic>
+            </GridCol>
         </GridRow>
 
         <Table TItem="SignModel" DataSource="@Models">
@@ -167,7 +172,6 @@
         get => _searchValue;
         set
         {
-            if (string.IsNullOrEmpty(value)) return;
             _searchValue = value;
             GetData();
         }
@@ -175,6 +179,11 @@
 
     private async void GetData()
     {
+        if (string.IsNullOrEmpty(_searchValue))
+        {
+            Models = new List<SignModel>();
+            return;
+        }
         var context = await DbFactory.CreateDbContextAsync();
         Models = SearchItem switch
         {
@@ -188,7 +197,20 @@
     }
 
     private List<SignModel> DeleteModels { get; } = new();
-    private List<SignModel> Models { get; set; } = new();
+
+    private List<SignModel> _models = new();
+    
+    private int Total { get; set; }
+    private List<SignModel> Models
+    {
+        get => _models;
+        set
+        {
+            _models = value;
+            Total = value.Count;
+            StateHasChanged();
+        }
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -261,7 +283,6 @@
         RunningStyle = "";
         foreach (var model in list)
         {
-            //if (!await context.Students.AsNoTracking().AnyAsync(x => x.UserId.Replace(" ", "") == model.UserId.Replace(" ", "")))
             try
             {
                 await context.Students.AddAsync(model.Standardization());
@@ -270,9 +291,10 @@
             {
                 continue;
             }
+
             await context.SaveChangesAsync();
         }
-        
+
         Models = await context.Students.ToListAsync();
         await context.DisposeAsync();
         RunningStyle = "visibility: hidden";

@@ -13,7 +13,6 @@
             <Button Type="@ButtonType.Text" OnClick="@(() => Nav.NavigateTo("/Logout"))">
                 <Icon Style="font-size: 22px;color: #f5f5f7;" Type="export" Theme="outline"/>
             </Button>
-
         </header>
 
         <div class="main">
@@ -46,7 +45,7 @@
         </header>
 
         <div class="main">
-            <ReturnView ReturnInfo="" FlushedUrl="/Centre"/>
+            <ReturnView ReturnInfo="" FlushedUrl="@Nav.Uri"/>
         </div>
 
         <footer></footer>

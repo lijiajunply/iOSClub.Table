@@ -1,0 +1,15 @@
+﻿@page "/Admin/DataCentre"
+@using iOSClub.Share.Data
+@using Microsoft.EntityFrameworkCore
+@inject IDbContextFactory<SignContext> DbFactory
+
+<PageView Style="min-height: 100vh">
+    <Context>
+        
+        @* <Statistic Title="Active Users" Value="112893" TValue="int"/> *@
+    </Context>
+</PageView>
+
+@code {
+    public int Total { get; set; }
+}
