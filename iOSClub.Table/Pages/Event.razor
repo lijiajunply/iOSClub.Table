@@ -3,7 +3,7 @@
 @using Microsoft.EntityFrameworkCore
 @inject IDbContextFactory<SignContext> DbFactory
 
-<PageTitle>社团活动</PageTitle>
+<PageTitle>社团活动 - 西建大iOS Club</PageTitle>
 
 <meta name="referrer" content="never">
 
@@ -24,13 +24,13 @@
                 </div>
             </GridCol>
             <GridCol Span="12">
-                <Image Src="@item.Cover"/>
+                <Image Src="@item.Cover" Alt="@item.Title"/>
             </GridCol>
         }
         else
         {
             <GridCol Span="12">
-                <Image Src="@item.Cover"/>
+                <Image Src="@item.Cover" Alt="@item.Title"/>
             </GridCol>
             <GridCol Span="12">
                 <div class="div">
