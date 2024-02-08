@@ -2,7 +2,6 @@ using System.Text.Encodings.Web;
 using System.Text.Unicode;
 using iOSClub.Share.Data;
 using iOSClub.Table.Auth;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.EntityFrameworkCore;
@@ -21,22 +20,7 @@ builder.Services.AddScoped<ProtectedSessionStorage>();
 builder.Services.AddScoped<AuthenticationStateProvider, Provider>();
 builder.Services.AddOptions();
 builder.Services.AddAuthorizationCore();
-builder.Services.AddAuthentication(options =>
-    {
-        options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-        options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-        options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    })
-    .AddCookie(options =>
-    {
-        options.SlidingExpiration = false;
-        options.LoginPath = "/Login";
-        options.LogoutPath = "/Login";
-        options.Cookie.Name = ".iOSClub.Website.Cookie";
-        options.Cookie.HttpOnly = true;
-        options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
-        options.Cookie.SameSite = SameSiteMode.Lax;
-    });
+builder.Services.AddAuthentication();
 
 // 数据库
 if (builder.Environment.IsDevelopment())
