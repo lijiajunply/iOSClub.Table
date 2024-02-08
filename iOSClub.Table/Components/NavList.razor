@@ -15,16 +15,31 @@
 </div>
 
 <Drawer MaskClosable="true" Visible="visible" Closable="false" OnClose="@close" Width="160" Placement="right">
-    @foreach (var item in NavLists)
-    {
-        <p @onclick="@close">
-            <NavLink class="nav-item" href="@item.Url" Match="NavLinkMatch.All">@item.Name</NavLink>
-        </p>
-    }
+    <Menu Mode="@MenuMode.Vertical" Style="width: 140px">
+        <MenuItemGroup>
+            <TitleTemplate>
+                @Title
+                <Divider/>
+            </TitleTemplate>
+            <ChildContent>
+                @foreach (var item in NavLists)
+                {
+                    <MenuItem OnClick="@close" RouterLink="@item.Url" RouterMatch="NavLinkMatch.All">
+                        @if (!string.IsNullOrEmpty(item.Icon))
+                        {
+                            <Icon Type="@item.Icon"/>
+                        }
+                        @item.Name
+                    </MenuItem>
+                }
+            </ChildContent>
+        </MenuItemGroup>
+    </Menu>
 </Drawer>
 
 @code {
     [Parameter] public List<NavModel> NavLists { get; set; } = new();
+    [Parameter] public string Title { get; set; } = "西建大iOS Club";
     bool visible = false;
 
     void open()

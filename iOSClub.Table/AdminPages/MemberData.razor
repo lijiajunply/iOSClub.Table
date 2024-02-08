@@ -21,9 +21,6 @@
        Footer="null">
     <Space>
         <SpaceItem>
-            <Spin size="large" Style="@RunningStyle"/>
-        </SpaceItem>
-        <SpaceItem>
             <Button Type="@ButtonType.Primary" OnClick="@CsvDownload">下载Csv文件</Button>
         </SpaceItem>
         <SpaceItem>
@@ -38,9 +35,9 @@
 
 @code
 {
-    private string _runningStyle = "visibility: hidden";
 
-    private string RunningStyle
+    private bool _runningStyle;
+    private bool RunningStyle
     {
         get => _runningStyle;
         set
@@ -64,10 +61,10 @@
 
     private async Task Download(string fileName, byte[] data)
     {
-        RunningStyle = "";
+        RunningStyle = true;
         await JS.InvokeVoidAsync("jsSaveAsFile", fileName, Convert.ToBase64String(data));
         HandleCancel();
-        RunningStyle = "visibility: hidden";
+        RunningStyle = false;
     }
 
     private async Task CsvDownload()
@@ -78,10 +75,10 @@
     }
 }
 
-<Drawer Closable="true" Width="720" Visible="Visible"
+<Drawer Closable="true" Width="600" Visible="Visible"
         Title='"更改"' OnClose="@CloseTable"
         Mask="false">
-    <Template style="height:90%">
+    <Template Style="height:90%">
         <MemberTable CallBack="() => Visible = false" ChangeModel="ChangeModel"/>
     </Template>
 </Drawer>
@@ -93,70 +90,96 @@
                 <Button Type="@ButtonType.Primary" OnClick="@FileDownload">下载文件</Button>
             </SpaceItem>
             <SpaceItem>
-                <Upload Name="files">
-                    <label class="ant-btn" for="fileInput">上传Json数据</label>
-                </Upload>
+                <div class="phone-left-display">
+                    <Upload Name="files">
+                        <label class="ant-btn" for="fileInput">上传Json数据</label>
+                    </Upload>
+                </div>
             </SpaceItem>
             <SpaceItem>
-                <Button Type="@ButtonType.Primary" OnClick="@RemoveAll">删除所有数据</Button>
+                <div class="phone-left-display">
+                    <Button Type="@ButtonType.Primary" OnClick="@RemoveAll">删除所有数据</Button>
+                </div>
             </SpaceItem>
             <SpaceItem>
                 <Button Type="@ButtonType.Primary" OnClick="@Flushed">刷新</Button>
             </SpaceItem>
             <SpaceItem>
-                @if (DeleteModels.Count > 0)
-                {
-                    <Button Type="@ButtonType.Primary" OnClick="@Recover">恢复</Button>
-                }
+                <div class="phone-left-display">
+                    @if (DeleteModels.Count > 0)
+                    {
+                        <Button Type="@ButtonType.Primary" OnClick="@Recover">恢复</Button>
+                    }
+                </div>
             </SpaceItem>
         </Space>
     </Extra>
     <Context>
-        <GridRow>
-            <GridCol Span="8"/>
-            <GridCol Span="8">
-                <Space>
-                    <SpaceItem>
-                        <select class="form-control" @bind="@SearchItem">
-                            @foreach (var item in SearchItems)
-                            {
-                                <option value="@item">@item</option>
-                            }
-                        </select>
-                    </SpaceItem>
-                    <SpaceItem>
-                        <Search Placeholder="请输入搜索项" EnterButton="@("搜索")" @bind-Value="@SearchValue" Size="large"/>
-                    </SpaceItem>
-                </Space>
-            </GridCol>
-            <GridCol Span="8">
-                <Statistic Title="当前成员" Value="@Total" TValue="int">
-                    <PrefixTemplate>
-                        <Icon Type="team" Theme="outline"/>
-                    </PrefixTemplate>
-                </Statistic>
-            </GridCol>
-        </GridRow>
-
-        <Table TItem="SignModel" DataSource="@Models">
-            <PropertyColumn Title="姓名" Property="c => c.UserName"/>
-            <PropertyColumn Title="学号" Property="c => c.UserId"/>
-            <PropertyColumn Title="学院" Property="c => c.Academy"/>
-            <PropertyColumn Title="政治面貌" Property="c => c.PoliticalLandscape"/>
-            <PropertyColumn Title="性别" Property="c => c.Gender"/>
-            <PropertyColumn Title="专业班级" Property="c => c.ClassName"/>
-            <PropertyColumn Title="手机号码" Property="c => c.PhoneNum"/>
-            <ActionColumn Title="操作">
-                <Space>
-                    <SpaceItem>
-                        <Button Danger OnClick="@(() => Delete(context))">删除</Button>
-                    </SpaceItem>
-                    <SpaceItem>
-                        <Button Danger OnClick="@(() => OpenTable(context))">更改</Button>
-                    </SpaceItem>
-                </Space>
-            </ActionColumn>
-        </Table>
+        <div class="phone-left-display">
+            <GridRow>
+                <GridCol Span="8"/>
+                <GridCol Span="8">
+                    <Space>
+                        <SpaceItem>
+                            <select class="form-control" @bind="@SearchItem">
+                                @foreach (var item in SearchItems)
+                                {
+                                    <option value="@item">@item</option>
+                                }
+                            </select>
+                        </SpaceItem>
+                        <SpaceItem>
+                            <Search Placeholder="请输入搜索项" EnterButton="@("搜索")" @bind-Value="@SearchValue" Size="large"/>
+                        </SpaceItem>
+                    </Space>
+                </GridCol>
+                <GridCol Span="8">
+                    <Statistic GroupSeparator=" " Title="当前成员" Value="@Total" TValue="int">
+                        <PrefixTemplate>
+                            <Icon Type="team" Theme="outline"/>
+                        </PrefixTemplate>
+                    </Statistic>
+                </GridCol>
+            </GridRow>
+        </div>
+        <div class="phone-top-display" style="text-align: center">
+            <Space>
+                <SpaceItem>
+                    <select class="form-control" @bind="@SearchItem">
+                        @foreach (var item in SearchItems)
+                        {
+                            <option value="@item">@item</option>
+                        }
+                    </select>
+                </SpaceItem>
+                <SpaceItem>
+                    <Search Placeholder="请输入搜索项" EnterButton="@("搜索")" @bind-Value="@SearchValue" Size="large"/>
+                </SpaceItem>
+            </Space>
+        </div>
+        <Spin Spinning="@RunningStyle">
+            <Table TItem="SignModel" DataSource="@Models" Responsive>
+                <PropertyColumn Title="姓名" Property="c => c.UserName"/>
+                <PropertyColumn Title="学号" Property="c => c.UserId"/>
+                <PropertyColumn Title="学院" Property="c => c.Academy"/>
+                <PropertyColumn Title="政治面貌" Property="c => c.PoliticalLandscape"/>
+                <PropertyColumn Title="性别" Property="c => c.Gender"/>
+                <PropertyColumn Title="专业班级" Property="c => c.ClassName"/>
+                <PropertyColumn Title="手机号码" Property="c => c.PhoneNum"/>
+                <ActionColumn Title="操作">
+                    <Space>
+                        <SpaceItem>
+                            <Button Danger OnClick="@(() => Delete(context))">删除</Button>
+                        </SpaceItem>
+                        <SpaceItem>
+                            <div class="phone-left-display">
+                                <Button Danger OnClick="@(() => OpenTable(context))">更改</Button>
+                            </div>
+                        </SpaceItem>
+                    </Space>
+                </ActionColumn>
+            </Table>
+        </Spin>
     </Context>
 </PageView>
 
@@ -184,6 +207,8 @@
             Models = new List<SignModel>();
             return;
         }
+
+        RunningStyle = true;
         var context = await DbFactory.CreateDbContextAsync();
         Models = SearchItem switch
         {
@@ -192,6 +217,7 @@
             "学院" => await context.Students.Where(x => x.Academy.StartsWith(_searchValue)).ToListAsync(),
             _ => Models
         };
+        RunningStyle = false;
 
         await context.DisposeAsync();
     }
@@ -199,8 +225,9 @@
     private List<SignModel> DeleteModels { get; } = new();
 
     private List<SignModel> _models = new();
-    
+
     private int Total { get; set; }
+
     private List<SignModel> Models
     {
         get => _models;
@@ -280,7 +307,7 @@
         var list = GetList(result);
         var context = await DbFactory.CreateDbContextAsync();
 
-        RunningStyle = "";
+        RunningStyle = true;
         foreach (var model in list)
         {
             try
@@ -291,13 +318,11 @@
             {
                 continue;
             }
-
             await context.SaveChangesAsync();
         }
-
+        RunningStyle = false;
         Models = await context.Students.ToListAsync();
         await context.DisposeAsync();
-        RunningStyle = "visibility: hidden";
     }
 
     private static List<SignModel> GetList(string result)
