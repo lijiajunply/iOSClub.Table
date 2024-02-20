@@ -19,6 +19,7 @@
       </PackageReference>
       <PackageReference Include="MySql.EntityFrameworkCore" Version="7.0.5" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.11" />
+      <PackageReference Include="Zack.EFCore.Batch.Npgsql_NET7" Version="7.1.8" />
     </ItemGroup>
 
 </Project>

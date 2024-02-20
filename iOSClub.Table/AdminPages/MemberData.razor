@@ -11,6 +11,7 @@
 @using System.Diagnostics.CodeAnalysis
 @inject IJSRuntime JS
 @inject IDbContextFactory<SignContext> DbFactory
+@inject IWebHostEnvironment HostEnvironment
 
 <PageTitle>成员数据</PageTitle>
 
@@ -37,6 +38,7 @@
 {
 
     private bool _runningStyle;
+
     private bool RunningStyle
     {
         get => _runningStyle;
@@ -308,18 +310,29 @@
         var context = await DbFactory.CreateDbContextAsync();
 
         RunningStyle = true;
-        foreach (var model in list)
+
+        if (HostEnvironment.IsProduction())
         {
-            try
-            {
-                await context.Students.AddAsync(model.Standardization());
-            }
-            catch
-            {
-                continue;
-            }
+            await context.BulkInsertAsync(list.Select(x => x.Standardization()));
             await context.SaveChangesAsync();
         }
+        else
+        {
+            foreach (var model in list)
+            {
+                try
+                {
+                    await context.Students.AddAsync(model.Standardization());
+                }
+                catch
+                {
+                    continue;
+                }
+
+                await context.SaveChangesAsync();
+            }
+        }
+
         RunningStyle = false;
         Models = await context.Students.ToListAsync();
         await context.DisposeAsync();
@@ -340,9 +353,9 @@
     private async Task RemoveAll()
     {
         var context = await DbFactory.CreateDbContextAsync();
-        context.Students.RemoveRange(Models);
+        await context.Students.ExecuteDeleteAsync();
         await context.SaveChangesAsync();
-        Models = await context.Students.ToListAsync();
+        Models = new List<SignModel>();
         await context.DisposeAsync();
     }
 }
