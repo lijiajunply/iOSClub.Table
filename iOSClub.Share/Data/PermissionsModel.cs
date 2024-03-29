@@ -22,7 +22,6 @@ public class PermissionsModel
     /// NewMediaMember : 新媒体部成员
     /// Member : 普通成员
     /// </summary>
-    /// 
     [Column(TypeName = "varchar(20)")]
     public string Identity { get; init; } = "Member";
     

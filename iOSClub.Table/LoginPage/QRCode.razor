@@ -1,5 +1,5 @@
 ﻿@page "/QRCode"
-@inject NavigationManager Nav;
+@inject IJSRuntime Js;
 
 <PageTitle>加入我们！</PageTitle>
 
@@ -32,11 +32,10 @@
         new("西建大小米俱乐部", "xiaomi.jpg", "", "")
     };
 
-    private void Click(OrgRecord orgRecord)
+    private async Task Click(OrgRecord orgRecord)
     {
         if (string.IsNullOrEmpty(orgRecord.qqApi) || string.IsNullOrEmpty(orgRecord.https)) return;
-        Nav.NavigateTo(orgRecord.qqApi, true);
-        Nav.NavigateTo(orgRecord.https, true);
+        await Js.InvokeVoidAsync("NavigateTo", orgRecord.qqApi, orgRecord.https);
     }
 
 }

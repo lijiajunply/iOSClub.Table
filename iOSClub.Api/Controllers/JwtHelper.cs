@@ -6,15 +6,8 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace iOSClub.Api.Controllers;
 
-public class JwtHelper
+public class JwtHelper(IConfiguration configuration)
 {
-    private readonly IConfiguration _configuration;
-
-    public JwtHelper(IConfiguration configuration)
-    {
-        _configuration = configuration;
-    }
-
     public string GetMemberToken(PermissionsModel model)
     {
         var claims = new[]
@@ -24,7 +17,7 @@ public class JwtHelper
             new Claim(ClaimTypes.PrimarySid,model.UserId)
         };
 
-        var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]!));
+        var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:SecretKey"]!));
         const string algorithm = SecurityAlgorithms.HmacSha256;
         var signingCredentials = new SigningCredentials(secretKey, algorithm);
 
@@ -47,7 +40,7 @@ public class JwtHelper
             new Claim(ClaimTypes.PrimarySid,model.UserId)
         };
 
-        var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]!));
+        var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:SecretKey"]!));
         const string algorithm = SecurityAlgorithms.HmacSha256;
         var signingCredentials = new SigningCredentials(secretKey, algorithm);
 

@@ -1,5 +1,6 @@
 ﻿namespace iOSClub.Share.Data;
 
+[Serializable]
 public class NavModel
 {
     public string Name { get; init; } = "";

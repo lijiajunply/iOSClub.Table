@@ -14,31 +14,25 @@ namespace iOSClub.Api.Controllers;
 [TokenActionFilter]
 [Route("api/[controller]/[action]")]
 [ApiController]
-public class PresidentController : ControllerBase
+public class PresidentController(SignContext context, IHttpContextAccessor httpContextAccessor)
+    : ControllerBase
 {
-    private readonly SignContext _context;
-    private readonly IHttpContextAccessor _httpContextAccessor;
-
-    public PresidentController(SignContext context,IHttpContextAccessor httpContextAccessor)
-    {
-        _context = context;
-        _httpContextAccessor = httpContextAccessor;
-    }
+    private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
 
     // GET: api/Member
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(string id)
     {
-        if (_context.Students == null!)
+        if (context.Students == null!)
             return NotFound();
 
-        var memberModel = await _context.Students.FindAsync(id);
+        var memberModel = await context.Students.FindAsync(id);
 
         if (memberModel == null)
             return NotFound();
 
-        _context.Students.Remove(memberModel);
-        await _context.SaveChangesAsync();
+        context.Students.Remove(memberModel);
+        await context.SaveChangesAsync();
 
         return NoContent();
     }
@@ -46,7 +40,7 @@ public class PresidentController : ControllerBase
     [HttpGet]
     public async Task<List<MemberModel>> GetAllData()
     {
-        var list = await _context.Students.ToListAsync();
+        var list = await context.Students.ToListAsync();
         var newList = new List<MemberModel>();
 
         list.ForEach(Action);
@@ -58,20 +52,20 @@ public class PresidentController : ControllerBase
     [HttpPost]
     public async Task<ActionResult> Update([FromBody] MemberModel model)
     {
-        if (_context.Students == null!)
+        if (context.Students == null!)
         {
             return NotFound();
         }
         
-        _context.Entry(model).State = EntityState.Modified;
+        context.Entry(model).State = EntityState.Modified;
 
         try
         {
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
-            var a = await _context.Students.AnyAsync(x => x.Equals(model));
+            var a = await context.Students.AnyAsync(x => x.Equals(model));
             if (!a)
                 return NotFound();
             throw;
@@ -83,7 +77,7 @@ public class PresidentController : ControllerBase
     private async Task<MemberModel> FromSignToMember(SignModel model)
     {
         var member = MemberModel.AutoCopy<SignModel, MemberModel>(model);
-        var m = await _context.Staffs.FirstOrDefaultAsync(x => x.UserId == model.UserId && x.Name == model.UserName);
+        var m = await context.Staffs.FirstOrDefaultAsync(x => x.UserId == model.UserId && x.Name == model.UserName);
         if (m != null) member.Identity = m.Identity;
         return member;
     }

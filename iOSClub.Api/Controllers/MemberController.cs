@@ -7,19 +7,9 @@ namespace iOSClub.Api.Controllers;
 
 [Route("api/[controller]/[action]")]
 [ApiController]
-public class MemberController : ControllerBase
+public class MemberController(SignContext context, JwtHelper jwtHelper, IHttpContextAccessor httpContextAccessor)
+    : ControllerBase
 {
-    private readonly JwtHelper _jwtHelper;
-    private readonly SignContext _context;
-    private readonly IHttpContextAccessor _httpContextAccessor;
-
-    public MemberController(SignContext context, JwtHelper jwtHelper, IHttpContextAccessor httpContextAccessor)
-    {
-        _context = context;
-        _jwtHelper = jwtHelper;
-        _httpContextAccessor = httpContextAccessor;
-    }
-
     #region Visitor
 
     [TokenActionFilter]
@@ -27,26 +17,26 @@ public class MemberController : ControllerBase
     [HttpGet]
     public ActionResult<MemberModel> GetData()
     {
-        var member = _httpContextAccessor.HttpContext?.User.GetUser();
+        var member = httpContextAccessor.HttpContext?.User.GetUser();
         if (member == null) return NotFound();
         return member;
     }
-    
+
     [HttpPost]
     public async Task<ActionResult<string>> SignUp(SignModel model)
     {
         if (DateTime.Today.Month != 10)
             return NotFound();
 
-        if (_context.Students == null!)
+        if (context.Students == null!)
         {
             return Problem("Entity set 'MemberContext.Students'  is null.");
         }
 
-        _context.Students.Add(model);
+        context.Students.Add(model);
         try
         {
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
         catch (DbUpdateException)
         {
@@ -57,27 +47,27 @@ public class MemberController : ControllerBase
         }
 
         //return MemberModel.AutoCopy<SignModel, MemberModel>(model);
-        return _jwtHelper.GetMemberToken(MemberModel.AutoCopy<SignModel, MemberModel>(model));
+        return jwtHelper.GetMemberToken(MemberModel.AutoCopy<SignModel, MemberModel>(model));
     }
 
 
     [HttpPost]
     public async Task<ActionResult<string>> Login(LoginModel loginModel)
     {
-        if (_context.Students == null!)
+        if (context.Students == null!)
             return NotFound();
 
-        var peo = await _context.Staffs.FirstOrDefaultAsync(x =>
+        var peo = await context.Staffs.FirstOrDefaultAsync(x =>
             x.UserId == loginModel.Id && x.Name == loginModel.Name);
 
-        if (peo != null) return _jwtHelper.GetMemberToken(new MemberModel(peo));
+        if (peo != null) return jwtHelper.GetMemberToken(new MemberModel(peo));
         var model =
-            await _context.Students.FirstOrDefaultAsync(x =>
+            await context.Students.FirstOrDefaultAsync(x =>
                 x.UserId == loginModel.Id && x.UserName == loginModel.Name);
 
         if (model == null)
             return NotFound();
-        return _jwtHelper.GetMemberToken(MemberModel.AutoCopy<SignModel, MemberModel>(model));
+        return jwtHelper.GetMemberToken(MemberModel.AutoCopy<SignModel, MemberModel>(model));
     }
 
     #endregion
@@ -95,11 +85,11 @@ public class MemberController : ControllerBase
             return BadRequest();
         }
 
-        _context.Entry(memberModel).State = EntityState.Modified;
+        context.Entry(memberModel).State = EntityState.Modified;
 
         try
         {
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -116,14 +106,6 @@ public class MemberController : ControllerBase
 
     private async Task<bool> MemberModelExists(string id)
     {
-        return await _context.Students.AnyAsync(e => e.UserId == id);
-    }
-
-    private async Task<MemberModel> FromSignToMember(SignModel model)
-    {
-        var member = MemberModel.AutoCopy<SignModel, MemberModel>(model);
-        var m = await _context.Staffs.FirstOrDefaultAsync(x => x.UserId == model.UserId && x.Name == model.UserName);
-        if (m != null) member.Identity = m.Identity;
-        return member;
+        return await context.Students.AnyAsync(e => e.UserId == id);
     }
 }
