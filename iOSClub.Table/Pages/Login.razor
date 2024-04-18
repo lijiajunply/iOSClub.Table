@@ -28,7 +28,7 @@
             </div>
         </FormItem>
         <FormItem Class="item" Style="text-align: center">
-            <Button Type="@ButtonType.Primary" HtmlType="submit">提交</Button>
+            <Button Style="border-radius: 4px;" Type="@ButtonType.Primary" HtmlType="submit">提交</Button>
         </FormItem>
         <FormItem Class="item">
             <Paragraph class="Submit" Style="text-align: center">
@@ -56,10 +56,10 @@
 
         await using var context = await DbFactory.CreateDbContextAsync();
 
-        var peo = await context.Staffs.FirstOrDefaultAsync(x => x.UserId == Model.Id && x.Name == Model.Name);
+        var permission = await context.Staffs.FirstOrDefaultAsync(x => x.UserId == Model.Id && x.Name == Model.Name);
 
         var identity = "Member";
-        if (peo != null) identity = peo.Identity;
+        if (permission != null) identity = permission.Identity;
         else
         {
             var signModel = await context.Students.FirstOrDefaultAsync(x => x.UserId == Model.Id && x.UserName == Model.Name);
@@ -91,7 +91,7 @@
             var authState = await authenticationState;
             var user = authState.User;
 
-            if (user?.Identity is not null && user.Identity.IsAuthenticated)
+            if (user.Identity is not null && user.Identity.IsAuthenticated)
             {
                 navigation.NavigateTo("/Centre");
             }
