@@ -23,4 +23,24 @@
       <ProjectReference Include="..\iOSClub.Share\iOSClub.Share.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="AdminPages\Admin.razor" />
+      <_ContentIncludedByDefault Remove="AdminPages\AdminLayout.razor" />
+      <_ContentIncludedByDefault Remove="AdminPages\DataCentre.razor" />
+      <_ContentIncludedByDefault Remove="AdminPages\Env.razor" />
+      <_ContentIncludedByDefault Remove="AdminPages\EventManager.razor" />
+      <_ContentIncludedByDefault Remove="AdminPages\MemberData.razor" />
+      <_ContentIncludedByDefault Remove="AdminPages\Permissions.razor" />
+      <_ContentIncludedByDefault Remove="AdminPages\_Imports.razor" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="CentrePages\AdminPages\Admin.razor" />
+      <AdditionalFiles Include="CentrePages\AdminPages\DataCentre.razor" />
+      <AdditionalFiles Include="CentrePages\AdminPages\Env.razor" />
+      <AdditionalFiles Include="CentrePages\AdminPages\EventManager.razor" />
+      <AdditionalFiles Include="CentrePages\AdminPages\MemberData.razor" />
+      <AdditionalFiles Include="CentrePages\AdminPages\Permissions.razor" />
+    </ItemGroup>
+
 </Project>

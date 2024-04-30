@@ -1,5 +1,14 @@
 ﻿@media screen and (max-width: 768px) {
-    footer{
-        border-radius: 0;
+    .footer-p {
+        font-size: 14px;
     }
+}
+
+.footer-container {
+    padding-bottom: 10px;
+}
+
+.footer-p {
+    all: revert;
+    font-size: 18px;
 }

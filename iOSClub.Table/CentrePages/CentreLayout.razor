@@ -8,47 +8,67 @@
 
 <AuthorizeView>
     <Authorized>
-        <header class="page-header">
-            <h4 style="color: #f5f5f7;font-weight: bold;">XAUAT iOS Club</h4>
-            <Button Type="@ButtonType.Text" OnClick="@(() => Nav.NavigateTo("/Logout"))">
-                <Icon Style="font-size: 22px;color: #f5f5f7;" Type="export" Theme="outline"/>
-            </Button>
-        </header>
+        <Layout Style="height: 100vh">
+            <Header Style="background: #fff;">
+                <Flex Vertical="false" Justify="space-between" Align="center">
+                    <header>
+                        <img src="iOS_Club_LOGO.png" style="width:40px; height:40px" class="logo" alt=""/>
+                    </header>
+                    <Button Size="@AntSizeLDSType.Large" Type="@ButtonType.Text">
+                        <Icon Type="logout" Theme="outline"/>
+                    </Button>
+                </Flex>
+            </Header>
+            <Layout Style="max-height: 100%;overflow:hidden">
+                <Sider Breakpoint="@BreakpointType.Md" Class="sider"
+                       CollapsedWidth="64" Trigger="@null">
+                    <Menu Theme="MenuTheme.Light"
+                          Mode="MenuMode.Inline">
+                        <MenuItem RouterLink="/Centre" RouterMatch="NavLinkMatch.All">
+                            <Icon Type="home" Theme="outline"/>
+                            <span class="nav-text">主页</span>
+                        </MenuItem>
 
-        <div class="main">
-            <CascadingValue Value="@Member">
-                @Body
-            </CascadingValue>
-        </div>
+                        @if (State != null)
+                        {
+                            <MenuItem RouterLink="/Centre/PersonalData" RouterMatch="NavLinkMatch.All">
+                                <Icon Type="user" Theme="outline"/>
+                                <span class="nav-text">成员信息</span>
+                            </MenuItem>
+                        }
 
-        <footer>
-            <div class="dock">
-                <ul>
-                    @foreach (var item in Models)
-                    {
-                        <li title="@item.ToolStr">
-                            <NavLink href="@item.Url" Match="NavLinkMatch.All">
-                                <img src="@item.ContextUrl" alt=""/>
-                            </NavLink>
-                        </li>
-                    }
-                </ul>
-            </div>
-        </footer>
+                        @if (State == null || State!.Value)
+                        {
+                            <MenuItem RouterLink="/Admin" RouterMatch="NavLinkMatch.All">
+                                <Icon Type="upload" Theme="outline"/>
+                                <span class="nav-text">nav 3</span>
+                            </MenuItem>
+                        }
+
+                        <MenuItem RouterLink="/Centre/Tool" RouterMatch="NavLinkMatch.All">
+                            <Icon Type="video-camera" Theme="outline"/>
+                            <span class="nav-text">nav 4</span>
+                        </MenuItem>
+                    </Menu>
+                </Sider>
+                <Content Style="overflow: auto;background-color: #ffffff">
+                    <CascadingValue Value="@Member">
+                        @Body
+                    </CascadingValue>
+                </Content>
+            </Layout>
+        </Layout>
     </Authorized>
     <Authorizing>
         <p>正在进行身份验证，请稍等</p>
     </Authorizing>
     <NotAuthorized>
-        <header class="page-header">
-            <h4 style="color: #f5f5f7;font-weight: bold;">XAUAT iOS Club</h4>
-        </header>
-
-        <div class="main">
-            <ReturnView ReturnInfo="" FlushedUrl="@Nav.Uri"/>
+        <div class="body">
+            <div class="main">
+                <ReturnView ReturnInfo="" FlushedUrl="@Nav.Uri"/>
+            </div>
         </div>
 
-        <footer></footer>
     </NotAuthorized>
 </AuthorizeView>
 
@@ -56,134 +76,46 @@
 {
     private MemberModel Member { get; set; } = new();
 
-    private List<CentreModel> Models { get; } = new()
-    {
-        new CentreModel { ToolStr = "身份信息", Url = "/Centre/PersonalData", ContextUrl = "Centre/personal.png" }
-    };
+    private bool? State { get; set; } = false;
 
     [CascadingParameter] private Task<AuthenticationState>? authenticationState { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        if (authenticationState is not null)
+        if (authenticationState is null) return;
+        var authState = await authenticationState;
+        var user = authState.User;
+
+        if (user.Identity is not null && user.Identity.IsAuthenticated)
         {
-            var authState = await authenticationState;
-            var user = authState.User;
-
-            if (user.Identity is not null && user.Identity.IsAuthenticated)
+            var name = user.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
+            var identity = user.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
+            var id = user.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(identity) || string.IsNullOrEmpty(id)) return;
+            await using var context = await DbFactory.CreateDbContextAsync();
+            var model = await context.Students.FirstOrDefaultAsync(x => x.UserId == id && x.UserName == name);
+            if (model == null)
             {
-                var name = user.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
-                var identity = user.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
-                var id = user.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
-                if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(identity) || string.IsNullOrEmpty(id))
-                    return;
-                await using var context = await DbFactory.CreateDbContextAsync();
-                var model = await context.Students.FirstOrDefaultAsync(x => x.UserId == id && x.UserName == name);
-                if (model == null)
-                {
-                    Models.Clear();
-                    if (identity == "Founder")
-                        Models.Add(new CentreModel { ToolStr = "超级用户", Url = "Admin", ContextUrl = "Centre/root.jpg" });
-                    return;
-                }
-
-                if (identity != "PracticalMember" && identity != "NewMediaMember" && identity != "Member" && identity != "TechnologyMember")
-                    Models.Add(new CentreModel { ToolStr = "超级用户", Url = "Admin", ContextUrl = "Centre/root.jpg" });
-                Member = MemberModel.AutoCopy<SignModel, MemberModel>(model);
-                Member.Identity = identity;
+                if (identity == "Founder") State = null;
+                return;
             }
+
+            State = identity != "PracticalMember" && identity != "NewMediaMember" && identity != "Member" && identity != "TechnologyMember";
+            Member = MemberModel.AutoCopy<SignModel, MemberModel>(model);
+            Member.Identity = identity;
         }
     }
 }
 
 <style>
-
-html, body {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    margin: 0;
-}
-
-html {
-    _height: auto;
-    _padding: 100px 0 50px;
-}
-
-footer {
-    width: 100%;
-    /*transform: translateX(-50%);*/
-    /*bottom: 0;*/
-    text-align: center;
-    color: #333;
-    background: rgba(255, 255, 255, 0.4);
-    -webkit-backdrop-filter: blur(20px);
-    backdrop-filter: blur(20px);
-    box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.2);
-    border-radius: 10px 10px 0;
-    height: 8%;
-    min-height: 8vh;
-    line-height: 9vh;
-    max-height: 11vh;
-}
-
-footer .dock {
-    height: 100%;
-    /*块级标签居中*/
-    margin: 0 auto;
-    border-top-right-radius: 5px;
-    border-top-left-radius: 5px;
-}
-
-footer .dock ul {
-    display: inline-block;
-}
-
-footer .dock ul li {
-    float: left;
-    margin: 0 2vh;
-    color: transparent;
-    /*设置动画的过渡效果*/
-    transition: all 0.25s linear;
-}
-
-footer .dock ul li img {
-    width: 6vh;
-}
-
-/*动画*/
-footer .dock ul li:hover {
-    /*设置动画的方向 从底部向中间*/
-    transform-origin: bottom center;
-    /*放大1.5倍*/
-    transform: scale(1.5);
-}
-
-.main {
-    all: revert;
-    margin: 1% 0;
-    height: 82%;
-    max-height: 82vh;
-    min-height: 80vh;
-    overflow-y: auto;
-}
-
-.page-header {
-    display: flex;
-    text-align: center;
-    justify-content: space-between;
-    height: 6%;
-}
-
-</style>
-
-@code
-{
-    public class CentreModel
-    {
-        public string? Url { get; init; }
-        public string? ContextUrl { get; init; }
-        public string? ToolStr { get; init; }
+    .sider {
+        background: #ffffff;
+        overflow: auto;
+        height: 100%;
     }
-}
+
+    body {
+        height: 100% !important;
+    }
+</style>
