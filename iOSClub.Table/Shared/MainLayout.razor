@@ -3,13 +3,7 @@
 
 <ErrorBoundary @ref="errorBoundary">
     <ChildContent>
-        <div class="page">
-            <main class="body">
-                <article class="content">
-                    @Body
-                </article>
-            </main>
-        </div>
+        @Body
     </ChildContent>
     <ErrorContent Context="ex">
         <Flex Justify="center" Style="height: 100vh">

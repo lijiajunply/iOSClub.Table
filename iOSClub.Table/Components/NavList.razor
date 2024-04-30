@@ -38,7 +38,7 @@
 </Drawer>
 
 @code {
-    [Parameter] public List<NavModel> NavLists { get; set; } = new();
+    [Parameter] public List<NavModel> NavLists { get; set; } = [];
     [Parameter] public string Title { get; set; } = "西建大iOS Club";
     bool visible = false;
 
@@ -64,6 +64,8 @@
     }
     
     .header-box {
+        margin-left: 10px;
+        margin-right: 10px;
         padding-left: 10px;
         padding-right: 10px;
         color: #333;

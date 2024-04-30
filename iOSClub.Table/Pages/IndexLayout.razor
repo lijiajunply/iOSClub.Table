@@ -3,24 +3,26 @@
 @using iOSClub.Share.Data
 @inherits LayoutComponentBase
 
-<main class="body">
-    <NavList NavLists="NavModels"/>
+<div class="page">
+    <main class="body content">
+        <NavList NavLists="NavModels"/>
 
-    <article class="main">
-        @Body
-    </article>
+        <article class="main">
+            @Body
+        </article>
 
-    <FooterList/>
-</main>
+        <FooterList/>
+    </main>
+</div>
 
 
 @code
 {
-    public readonly List<NavModel> NavModels = new()
-    {
-        new NavModel {Name = "主页"},
-        new NavModel {Name = "关于",Url = "SocietyAbout"},
-        new NavModel {Name = "活动",Url = "Event"},
-        new NavModel {Name = "登录",Url = "Login"}
-    };
+    public readonly List<NavModel> NavModels =
+    [
+        new NavModel { Name = "主页" },
+        new NavModel { Name = "关于", Url = "SocietyAbout" },
+        new NavModel { Name = "活动", Url = "Event" },
+        new NavModel { Name = "登录", Url = "Login" }
+    ];
 }
