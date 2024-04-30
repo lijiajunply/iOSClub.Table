@@ -313,7 +313,7 @@
 
         if (HostEnvironment.IsProduction())
         {
-            await context.BulkInsertAsync(list.Select(x => x.Standardization()));
+            await context.Students.AddRangeAsync(list.Select(x => x.Standardization()));
             await context.SaveChangesAsync();
         }
         else
