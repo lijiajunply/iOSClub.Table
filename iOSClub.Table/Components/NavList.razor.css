@@ -1,16 +1,8 @@
 @media screen and (max-width: 768px) {
-    .navbar-expand {
-        display: none;
-    }
-
     .header-box {
         margin: 0;
         border-radius: 0;
         box-shadow : revert;
-    }
-
-    .phone-menu-btn {
-        display: revert !important;
     }
 }
 
@@ -23,11 +15,5 @@ h1 {
 }
 
 h5 {
-    color: #f5f5f7;
-}
-
-.phone-menu-btn {
-    display: none;
-    font-size: 18px;
     color: #f5f5f7;
 }

@@ -3,7 +3,7 @@ using iOSClub.Share.Data;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 
-namespace iOSClub.Table.Auth;
+namespace iOSClub.Table.Models;
 
 public class Provider : AuthenticationStateProvider
 {
