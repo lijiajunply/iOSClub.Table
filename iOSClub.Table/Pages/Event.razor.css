@@ -8,14 +8,11 @@
         display: none;
     }
 
-    .div h3{
+    .div h2{
         font-size: 20px;
     }
     
     .div{
         max-height: 100%;
     }
-    /*.div{*/
-    /*    margin: 10px;*/
-    /*}*/
 }

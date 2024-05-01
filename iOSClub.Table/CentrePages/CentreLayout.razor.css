@@ -1,14 +1,11 @@
 ﻿@media screen and (max-width: 768px) {
-    .footer-p {
-        font-size: 14px;
+    .layout-context {
+        margin: 0;
     }
 }
 
-.footer-container {
-    padding-bottom: 10px;
-}
-
-.footer-p {
-    all: revert;
-    font-size: 18px;
+.layout-context {
+    overflow: auto;
+    background-color: #f3f5f7;
+    margin: 24px 16px 0;
 }

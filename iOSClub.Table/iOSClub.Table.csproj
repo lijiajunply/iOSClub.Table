@@ -32,6 +32,8 @@
       <_ContentIncludedByDefault Remove="AdminPages\MemberData.razor" />
       <_ContentIncludedByDefault Remove="AdminPages\Permissions.razor" />
       <_ContentIncludedByDefault Remove="AdminPages\_Imports.razor" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\bootstrap.min.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\bootstrap.min.css.map" />
     </ItemGroup>
 
     <ItemGroup>
