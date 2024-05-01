@@ -8,7 +8,6 @@
 @using JsonSerializer = System.Text.Json.JsonSerializer
 @using System.IO
 @using iOSClub.Share.Data
-@using System.Diagnostics.CodeAnalysis
 @inject IJSRuntime JS
 @inject IDbContextFactory<SignContext> DbFactory
 @inject IWebHostEnvironment HostEnvironment
@@ -298,8 +297,7 @@
         Visible = true;
         ChangeModel = model;
     }
-
-    [SuppressMessage("ReSharper.DPA", "DPA0005: Database issues")]
+    
     private async Task UploadFiles(InputFileChangeEventArgs e)
     {
         var reader = new StreamReader(e.File.OpenReadStream());
@@ -355,7 +353,7 @@
         var context = await DbFactory.CreateDbContextAsync();
         await context.Students.ExecuteDeleteAsync();
         await context.SaveChangesAsync();
-        Models = new List<SignModel>();
+        Models.Clear();
         await context.DisposeAsync();
     }
 }

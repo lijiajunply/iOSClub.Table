@@ -1,43 +1,63 @@
 ﻿@using iOSClub.Share.Data
+
+<Row OnBreakpoint="OnBreakpoint"/>
+
 <div class="header-box">
     <h1 class="logo">XAUAT iOS Club</h1>
-    <nav class="navbar-expand">
-        <ul class="nav-menu">
-            @foreach (var item in NavLists)
-            {
-                <NavLink class="header-nav-item" href="@item.Url" Match="NavLinkMatch.All">@item.Name</NavLink>
-            }
-        </ul>
-    </nav>
-    <div class="phone-menu-btn">
-        <Icon Type="menu" OnClick="@open" Theme="outline"/>
-    </div>
-</div>
-
-<Drawer MaskClosable="true" Visible="visible" Closable="false" OnClose="@close" Width="160" Placement="right">
-    <Menu Mode="@MenuMode.Vertical" Style="width: 140px">
-        <MenuItemGroup>
-            <TitleTemplate>
-                @Title
-                <Divider/>
-            </TitleTemplate>
-            <ChildContent>
+    @if (_isMobile)
+    {
+        <Icon Type="menu" OnClick="@open" Theme="outline" Style="color: #f3f5f7"/>
+    }
+    else
+    {
+        <nav class="navbar-expand">
+            <ul class="nav-menu">
                 @foreach (var item in NavLists)
                 {
-                    <MenuItem OnClick="@close" RouterLink="@item.Url" RouterMatch="NavLinkMatch.All">
-                        @if (!string.IsNullOrEmpty(item.Icon))
-                        {
-                            <Icon Type="@item.Icon"/>
-                        }
-                        @item.Name
-                    </MenuItem>
+                    <NavLink class="header-nav-item" href="@item.Url" Match="NavLinkMatch.All">@item.Name</NavLink>
                 }
-            </ChildContent>
-        </MenuItemGroup>
-    </Menu>
-</Drawer>
+            </ul>
+        </nav>
+    }
+</div>
+
+@if (_isMobile)
+{
+    <Drawer MaskClosable="true" Visible="visible" Closable="false" OnClose="@close" Width="160" Placement="right">
+        <Menu Mode="@MenuMode.Vertical" Style="width: 140px">
+            <MenuItemGroup>
+                <TitleTemplate>
+                    @Title
+                    <Divider/>
+                </TitleTemplate>
+                <ChildContent>
+                    @foreach (var item in NavLists)
+                    {
+                        <MenuItem OnClick="@close" RouterLink="@item.Url" RouterMatch="NavLinkMatch.All">
+                            @if (!string.IsNullOrEmpty(item.Icon))
+                            {
+                                <Icon Type="@item.Icon"/>
+                            }
+                            @item.Name
+                        </MenuItem>
+                    }
+                </ChildContent>
+            </MenuItemGroup>
+        </Menu>
+    </Drawer>
+}
+
 
 @code {
+
+    private void OnBreakpoint(BreakpointType breakpoint)
+    {
+        _isMobile = breakpoint.IsIn(BreakpointType.Sm, BreakpointType.Xs, BreakpointType.Md);
+        StateHasChanged();
+    }
+
+    private bool _isMobile;
+
     [Parameter] public List<NavModel> NavLists { get; set; } = [];
     [Parameter] public string Title { get; set; } = "西建大iOS Club";
     bool visible = false;

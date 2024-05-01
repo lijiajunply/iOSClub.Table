@@ -1,7 +1,7 @@
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 using iOSClub.Share.Data;
-using iOSClub.Table.Auth;
+using iOSClub.Table.Models;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.EntityFrameworkCore;

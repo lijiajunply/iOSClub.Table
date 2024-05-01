@@ -6,52 +6,43 @@
 @inject IDbContextFactory<SignContext> DbFactory
 @inject NavigationManager Nav
 
+<Row OnBreakpoint="OnBreakpoint"/>
+
 <AuthorizeView>
     <Authorized>
         <Layout Style="height: 100vh">
-            <Header Style="background: #fff;">
-                <Flex Vertical="false" Justify="space-between" Align="center">
-                    <header>
-                        <img src="iOS_Club_LOGO.png" style="width:40px; height:40px" class="logo" alt=""/>
-                    </header>
-                    <Button Size="@AntSizeLDSType.Large" Type="@ButtonType.Text">
-                        <Icon Type="logout" Theme="outline"/>
-                    </Button>
+            <Header>
+                <Flex Vertical="false" Align="center" Gap="@(_isMobile ? "small" : "large")">
+                    <Image Src="iOS_Club_LOGO.png" Style="width:40px; height:40px"/>
+                    @if (_isMobile)
+                    {
+                        <Button Size="@AntSizeLDSType.Large" Type="@ButtonType.Text" OnClick="@(() => _drawerVisible = !_drawerVisible)">
+                            <Icon Type="menu" Theme="outline" Style="color:#fff;font-size: 30px"/>
+                        </Button>
+                    }
+                    else
+                    {
+                        <div style="color:#f3f5f7;font-size: 32px">iOS Club个人中心</div>
+                    }
                 </Flex>
             </Header>
             <Layout Style="max-height: 100%;overflow:hidden">
-                <Sider Breakpoint="@BreakpointType.Md" Class="sider"
-                       CollapsedWidth="64" Trigger="@null">
-                    <Menu Theme="MenuTheme.Light"
-                          Mode="MenuMode.Inline">
-                        <MenuItem RouterLink="/Centre" RouterMatch="NavLinkMatch.All">
-                            <Icon Type="home" Theme="outline"/>
-                            <span class="nav-text">主页</span>
-                        </MenuItem>
-
-                        @if (State != null)
-                        {
-                            <MenuItem RouterLink="/Centre/PersonalData" RouterMatch="NavLinkMatch.All">
-                                <Icon Type="user" Theme="outline"/>
-                                <span class="nav-text">成员信息</span>
-                            </MenuItem>
-                        }
-
-                        @if (State == null || State!.Value)
-                        {
-                            <MenuItem RouterLink="/Admin" RouterMatch="NavLinkMatch.All">
-                                <Icon Type="upload" Theme="outline"/>
-                                <span class="nav-text">nav 3</span>
-                            </MenuItem>
-                        }
-
-                        <MenuItem RouterLink="/Centre/Tool" RouterMatch="NavLinkMatch.All">
-                            <Icon Type="video-camera" Theme="outline"/>
-                            <span class="nav-text">nav 4</span>
-                        </MenuItem>
-                    </Menu>
-                </Sider>
-                <Content Style="overflow: auto;background-color: #ffffff">
+                @if (_isMobile)
+                {
+                    <Drawer Placement="left" Closable="false"
+                            Visible="@_drawerVisible"
+                            OnClose="@(() => _drawerVisible = false)">
+                        @Menu
+                    </Drawer>
+                }
+                else
+                {
+                    <Sider Breakpoint="@BreakpointType.Md" Class="sider"
+                           CollapsedWidth="64" Trigger="@null">
+                        @Menu
+                    </Sider>
+                }
+                <Content Style="overflow: auto;background-color: #f3f5f7;margin: 24px 16px 0">
                     <CascadingValue Value="@Member">
                         @Body
                     </CascadingValue>
@@ -59,21 +50,26 @@
             </Layout>
         </Layout>
     </Authorized>
-    <Authorizing>
-        <p>正在进行身份验证，请稍等</p>
-    </Authorizing>
     <NotAuthorized>
         <div class="body">
             <div class="main">
                 <ReturnView ReturnInfo="" FlushedUrl="@Nav.Uri"/>
             </div>
         </div>
-
     </NotAuthorized>
 </AuthorizeView>
 
 @code
 {
+    private void OnBreakpoint(BreakpointType breakpoint)
+    {
+        _isMobile = breakpoint.IsIn(BreakpointType.Sm, BreakpointType.Xs, BreakpointType.Md);
+        StateHasChanged();
+    }
+
+    private bool _isMobile;
+    private bool _drawerVisible;
+
     private MemberModel Member { get; set; } = new();
 
     private bool? State { get; set; } = false;
@@ -108,9 +104,67 @@
     }
 }
 
+@code
+{
+    private RenderFragment Menu => @<Template>
+        <Menu Theme="MenuTheme.Light"
+              Mode="MenuMode.Inline">
+            <MenuItem RouterLink="/Centre" RouterMatch="NavLinkMatch.All">
+                <Icon Type="home" Theme="outline"/>
+                <span class="nav-text">主页</span>
+            </MenuItem>
+
+            @if (State != null)
+            {
+                <MenuItem RouterLink="/Centre/PersonalData" RouterMatch="NavLinkMatch.All">
+                    <Icon Type="user" Theme="outline"/>
+                    <span class="nav-text">成员信息</span>
+                </MenuItem>
+            }
+
+            @if (State == null || State!.Value)
+            {
+                <SubMenu>
+                    <TitleTemplate>
+                        <Icon Type="upload" Theme="outline"/>
+                        <span class="nav-text">管理</span>
+                    </TitleTemplate>
+                    <ChildContent>
+                        <MenuItem RouterLink="/Admin/MemberData" RouterMatch="NavLinkMatch.All">
+                            <Icon Type="team" Theme="outline"/>
+                            <span class="nav-text">成员管理</span>
+                        </MenuItem>
+                        <MenuItem RouterLink="/Admin/EventManager" RouterMatch="NavLinkMatch.All">
+                            <Icon Type="trophy" Theme="outline"/>
+                            <span class="nav-text">活动管理</span>
+                        </MenuItem>
+                        <MenuItem RouterLink="/Admin/Env" RouterMatch="NavLinkMatch.All">
+                            <Icon Type="setting" Theme="outline"/>
+                            <span class="nav-text">环境管理</span>
+                        </MenuItem>
+                        <MenuItem RouterLink="/Admin/Permissions" RouterMatch="NavLinkMatch.All">
+                            <Icon Type="alert" Theme="outline"/>
+                            <span class="nav-text">权限管理</span>
+                        </MenuItem>
+                    </ChildContent>
+                </SubMenu>
+            }
+
+            <MenuItem RouterLink="/Centre/Tool" RouterMatch="NavLinkMatch.All">
+                <Icon Type="tool" Theme="outline"/>
+                <span class="nav-text">社团小工具</span>
+            </MenuItem>
+            <MenuItem OnClick="@(() => Nav.NavigateTo("/Logout"))">
+                <Icon Type="logout" Theme="outline"/>
+                <span class="nav-text">退出登录</span>
+            </MenuItem>
+        </Menu>
+    </Template>;
+}
+
 <style>
     .sider {
-        background: #ffffff;
+        background-color: #f3f5f7;
         overflow: auto;
         height: 100%;
     }

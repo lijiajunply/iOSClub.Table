@@ -35,8 +35,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <AdditionalFiles Include="CentrePages\AdminPages\Admin.razor" />
-      <AdditionalFiles Include="CentrePages\AdminPages\DataCentre.razor" />
       <AdditionalFiles Include="CentrePages\AdminPages\Env.razor" />
       <AdditionalFiles Include="CentrePages\AdminPages\EventManager.razor" />
       <AdditionalFiles Include="CentrePages\AdminPages\MemberData.razor" />
