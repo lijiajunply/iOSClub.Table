@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace iOSClub.Api.Controllers;
+namespace iOSClub.Table.Controllers;
 
 [Route("api/[controller]/[action]")]
 [ApiController]

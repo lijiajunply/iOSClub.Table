@@ -1,11 +1,15 @@
+using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 using iOSClub.Share.Data;
+using iOSClub.Table.Controllers;
 using iOSClub.Table.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.WebEncoders;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -14,13 +18,32 @@ var configuration = builder.Configuration;
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddAntDesign();
+builder.Services.AddControllers();
 
 // 身份验证
 builder.Services.AddScoped<ProtectedSessionStorage>();
 builder.Services.AddScoped<AuthenticationStateProvider, Provider>();
 builder.Services.AddOptions();
 builder.Services.AddAuthorizationCore();
-builder.Services.AddAuthentication();
+builder.Services.AddAuthentication(options => { options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme; })
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters()
+        {
+            ValidateIssuer = false, //是否验证Issuer
+            ValidateAudience = false, //是否验证Audience
+            ValidateIssuerSigningKey = true, //是否验证SecurityKey
+            IssuerSigningKey =
+                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:SecretKey"]!)), //SecurityKey
+            ValidateLifetime = true, //是否验证失效时间
+            ClockSkew = TimeSpan.FromSeconds(30), //过期时间容错值，解决服务器端时间不同步问题（秒）
+            RequireExpirationTime = true,
+        };
+    });
+
+builder.Services.AddSingleton(new JwtHelper(configuration));
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddScoped<TokenActionFilter>();
 
 // 数据库
 if (builder.Environment.IsDevelopment())
@@ -88,5 +111,7 @@ app.UseAuthorization();
 app.UseCors();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
+
+app.MapControllers();
 
 app.Run();
