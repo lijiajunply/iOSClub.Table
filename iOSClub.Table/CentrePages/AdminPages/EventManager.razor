@@ -26,16 +26,13 @@
         </Space>
     </Extra>
     <Context>
-        <Table TItem="EventModel" DataSource="@Models">
+        <Table TItem="EventModel" DataSource="@Models" EnableVirtualization>
             <PropertyColumn Title="标题" Property="c => c.Title"/>
             <PropertyColumn Title="简介" Property="c => c.Digest"/>
             <ActionColumn Title="操作">
                 <Space>
                     <SpaceItem>
                         <NavLink Match="NavLinkMatch.All" href="@context.Link">打开链接</NavLink>
-                    </SpaceItem>
-                    <SpaceItem>
-                        <NavLink Match="NavLinkMatch.All" href="@context.Cover">查看图片</NavLink>
                     </SpaceItem>
                     <SpaceItem>
                         <Button Danger OnClick="@(() => Delete(context))">删除</Button>

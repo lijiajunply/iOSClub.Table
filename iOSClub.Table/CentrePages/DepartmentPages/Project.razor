@@ -1,0 +1,90 @@
+﻿@page "/Centre/Project/{Id?}"
+@using iOSClub.Share.Data
+@using Markdig
+@using Microsoft.EntityFrameworkCore
+@inject IDbContextFactory<SignContext> DbFactory
+@inject NavigationManager Nav
+@inject MessageService MessageService
+
+
+<PageView Style="height: 100%" ContextStyle="margin: 10px;">
+    <Extra>
+        @if (IsAdmin)
+        {
+            <Button Type="@ButtonType.Primary" OnClick="@(() => Nav.NavigateTo($"/Centre/EditProject/{Id}"))">
+                更改项目
+            </Button>
+        }
+    </Extra>
+    <Context>
+        <h1>@Data.Title</h1>
+        <p>@($"{Data.StartTime} - {Data.EndTime}")</p>
+        <p>@((MarkupString)Markdown.ToHtml(Data.Description))</p>
+        <Divider/>
+        <AntList DataSource="@Data.Tasks" TItem="TaskModel">
+            <ListItem>
+                <ListItemMeta >
+                    <TitleTemplate>
+                        <h3>@context.Title</h3>
+                    </TitleTemplate>
+                    <DescriptionTemplate>
+                        <p>@((MarkupString)Markdown.ToHtml(context.Description))</p>
+                    </DescriptionTemplate>
+                </ListItemMeta>
+            </ListItem>
+        </AntList>
+        <Divider/>
+        <AntList DataSource="@Data.Staffs" TItem="StaffModel">
+            <ListItem>
+                <ListItemMeta >
+                    <TitleTemplate>
+                        <h3>@context.Name</h3>
+                    </TitleTemplate>
+                    <DescriptionTemplate>
+                        <p>@MemberModel.IdentityDictionary[context.Identity]</p>
+                    </DescriptionTemplate>
+                </ListItemMeta>
+            </ListItem>
+        </AntList>
+    </Context>
+</PageView>
+
+@code {
+    private bool IsAdmin { get; set; }
+    [CascadingParameter] private MemberModel Member { get; set; } = new();
+    [Parameter] public string? Id { get; set; }
+    private ProjectModel Data { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Member.Identity == "Member")
+        {
+            Nav.NavigateTo("/Centre");
+            return;
+        }
+
+        await using var context = await DbFactory.CreateDbContextAsync();
+        
+        var a = await context.Projects.FirstOrDefaultAsync(x => x.Id.ToString() == Id);
+        if (a == null)
+        {
+            await MessageService.Error("项目不存在");
+            Nav.NavigateTo("/Centre");
+            return;
+        }
+
+        Data = a;
+        IsAdmin = Member.Identity.Contains("President") || Member.Identity.Contains("Minister");
+        await base.OnInitializedAsync();
+
+
+        await base.OnInitializedAsync();
+    }
+
+}
+
+<style>
+    h1,h2,h3{
+        font-size: initial;
+    }
+</style>

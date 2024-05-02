@@ -9,7 +9,7 @@
             @Extra
         </nav>
     </header>
-    <main class="context">
+    <main class="context @ContextClass" style="@ContextStyle">
         @Context
     </main>
 </div>
@@ -18,10 +18,14 @@
     [Parameter] public RenderFragment? Extra { get; set; }
 
     [Parameter] public RenderFragment? Context { get; set; }
-    
+
     [Parameter] public string? Class { get; set; }
-    
+
     [Parameter] public string? Style { get; set; }
+
+    [Parameter] public string? ContextClass { get; set; }
+
+    [Parameter] public string? ContextStyle { get; set; }
 }
 
 <style>

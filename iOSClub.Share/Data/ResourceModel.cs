@@ -8,15 +8,12 @@ public class ResourceModel
     [Key]
     public int Id { get; init; }
 
-    [Column(TypeName = "varchar(256)")]
+    [Column(TypeName = "varchar(20)")]
     public string Name { get; init; } = "";
 
-    [Column(TypeName = "varchar(256)")]
-    public string Url { get; init; } = "";
-
-    [Column(TypeName = "varchar(256)")]
+    [Column(TypeName = "varchar(512)")]
     public string? Description { get; init; }
 
-    [Column(TypeName = "varchar(256)")]
+    [Column(TypeName = "varchar(50)")]
     public string? Tag { get; init; }
 }

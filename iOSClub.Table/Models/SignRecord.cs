@@ -93,6 +93,14 @@ public class SignRecord
         new FormValidationRule
             { Len = 512, Message = "项目描述太长了", Required = true }
     ];
+    
+    public static Dictionary<string, string> DepartmentDictionary => new()
+    {
+        ["All"] = "所有",
+        ["Technology"] = "科技部",
+        ["NewMedia"] = "新媒体部",
+        ["Practical"] = "交流实践部"
+    };
 
     #endregion
 }

@@ -1,5 +1,56 @@
 ﻿@page "/Centre/Resource"
+@using iOSClub.Share.Data
+@using Microsoft.EntityFrameworkCore
+@inject IDbContextFactory<SignContext> DbFactory
+@inject NavigationManager Nav
+
+<PageView Style="height: 100%">
+    <Extra>
+        @if (IsAdmin)
+        {
+            <Button Type="@ButtonType.Primary">
+                添加资源
+            </Button>
+        }
+    </Extra>
+    <Context>
+        <Flex Wrap="wrap" Gap="middle" Justify="space-between">
+            @foreach (var item in Resources)
+            {
+                <Card Hoverable Style="border-radius: 10px;" BodyStyle="margin: 10px">
+                    <Title Level="2">@item.Name</Title>
+                    <Paragraph>@item.Description</Paragraph>
+                    <div>
+                        @foreach (var s in item.Tag?.Split(",") ?? [])
+                        {
+                            <Tag Color="blue-inverse">@s</Tag>
+                        }
+                    </div>
+                </Card>
+            }
+        </Flex>
+    </Context>
+</PageView>
 
 @code {
+    private bool IsAdmin { get; set; }
+    private List<ResourceModel> Resources { get; set; } = [];
+    [CascadingParameter] private MemberModel Member { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Member.Identity == "Member")
+        {
+            Nav.NavigateTo("/Centre");
+            return;
+        }
+
+        await using var context = await DbFactory.CreateDbContextAsync();
+
+        Resources = await context.Resources.ToListAsync();
+        IsAdmin = Member.Identity.Contains("President") || Member.Identity.Contains("Minister");
+
+        await base.OnInitializedAsync();
+    }
     
 }

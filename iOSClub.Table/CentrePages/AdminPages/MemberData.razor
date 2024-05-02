@@ -117,31 +117,26 @@
     </Extra>
     <Context>
         <div class="phone-left-display">
-            <GridRow>
-                <GridCol Span="8"/>
-                <GridCol Span="8">
-                    <Space>
-                        <SpaceItem>
-                            <select class="form-control" @bind="@SearchItem">
-                                @foreach (var item in SearchItems)
-                                {
-                                    <option value="@item">@item</option>
-                                }
-                            </select>
-                        </SpaceItem>
-                        <SpaceItem>
-                            <Search Placeholder="请输入搜索项" EnterButton="@("搜索")" @bind-Value="@SearchValue" Size="large"/>
-                        </SpaceItem>
-                    </Space>
-                </GridCol>
-                <GridCol Span="8">
-                    <Statistic GroupSeparator=" " Title="当前成员" Value="@Total" TValue="int">
-                        <PrefixTemplate>
-                            <Icon Type="team" Theme="outline"/>
-                        </PrefixTemplate>
-                    </Statistic>
-                </GridCol>
-            </GridRow>
+            <Flex Justify="center" Gap="middle">
+                <Space>
+                    <SpaceItem>
+                        <select class="form-control" @bind="@SearchItem">
+                            @foreach (var item in SearchItems)
+                            {
+                                <option value="@item">@item</option>
+                            }
+                        </select>
+                    </SpaceItem>
+                    <SpaceItem>
+                        <Search Placeholder="请输入搜索项" EnterButton="@("搜索")" @bind-Value="@SearchValue" Size="large"/>
+                    </SpaceItem>
+                </Space>
+                <Statistic GroupSeparator=" " Title="当前成员" Value="@Total" TValue="int">
+                    <PrefixTemplate>
+                        <Icon Type="team" Theme="outline"/>
+                    </PrefixTemplate>
+                </Statistic>
+            </Flex>
         </div>
         <div class="phone-top-display" style="text-align: center">
             <Space>
@@ -159,7 +154,7 @@
             </Space>
         </div>
         <Spin Spinning="@RunningStyle">
-            <Table TItem="SignModel" DataSource="@Models" Responsive>
+            <Table TItem="SignModel" DataSource="@Models" Responsive EnableVirtualization>
                 <PropertyColumn Title="姓名" Property="c => c.UserName"/>
                 <PropertyColumn Title="学号" Property="c => c.UserId"/>
                 <PropertyColumn Title="学院" Property="c => c.Academy"/>
@@ -297,7 +292,7 @@
         Visible = true;
         ChangeModel = model;
     }
-    
+
     private async Task UploadFiles(InputFileChangeEventArgs e)
     {
         var reader = new StreamReader(e.File.OpenReadStream());

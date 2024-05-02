@@ -1,76 +1,40 @@
-﻿@page "/Centre/Department/{Id?}"
+﻿@page "/Centre/Department"
 @using iOSClub.Share.Data
-@using Markdig
+@using iOSClub.Table.Models
 @using Microsoft.EntityFrameworkCore
 @inject IDbContextFactory<SignContext> DbFactory
 @inject NavigationManager Nav
-@inject MessageService MessageService
 
 <PageView Style="height: 100%">
     <Extra>
         @if (IsAdmin)
         {
-            <Button Type="@ButtonType.Primary" OnClick="@(() => Nav.NavigateTo($"/Centre/EditProject/{Id}"))">
-                @if (string.IsNullOrEmpty(Id))
-                {
-                    <p>添加项目</p>
-                }
-                else
-                {
-                    <p>更改项目</p>
-                }
+            <Button Type="@ButtonType.Primary" OnClick="@(() => Nav.NavigateTo($"/Centre/EditProject"))">
+                添加项目
             </Button>
         }
     </Extra>
     <Context>
-        @if (string.IsNullOrEmpty(Id))
-        {
-            <Flex Wrap="wrap" Gap="middle" Justify="space-around">
-                @foreach (var item in Projects)
-                {
-                    <Card Hoverable BodyStyle="padding: 0; overflow: hidden;">
-                        <h1>@item.Title</h1>
-                        <p>@($"{item.StartTime} - {item.EndTime}")</p>
-                        <p>@((MarkupString)Markdown.ToHtml(item.Description))</p>
-                        <Button Type="@ButtonType.Primary" OnClick="@(() => Nav.NavigateTo($"/Centre/Department/{item.Id}"))">
+        <Flex Wrap="wrap" Gap="middle" Justify="space-between">
+            @foreach (var item in Projects)
+            {
+                <Card Hoverable Style="border-radius: 10px;" BodyStyle="margin: 10px">
+                    <Flex Vertical Align="flex-end" Justify="space-between" Style="height: 200px">
+                        <div>
+                            <Flex Justify="space-between" Align="center">
+                                <Title Level="2">@item.Title</Title>
+                                <Tag Icon="apple" Color="blue-inverse">@SignRecord.DepartmentDictionary[item.DepartmentName]</Tag>
+                            </Flex>
+                            <Text Type="secondary">@($"{item.StartTime} - {item.EndTime}")</Text>
+                        </div>
+
+                        <Button Type="@ButtonType.Primary" OnClick="@(() => Nav.NavigateTo($"/Centre/Project/{item.Id}"))">
                             去看看
                         </Button>
-                    </Card>
-                }
-            </Flex>
-        }
-        else
-        {
-            <h1>@Project.Title</h1>
-            <p>@($"{Project.StartTime} - {Project.EndTime}")</p>
-            <p>@Markdown.ToHtml(Project.Description)</p>
-            <Divider/>
-            <AntList DataSource="@Project.Tasks" TItem="TaskModel">
-                <ListItem>
-                    <ListItemMeta >
-                        <TitleTemplate>
-                            <h3>@context.Title</h3>
-                        </TitleTemplate>
-                        <DescriptionTemplate>
-                            <p>@((MarkupString)Markdown.ToHtml(context.Description))</p>
-                        </DescriptionTemplate>
-                    </ListItemMeta>
-                </ListItem>
-            </AntList>
-            <Divider/>
-            <AntList DataSource="@Project.Staffs" TItem="StaffModel">
-                <ListItem>
-                    <ListItemMeta >
-                        <TitleTemplate>
-                            <h3>@context.Name</h3>
-                        </TitleTemplate>
-                        <DescriptionTemplate>
-                            <p>@MemberModel.IdentityDictionary[context.Identity]</p>
-                        </DescriptionTemplate>
-                    </ListItemMeta>
-                </ListItem>
-            </AntList>
-        }
+                    </Flex>
+                </Card>
+            }
+        </Flex>
     </Context>
 </PageView>
 
@@ -79,8 +43,6 @@
     private bool IsAdmin { get; set; }
     private List<ProjectModel> Projects { get; set; } = [];
     [CascadingParameter] private MemberModel Member { get; set; } = new();
-    [Parameter] public string? Id { get; set; }
-    private ProjectModel Project { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -91,21 +53,6 @@
         }
 
         await using var context = await DbFactory.CreateDbContextAsync();
-
-        if (!string.IsNullOrEmpty(Id))
-        {
-            var a = await context.Projects.FirstOrDefaultAsync(x => x.Id.ToString() == Id);
-            if (a == null)
-            {
-                await MessageService.Error("项目不存在");
-                Nav.NavigateTo("/Centre");
-                return;
-            }
-
-            Project = a;
-            IsAdmin = Member.Identity.Contains("President") || Member.Identity.Contains("Minister");
-            return;
-        }
 
         if (Member.Identity.Contains("President"))
         {
