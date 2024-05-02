@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace iOSClub.Share.Data;
 
-public class PermissionsModel
+public class StaffModel
 {
     [Key]
     [Column(TypeName = "varchar(256)")]
@@ -24,14 +24,15 @@ public class PermissionsModel
     /// </summary>
     [Column(TypeName = "varchar(20)")]
     public string Identity { get; init; } = "Member";
-    
-    // [Column(TypeName = "varchar(30)")]
-    // public string? Tag { get; init; }
 
-    public PermissionsModel()
-    { }
+    public List<ProjectModel> Projects { get; init; } = [];
+    public List<TaskModel> Tasks { get; init; } = [];
 
-    public PermissionsModel(LoginModel model, string identity = "Member")
+    public StaffModel()
+    {
+    }
+
+    public StaffModel(LoginModel model, string identity = "Member")
     {
         UserId = model.Id;
         Name = model.Name;

@@ -72,7 +72,7 @@
         }
 
         var provider = (Provider)authStateProvider;
-        await provider.UpdateAuthState(new PermissionsModel(Model, identity));
+        await provider.UpdateAuthState(new StaffModel(Model, identity));
 
         await _message.Info("登陆成功!");
         navigation.NavigateTo("/Centre", true);

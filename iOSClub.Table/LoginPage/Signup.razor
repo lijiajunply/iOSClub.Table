@@ -75,9 +75,8 @@ else
 
     private bool isWeiXin;
 
-    [Parameter]
-    public string? Text { get; set; }
-    
+    [Parameter] public string? Text { get; set; }
+
     public SignModel Model { get; } = new();
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -88,6 +87,7 @@ else
             isWeiXin = await Js.InvokeAsync<bool>("isWeiXin");
             StateHasChanged();
         }
+
         await base.OnAfterRenderAsync(firstRender);
     }
 
@@ -112,6 +112,7 @@ else
                 f.Gender = Model.Gender;
                 f.PoliticalLandscape = Model.PoliticalLandscape;
             }
+
             await context.SaveChangesAsync();
         }
         finally
@@ -124,6 +125,7 @@ else
             NavigationManager.NavigateTo("/QRCode");
             return;
         }
+
         NavigationManager.NavigateTo("mqqapi://card/show_pslcard?src_type=internal&version=1&uin=952954710&card_type=group&source=external");
     }
 

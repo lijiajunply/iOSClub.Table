@@ -12,21 +12,32 @@ public sealed class SignContext : DbContext
         {
             Database.Migrate();
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             Console.WriteLine(e.Message);
         }
         finally
         {
             Students = Set<SignModel>();
-            Staffs = Set<PermissionsModel>();
+            Staffs = Set<StaffModel>();
             Events = Set<EventModel>();
+            Tasks = Set<TaskModel>();
+            Projects = Set<ProjectModel>();
+            Resources = Set<ResourceModel>();
         }
     }
 
     public DbSet<SignModel> Students { get; init; }
-    public DbSet<PermissionsModel> Staffs { get; init; }
+    public DbSet<StaffModel> Staffs { get; init; }
     public DbSet<EventModel> Events { get; init; }
+    public DbSet<TaskModel> Tasks { get; init; }
+    public DbSet<ProjectModel> Projects { get; init; }
+    public DbSet<ResourceModel> Resources { get; init; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        // modelBuilder.Entity<PermissionsModel>().HasMany(x => x.Tasks).WithMany(x => x.Users);
+    }
 }
 
 public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<SignContext>

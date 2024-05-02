@@ -8,7 +8,7 @@ namespace iOSClub.Table.Controllers;
 
 public class JwtHelper(IConfiguration configuration)
 {
-    public string GetMemberToken(PermissionsModel model)
+    public string GetMemberToken(StaffModel model)
     {
         var claims = new[]
         {

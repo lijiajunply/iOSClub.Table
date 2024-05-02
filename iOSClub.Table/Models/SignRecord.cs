@@ -79,4 +79,20 @@ public class SignRecord
     ];
 
     #endregion
+
+    #region Project
+
+    public static FormValidationRule[] ProjectNameRules =>
+    [
+        new FormValidationRule
+            { Len = 20, Message = "项目名称太长了", Required = true }
+    ];
+    
+    public static FormValidationRule[] ProjectDescriptionRules =>
+    [
+        new FormValidationRule
+            { Len = 512, Message = "项目描述太长了", Required = true }
+    ];
+
+    #endregion
 }

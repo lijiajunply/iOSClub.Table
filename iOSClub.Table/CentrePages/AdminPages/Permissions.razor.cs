@@ -48,7 +48,7 @@ public partial class Permissions
 
     private async Task Add(SignModel model)
     {
-        var staff = new PermissionsModel() { Name = model.UserName, Identity = Department, UserId = model.UserId };
+        var staff = new StaffModel() { Name = model.UserName, Identity = Department, UserId = model.UserId };
         await using var context = await DbFactory.CreateDbContextAsync();
         var isAdd = true;
         try
@@ -114,13 +114,13 @@ public partial class Permissions
         _operaVisible = string.IsNullOrEmpty(department);
     }
 
-    private List<PermissionsModel> President { get; set; } = new();
-    private List<PermissionsModel> TechnologyMinister { get; set; } = new();
-    private List<PermissionsModel> PracticalMinister { get; set; } = new();
-    private List<PermissionsModel> NewMediaMinister { get; set; } = new();
-    private List<PermissionsModel> TechnologyMember { get; set; } = new();
-    private List<PermissionsModel> PracticalMember { get; set; } = new();
-    private List<PermissionsModel> NewMediaMember { get; set; } = new();
+    private List<StaffModel> President { get; set; } = new();
+    private List<StaffModel> TechnologyMinister { get; set; } = new();
+    private List<StaffModel> PracticalMinister { get; set; } = new();
+    private List<StaffModel> NewMediaMinister { get; set; } = new();
+    private List<StaffModel> TechnologyMember { get; set; } = new();
+    private List<StaffModel> PracticalMember { get; set; } = new();
+    private List<StaffModel> NewMediaMember { get; set; } = new();
 
     private async Task FileDownload()
     {
@@ -185,16 +185,16 @@ public partial class Permissions
     [Serializable]
     class StaffsList
     {
-        public List<PermissionsModel> President { get; init; } = [];
-        public List<PermissionsModel> TechnologyMinister { get; init; } = [];
-        public List<PermissionsModel> PracticalMinister { get; init; } = [];
-        public List<PermissionsModel> NewMediaMinister { get; init; } = [];
-        public List<PermissionsModel> TechnologyMember { get; init; } = [];
-        public List<PermissionsModel> PracticalMember { get; init; } = [];
-        public List<PermissionsModel> NewMediaMember { get; init; } = [];
+        public List<StaffModel> President { get; init; } = [];
+        public List<StaffModel> TechnologyMinister { get; init; } = [];
+        public List<StaffModel> PracticalMinister { get; init; } = [];
+        public List<StaffModel> NewMediaMinister { get; init; } = [];
+        public List<StaffModel> TechnologyMember { get; init; } = [];
+        public List<StaffModel> PracticalMember { get; init; } = [];
+        public List<StaffModel> NewMediaMember { get; init; } = [];
     }
 
-    private async Task Delete(PermissionsModel context, string department)
+    private async Task Delete(StaffModel context, string department)
     {
         await using var dbContext = await DbFactory.CreateDbContextAsync();
         dbContext.Staffs.Remove(context);

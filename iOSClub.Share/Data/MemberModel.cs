@@ -48,7 +48,7 @@ public class MemberModel : SignModel
     
     public MemberModel(){}
 
-    public MemberModel(PermissionsModel model)
+    public MemberModel(StaffModel model)
     {
         Identity = model.Identity;
         UserId = model.UserId;

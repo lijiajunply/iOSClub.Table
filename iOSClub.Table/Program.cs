@@ -87,7 +87,7 @@ using (var scope = app.Services.CreateScope())
     var context = services.GetRequiredService<SignContext>();
     if (!context.Staffs.Any())
     {
-        var model = new PermissionsModel
+        var model = new StaffModel
         {
             UserId = "1906020412",
             Identity = "Founder",

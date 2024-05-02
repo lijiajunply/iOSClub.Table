@@ -19,7 +19,7 @@ public class Provider : AuthenticationStateProvider
     {
         try
         {
-            var storageResult = await _sessionStorage.GetAsync<PermissionsModel>("Permission");
+            var storageResult = await _sessionStorage.GetAsync<StaffModel>("Permission");
             var permission = storageResult.Success ? storageResult.Value : null;
             if (permission == null)
             {
@@ -41,7 +41,7 @@ public class Provider : AuthenticationStateProvider
         }
     }
 
-    public async Task UpdateAuthState(PermissionsModel? permission)
+    public async Task UpdateAuthState(StaffModel? permission)
     {
         ClaimsPrincipal claimsPrincipal;
         if (permission is not null)

@@ -96,14 +96,9 @@
 
 }
 
-@code {
-
-    [CascadingParameter] private MemberModel Member { get; set; } = new();
-
-}
-
 @code
 {
+    [CascadingParameter] private MemberModel Member { get; set; } = new();
 
     private void OnFinish()
     {
