@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using iOSClub.Share.Data;
+using iOSClub.Table.Models;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace iOSClub.Table.Controllers;

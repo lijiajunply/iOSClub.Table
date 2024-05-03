@@ -7,7 +7,9 @@
 @using Newtonsoft.Json
 @using JsonSerializer = System.Text.Json.JsonSerializer
 @using System.IO
+@using iOSClub.Share
 @using iOSClub.Share.Data
+@using iOSClub.Table.Models
 @inject IJSRuntime JS
 @inject IDbContextFactory<SignContext> DbFactory
 @inject IWebHostEnvironment HostEnvironment
@@ -84,7 +86,7 @@
     </Template>
 </Drawer>
 
-<PageView>
+<PageView ContextStyle="padding:10px;">
     <Extra>
         <Space>
             <SpaceItem>
@@ -154,7 +156,7 @@
             </Space>
         </div>
         <Spin Spinning="@RunningStyle">
-            <Table TItem="SignModel" DataSource="@Models" Responsive EnableVirtualization>
+            <Table TItem="SignModel" DataSource="@Models" Responsive>
                 <PropertyColumn Title="姓名" Property="c => c.UserName"/>
                 <PropertyColumn Title="学号" Property="c => c.UserId"/>
                 <PropertyColumn Title="学院" Property="c => c.Academy"/>

@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Text;
 using iOSClub.Share.Data;
+using iOSClub.Table.Models;
 using Microsoft.IdentityModel.Tokens;
 
 namespace iOSClub.Table.Controllers;

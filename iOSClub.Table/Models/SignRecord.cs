@@ -105,4 +105,36 @@ public class SignRecord
     };
 
     #endregion
+
+    #region Resourse
+
+    public static FormValidationRule[] ResourceNameRules =>
+    [
+        new FormValidationRule
+            { Len = 20, Message = "项目名称太长了", Required = true }
+    ];
+    
+    public static FormValidationRule[] ResourceDescriptionRules =>
+    [
+        new FormValidationRule
+            { Len = 512, Message = "项目描述太长了", Required = true }
+    ];
+
+    #endregion
+
+    #region Task
+
+    public static FormValidationRule[] TaskTitleRules =>
+    [
+        new FormValidationRule
+            { Len = 20, Message = "项目名称太长了", Required = true }
+    ];
+    
+    public static FormValidationRule[] TaskDescriptionRules =>
+    [
+        new FormValidationRule
+            { Len = 200, Message = "项目描述太长了", Required = true }
+    ];
+
+    #endregion
 }

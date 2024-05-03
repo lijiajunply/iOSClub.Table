@@ -95,12 +95,8 @@ a, .btn-link {
 /* 手机页面调整 */
 
 @media screen and (max-width: 768px) {
-    h1 {
-        font-size: 42px;
-    }
-
-    h2 {
-        font-size: 32px;
+    h1,h2 {
+        font-size: initial !important;
     }
 
     .whole {

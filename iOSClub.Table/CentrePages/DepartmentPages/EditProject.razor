@@ -1,4 +1,5 @@
 ﻿@page "/Centre/EditProject/{Id?}"
+@using iOSClub.Share
 @using iOSClub.Share.Data
 @using iOSClub.Table.Models
 @using Microsoft.EntityFrameworkCore
@@ -86,7 +87,13 @@
         if (string.IsNullOrEmpty(Id))
         {
             var p = Project.ToProject();
-            p.Staffs.Add(new StaffModel() { Identity = Member.Identity, Name = Member.UserName, UserId = Member.UserId });
+            var staff = await  context.Staffs.FirstOrDefaultAsync(x => x.UserId == Member.UserId);
+            if (staff == null)
+            {
+                await MessageService.Error("用户不存在");
+                return;
+            }
+            p.Staffs.Add(staff);
             await context.Projects.AddAsync(p);
             await context.SaveChangesAsync();
             await MessageService.Success("添加成功");

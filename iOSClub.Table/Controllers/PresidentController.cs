@@ -1,4 +1,6 @@
+using iOSClub.Share;
 using iOSClub.Share.Data;
+using iOSClub.Table.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

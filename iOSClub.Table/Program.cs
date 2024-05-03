@@ -1,6 +1,7 @@
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
+using iOSClub.Share;
 using iOSClub.Share.Data;
 using iOSClub.Table.Controllers;
 using iOSClub.Table.Models;

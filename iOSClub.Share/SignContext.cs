@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using iOSClub.Share.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace iOSClub.Share.Data;
+namespace iOSClub.Share;
 
 public sealed class SignContext : DbContext
 {
@@ -24,6 +25,7 @@ public sealed class SignContext : DbContext
             Tasks = Set<TaskModel>();
             Projects = Set<ProjectModel>();
             Resources = Set<ResourceModel>();
+            Tools = Set<ToolModel>();
         }
     }
 
@@ -33,6 +35,7 @@ public sealed class SignContext : DbContext
     public DbSet<TaskModel> Tasks { get; init; }
     public DbSet<ProjectModel> Projects { get; init; }
     public DbSet<ResourceModel> Resources { get; init; }
+    public DbSet<ToolModel> Tools { get; init; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
