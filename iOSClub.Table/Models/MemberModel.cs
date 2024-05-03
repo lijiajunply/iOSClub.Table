@@ -1,4 +1,6 @@
-﻿namespace iOSClub.Share.Data;
+﻿using iOSClub.Share.Data;
+
+namespace iOSClub.Table.Models;
 
 public class MemberModel : SignModel
 {

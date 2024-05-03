@@ -5,15 +5,11 @@ namespace iOSClub.Share.Data;
 
 public class ResourceModel
 {
-    [Key]
-    public int Id { get; init; }
+    [Key] public int Id { get; init; }
 
-    [Column(TypeName = "varchar(20)")]
-    public string Name { get; init; } = "";
+    [Column(TypeName = "varchar(20)")] public string Name { get; set; } = "";
 
-    [Column(TypeName = "varchar(512)")]
-    public string? Description { get; init; }
+    [Column(TypeName = "varchar(512)")] public string? Description { get; set; }
 
-    [Column(TypeName = "varchar(50)")]
-    public string? Tag { get; init; }
+    [Column(TypeName = "varchar(50)")] public string? Tag { get; set; }
 }

@@ -1,4 +1,4 @@
-﻿namespace iOSClub.Share.Data;
+﻿namespace iOSClub.Table.Models;
 
 [Serializable]
 public class NavModel

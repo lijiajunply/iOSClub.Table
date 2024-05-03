@@ -10,7 +10,7 @@ public class TaskModel
     [Column(TypeName = "varchar(200)")] public string Description { get; set; } = "";
     [Column(TypeName = "varchar(10)")] public string StartTime { get; set; } = "";
     [Column(TypeName = "varchar(10)")] public string EndTime { get; set; } = "";
-    [Column(TypeName = "varchar(10)")] public string Status { get; set; } = "";
+    [Column(TypeName = "boolean")] public bool Status { get; set; } 
     [Key] public int Id { get; init; }
 
     public List<StaffModel> Users { get; init; } = [];
@@ -21,6 +21,6 @@ public class TaskModel
         if (!string.IsNullOrEmpty(model.Description)) Description = model.Description;
         if (!string.IsNullOrEmpty(model.StartTime)) StartTime = model.StartTime;
         if (!string.IsNullOrEmpty(model.EndTime)) EndTime = model.EndTime;
-        if (!string.IsNullOrEmpty(model.Status)) Status = model.Status;
+        Status = model.Status;
     }
 }
