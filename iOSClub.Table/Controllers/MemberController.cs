@@ -60,7 +60,9 @@ public class MemberController(SignContext context, JwtHelper jwtHelper, IHttpCon
         var peo = await context.Staffs.FirstOrDefaultAsync(x =>
             x.UserId == loginModel.Id && x.Name == loginModel.Name);
 
-        if (peo != null) return jwtHelper.GetMemberToken(new MemberModel(peo));
+        if (peo != null)
+            return jwtHelper.GetMemberToken(new MemberModel()
+                { UserName = peo.Name, UserId = peo.UserId, Identity = peo.Identity });
         var model =
             await context.Students.FirstOrDefaultAsync(x =>
                 x.UserId == loginModel.Id && x.UserName == loginModel.Name);

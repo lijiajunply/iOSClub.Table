@@ -45,13 +45,7 @@ public class MemberModel : SignModel
 
         return child;
     }
-    
-    public MemberModel(){}
 
-    public MemberModel(StaffModel model)
-    {
-        Identity = model.Identity;
-        UserId = model.UserId;
-        UserName = model.Name;
-    }
+    public StaffModel ToStaff()
+        => new() { Identity = Identity, UserId = UserId, Name = UserName };
 }

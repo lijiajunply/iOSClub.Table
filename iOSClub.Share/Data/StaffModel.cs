@@ -6,7 +6,7 @@ namespace iOSClub.Share.Data;
 public class StaffModel
 {
     [Key]
-    [Column(TypeName = "varchar(256)")]
+    [Column(TypeName = "varchar(10)")]
     public string UserId { get; init; } = "";
 
     [Column(TypeName = "varchar(50)")] public string Name { get; init; } = "";
@@ -27,15 +27,4 @@ public class StaffModel
 
     public List<ProjectModel> Projects { get; init; } = [];
     public List<TaskModel> Tasks { get; init; } = [];
-
-    public StaffModel()
-    {
-    }
-
-    public StaffModel(LoginModel model, string identity = "Member")
-    {
-        UserId = model.Id;
-        Name = model.Name;
-        Identity = identity;
-    }
 }

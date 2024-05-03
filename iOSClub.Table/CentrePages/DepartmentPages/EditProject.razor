@@ -84,7 +84,9 @@
         await using var context = await DbFactory.CreateDbContextAsync();
         if (string.IsNullOrEmpty(Id))
         {
-            await context.Projects.AddAsync(Project.ToProject());
+            var p = Project.ToProject();
+            p.Staffs.Add(new StaffModel() { Identity = Member.Identity, Name = Member.UserName, UserId = Member.UserId });
+            await context.Projects.AddAsync(p);
             await context.SaveChangesAsync();
             await MessageService.Success("添加成功");
             Nav.NavigateTo("/Centre/Department");
@@ -113,35 +115,4 @@
     {
         await MessageService.Error("出问题了");
     }
-
-
-    private class ProjectEditModel
-    {
-        public string Title { get; set; } = "";
-        public string DepartmentName { get; set; } = "";
-        public DateTime StartTime { get; set; } = DateTime.Today;
-        public DateTime EndTime { get; set; } = DateTime.Today;
-        public string Description { get; set; } = "";
-
-        public static ProjectEditModel FromProject(ProjectModel project)
-            => new()
-            {
-                Title = project.Title,
-                DepartmentName = project.DepartmentName,
-                StartTime = DateTime.TryParse(project.StartTime, out var startTime) ? startTime : DateTime.Today,
-                EndTime = DateTime.TryParse(project.EndTime, out var endTime) ? endTime : DateTime.Today.AddDays(7),
-                Description = project.Description
-            };
-
-        public ProjectModel ToProject()
-            => new()
-            {
-                Title = Title,
-                DepartmentName = DepartmentName,
-                StartTime = StartTime.ToString("yyyy年MM月dd日"),
-                EndTime = EndTime.ToString("yyyy年MM月dd日"),
-                Description = Description
-            };
-    }
-
 }

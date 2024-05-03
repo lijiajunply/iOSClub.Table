@@ -200,7 +200,7 @@
     {
         if (string.IsNullOrEmpty(_searchValue))
         {
-            Models = new List<SignModel>();
+            Models = [];
             return;
         }
 
@@ -218,9 +218,9 @@
         await context.DisposeAsync();
     }
 
-    private List<SignModel> DeleteModels { get; } = new();
+    private List<SignModel> DeleteModels { get; } = [];
 
-    private List<SignModel> _models = new();
+    private List<SignModel> _models = [];
 
     private int Total { get; set; }
 
