@@ -114,13 +114,13 @@ public partial class Permissions
         _operaVisible = string.IsNullOrEmpty(department);
     }
 
-    private List<StaffModel> President { get; set; } = new();
-    private List<StaffModel> TechnologyMinister { get; set; } = new();
-    private List<StaffModel> PracticalMinister { get; set; } = new();
-    private List<StaffModel> NewMediaMinister { get; set; } = new();
-    private List<StaffModel> TechnologyMember { get; set; } = new();
-    private List<StaffModel> PracticalMember { get; set; } = new();
-    private List<StaffModel> NewMediaMember { get; set; } = new();
+    private List<StaffModel> President { get; set; } = [];
+    private List<StaffModel> TechnologyMinister { get; set; } = [];
+    private List<StaffModel> PracticalMinister { get; set; } = [];
+    private List<StaffModel> NewMediaMinister { get; set; } = [];
+    private List<StaffModel> TechnologyMember { get; set; } = [];
+    private List<StaffModel> PracticalMember { get; set; } = [];
+    private List<StaffModel> NewMediaMember { get; set; } = [];
 
     private async Task FileDownload()
     {
@@ -183,7 +183,7 @@ public partial class Permissions
     }
 
     [Serializable]
-    class StaffsList
+    private class StaffsList
     {
         public List<StaffModel> President { get; init; } = [];
         public List<StaffModel> TechnologyMinister { get; init; } = [];

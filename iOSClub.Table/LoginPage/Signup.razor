@@ -17,12 +17,13 @@
 else
 {
     <Form Model="Model"
+          RequiredMark="FormRequiredMark.Optional"
           class="bg-login"
           Layout="vertical"
           ValidateMode="@FormValidateMode.Rules"
           OnFinish="OnFinish"
           OnFinishFailed="OnFinishFailed">
-        <h2 style="color: #f5f5f7;">注册</h2>
+        <Title Level="2" style="color: #f5f5f7;">注册</Title>
         <FormItem Class="item" Label="姓名" LabelStyle="color: #f5f5f7;" Rules="@(SignRecord.UserNameRules)">
             <Input @bind-Value="@context.UserName"/>
         </FormItem>

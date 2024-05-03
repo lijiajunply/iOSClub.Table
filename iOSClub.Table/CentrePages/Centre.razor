@@ -1,18 +1,41 @@
 ﻿@page "/Centre"
+@using iOSClub.Share.Data
+@using Microsoft.EntityFrameworkCore
+@inject IDbContextFactory<SignContext> DbFactory
 
 <PageTitle>个人中心 - 西建大iOS Club</PageTitle>
 
+<meta name="referrer" content="never">
+
 <Carousel>
-    <CarouselSlick>
-        <img src="https://s3-wt-blog.worktile.com/wt-wordpress/kb/wp-content/uploads/2024/04/24200410/43c04eb2-99e3-4a1a-ba6b-3f4a5155c673.webp"
-             alt=""/>
-    </CarouselSlick>
-    <CarouselSlick>
-        <img src="https://s3-wt-blog.worktile.com/wt-wordpress/kb/wp-content/uploads/2024/04/24200410/43c04eb2-99e3-4a1a-ba6b-3f4a5155c673.webp"
-             alt=""/>
-    </CarouselSlick>
-    <CarouselSlick>
-        <img src="https://s3-wt-blog.worktile.com/wt-wordpress/kb/wp-content/uploads/2024/04/24200410/43c04eb2-99e3-4a1a-ba6b-3f4a5155c673.webp"
-             alt=""/>
-    </CarouselSlick>
+    @foreach (var item in Events)
+    {
+        <CarouselSlick>
+            <img alt="" src="@item.Cover" class="img-container"/>
+        </CarouselSlick>
+    }
 </Carousel>
+
+@code
+{
+    private EventModel[] Events { get; set; } = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await using var context = await DbFactory.CreateDbContextAsync();
+        Events = await context.Events.ToArrayAsync();
+    }
+}
+
+<style>
+    .img-container {
+        position: relative;
+        background-size: cover;
+        width: 70vw;
+        height: auto;
+        background-position: center;
+        left: 15%;
+        right: 15%;
+    }
+</style>

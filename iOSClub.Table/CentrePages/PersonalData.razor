@@ -13,6 +13,7 @@
     <Context>
         <Form Model="Member"
               ValidateMode="@FormValidateMode.Rules"
+              RequiredMark="FormRequiredMark.Optional"
               OnFinish="OnFinish"
               OnFinishFailed="OnFinishFailed">
             <FormItem Class="item" Label="姓名" Rules="@(SignRecord.UserNameRules)">

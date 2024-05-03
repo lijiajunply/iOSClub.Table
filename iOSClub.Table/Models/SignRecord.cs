@@ -99,7 +99,9 @@ public class SignRecord
         ["All"] = "所有",
         ["Technology"] = "科技部",
         ["NewMedia"] = "新媒体部",
-        ["Practical"] = "交流实践部"
+        ["Practical"] = "交流实践部",
+        [""] = "其他",
+        ["Other"] = "其他"
     };
 
     #endregion
