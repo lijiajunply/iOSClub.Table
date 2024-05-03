@@ -25,7 +25,7 @@ public class MemberController(SignContext context, JwtHelper jwtHelper, IHttpCon
     }
 
     [HttpPost]
-    public async Task<ActionResult<string>> SignUp(SignModel model)
+    public async Task<ActionResult<string>> SignUp(StudentModel model)
     {
         if (DateTime.Today.Month != 10)
             return NotFound();
@@ -49,7 +49,7 @@ public class MemberController(SignContext context, JwtHelper jwtHelper, IHttpCon
         }
 
         //return MemberModel.AutoCopy<SignModel, MemberModel>(model);
-        return jwtHelper.GetMemberToken(MemberModel.AutoCopy<SignModel, MemberModel>(model));
+        return jwtHelper.GetMemberToken(MemberModel.AutoCopy<StudentModel, MemberModel>(model));
     }
 
 
@@ -71,7 +71,7 @@ public class MemberController(SignContext context, JwtHelper jwtHelper, IHttpCon
 
         if (model == null)
             return NotFound();
-        return jwtHelper.GetMemberToken(MemberModel.AutoCopy<SignModel, MemberModel>(model));
+        return jwtHelper.GetMemberToken(MemberModel.AutoCopy<StudentModel, MemberModel>(model));
     }
 
     #endregion

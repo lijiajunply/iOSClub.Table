@@ -12,7 +12,6 @@
 @using iOSClub.Table.Models
 @inject IJSRuntime JS
 @inject IDbContextFactory<SignContext> DbFactory
-@inject IWebHostEnvironment HostEnvironment
 
 <PageTitle>成员数据</PageTitle>
 
@@ -72,7 +71,7 @@
 
     private async Task CsvDownload()
     {
-        var jsonString = SignModel.GetCsv(Models);
+        var jsonString = StudentModel.GetCsv(Models);
         var data = Encoding.UTF8.GetBytes(jsonString);
         await Download("data.csv", data);
     }
@@ -156,7 +155,7 @@
             </Space>
         </div>
         <Spin Spinning="@RunningStyle">
-            <Table TItem="SignModel" DataSource="@Models" Responsive>
+            <Table TItem="StudentModel" DataSource="@Models" Responsive>
                 <PropertyColumn Title="姓名" Property="c => c.UserName"/>
                 <PropertyColumn Title="学号" Property="c => c.UserId"/>
                 <PropertyColumn Title="学院" Property="c => c.Academy"/>
@@ -220,13 +219,13 @@
         await context.DisposeAsync();
     }
 
-    private List<SignModel> DeleteModels { get; } = [];
+    private List<StudentModel> DeleteModels { get; } = [];
 
-    private List<SignModel> _models = [];
+    private List<StudentModel> _models = [];
 
     private int Total { get; set; }
 
-    private List<SignModel> Models
+    private List<StudentModel> Models
     {
         get => _models;
         set
@@ -251,7 +250,7 @@
         await context.DisposeAsync();
     }
 
-    private async Task Delete(SignModel model)
+    private async Task Delete(StudentModel model)
     {
         var context = await DbFactory.CreateDbContextAsync();
         context.Students.Remove(model);
@@ -281,15 +280,15 @@
 @code
 {
     private bool Visible;
-    private SignModel ChangeModel { get; set; } = new();
+    private StudentModel ChangeModel { get; set; } = new();
 
     private void CloseTable()
     {
         Visible = false;
-        ChangeModel = new SignModel();
+        ChangeModel = new StudentModel();
     }
 
-    private void OpenTable(SignModel model)
+    private void OpenTable(StudentModel model)
     {
         Visible = true;
         ChangeModel = model;
@@ -305,27 +304,19 @@
         var context = await DbFactory.CreateDbContextAsync();
 
         RunningStyle = true;
-
-        if (HostEnvironment.IsProduction())
+        
+        foreach (var model in list)
         {
-            await context.Students.AddRangeAsync(list.Select(x => x.Standardization()));
-            await context.SaveChangesAsync();
-        }
-        else
-        {
-            foreach (var model in list)
+            try
             {
-                try
-                {
-                    await context.Students.AddAsync(model.Standardization());
-                }
-                catch
-                {
-                    continue;
-                }
-
-                await context.SaveChangesAsync();
+                await context.Students.AddAsync(model.Standardization());
             }
+            catch
+            {
+                continue;
+            }
+
+            await context.SaveChangesAsync();
         }
 
         RunningStyle = false;
@@ -333,10 +324,10 @@
         await context.DisposeAsync();
     }
 
-    private static List<SignModel> GetList(string result)
+    private static List<StudentModel> GetList(string result)
     {
         var oldList = JsonConvert.DeserializeObject<List<OldSignModel>>(result)!;
-        return oldList.Any(x => string.IsNullOrEmpty(x.Id)) ? JsonConvert.DeserializeObject<List<SignModel>>(result)! : oldList.Select(oldModel => oldModel.To()).ToList();
+        return oldList.Any(x => string.IsNullOrEmpty(x.Id)) ? JsonConvert.DeserializeObject<List<StudentModel>>(result)! : oldList.Select(oldModel => oldModel.To()).ToList();
     }
 
     private void FileDownload() => _visible = true;

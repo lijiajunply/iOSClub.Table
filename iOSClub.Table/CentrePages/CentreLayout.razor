@@ -97,7 +97,7 @@
 
             State = identity;
             if (model == null) return;
-            Member = MemberModel.AutoCopy<SignModel, MemberModel>(model);
+            Member = MemberModel.AutoCopy<StudentModel, MemberModel>(model);
             Member.Identity = identity;
         }
     }
@@ -132,7 +132,7 @@
                 }
             }
 
-            @if (State.Contains("Minister") || State == "President")
+            @if (State.Contains("Minister") || State == "President" || State == "Founder")
             {
                 <SubMenu>
                     <TitleTemplate>

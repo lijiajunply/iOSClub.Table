@@ -19,7 +19,7 @@ public sealed class SignContext : DbContext
         }
         finally
         {
-            Students = Set<SignModel>();
+            Students = Set<StudentModel>();
             Staffs = Set<StaffModel>();
             Events = Set<EventModel>();
             Tasks = Set<TaskModel>();
@@ -29,7 +29,7 @@ public sealed class SignContext : DbContext
         }
     }
 
-    public DbSet<SignModel> Students { get; init; }
+    public DbSet<StudentModel> Students { get; init; }
     public DbSet<StaffModel> Staffs { get; init; }
     public DbSet<EventModel> Events { get; init; }
     public DbSet<TaskModel> Tasks { get; init; }

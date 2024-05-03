@@ -36,7 +36,7 @@ public partial class Permissions
         StateHasChanged();
     }
 
-    private List<SignModel> SearchResult { get; set; } = [];
+    private List<StudentModel> SearchResult { get; set; } = [];
 
     private string Department = "";
 
@@ -47,7 +47,7 @@ public partial class Permissions
         return Task.CompletedTask;
     }
 
-    private async Task Add(SignModel model)
+    private async Task Add(StudentModel model)
     {
         var staff = new StaffModel() { Name = model.UserName, Identity = Department, UserId = model.UserId };
         await using var context = await DbFactory.CreateDbContextAsync();

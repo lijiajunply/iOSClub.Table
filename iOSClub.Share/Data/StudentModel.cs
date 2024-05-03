@@ -4,7 +4,7 @@ using System.Text;
 
 namespace iOSClub.Share.Data;
 
-public class SignModel
+public class StudentModel
 {
     [Column(TypeName = "varchar(50)")] public string UserName { get; set; } = "";
 
@@ -23,13 +23,13 @@ public class SignModel
         return $"{UserName},{UserId},{Gender},{Academy},{PoliticalLandscape},{ClassName},{PhoneNum}";
     }
 
-    public SignModel Standardization()
+    public StudentModel Standardization()
     {
         UserId = UserId.Replace(" ", "");
         return this;
     }
 
-    public static string GetCsv(List<SignModel> models)
+    public static string GetCsv(List<StudentModel> models)
     {
         var builder = new StringBuilder("姓名,学号,性别,学院,政治面貌,专业班级,电话号码");
         foreach (var model in models)

@@ -43,7 +43,7 @@ public class PresidentController(SignContext context, IHttpContextAccessor httpC
         list.ForEach(Action);
         return newList;
 
-        async void Action(SignModel x) => newList.Add(await FromSignToMember(x));
+        async void Action(StudentModel x) => newList.Add(await FromSignToMember(x));
     }
 
     [HttpPost]
@@ -71,9 +71,9 @@ public class PresidentController(SignContext context, IHttpContextAccessor httpC
         return NoContent();
     }
 
-    private async Task<MemberModel> FromSignToMember(SignModel model)
+    private async Task<MemberModel> FromSignToMember(StudentModel model)
     {
-        var member = MemberModel.AutoCopy<SignModel, MemberModel>(model);
+        var member = MemberModel.AutoCopy<StudentModel, MemberModel>(model);
         var m = await context.Staffs.FirstOrDefaultAsync(x => x.UserId == model.UserId && x.Name == model.UserName);
         if (m != null) member.Identity = m.Identity;
         return member;

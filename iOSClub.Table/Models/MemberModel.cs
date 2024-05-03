@@ -2,7 +2,7 @@
 
 namespace iOSClub.Table.Models;
 
-public class MemberModel : SignModel
+public class MemberModel : StudentModel
 {
     /// <summary>
     /// Founder : 创始人

@@ -3,15 +3,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using iOSClub.Share.Data;
+using iOSClub.Share;
 
 #nullable disable
 
 namespace iOSClub.Share.Migrations
 {
     [DbContext(typeof(SignContext))]
-    [Migration("20240501150545_AddProject")]
-    partial class AddProject
+    [Migration("20240503151215_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace iOSClub.Share.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("StaffsUserId")
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("varchar(10)");
 
                     b.HasKey("ProjectsId", "StaffsUserId");
 
@@ -40,7 +40,7 @@ namespace iOSClub.Share.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("UsersUserId")
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("varchar(10)");
 
                     b.HasKey("TasksId", "UsersUserId");
 
@@ -100,6 +100,27 @@ namespace iOSClub.Share.Migrations
                     b.ToTable("Projects");
                 });
 
+            modelBuilder.Entity("iOSClub.Share.Data.ResourceModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("varchar(512)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<string>("Tag")
+                        .HasColumnType("varchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Resources");
+                });
+
             modelBuilder.Entity("iOSClub.Share.Data.SignModel", b =>
                 {
                     b.Property<string>("UserId")
@@ -137,7 +158,7 @@ namespace iOSClub.Share.Migrations
             modelBuilder.Entity("iOSClub.Share.Data.StaffModel", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("varchar(10)");
 
                     b.Property<string>("Identity")
                         .IsRequired()
@@ -173,9 +194,8 @@ namespace iOSClub.Share.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(10)");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("varchar(10)");
+                    b.Property<bool>("Status")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -186,6 +206,36 @@ namespace iOSClub.Share.Migrations
                     b.HasIndex("ProjectId");
 
                     b.ToTable("Tasks");
+                });
+
+            modelBuilder.Entity("iOSClub.Share.Data.ToolModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("varchar(64)");
+
+                    b.Property<string>("IconUrl")
+                        .IsRequired()
+                        .HasColumnType("varchar(64)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<string>("Tag")
+                        .HasColumnType("varchar(64)");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("varchar(64)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tools");
                 });
 
             modelBuilder.Entity("ProjectModelStaffModel", b =>

@@ -24,9 +24,9 @@
         <Title Level="4">@DataString</Title>
     </Extra>
     <Context>
-        <Title Level="2">我的项目</Title>
         @if (Staff != null)
         {
+            <Title Level="2">我的项目</Title>
             @if (Staff.Projects.Count == 0)
             {
                 <Empty Image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg" Style="padding: 20px">
@@ -60,6 +60,7 @@
                     </ListItem>
                 </AntList>
             }
+
             <Divider/>
             <Title Level="2">我的任务</Title>
             @if (Staff.Tasks.Count == 0)

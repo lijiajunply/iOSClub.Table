@@ -13,7 +13,7 @@ public class OldSignModel
     public string ClassName { get; set; } = "";
     public string PhoneNum { get; set; } = "";
 
-    public SignModel To()
+    public StudentModel To()
         => new()
         {
             UserName = UserName,
