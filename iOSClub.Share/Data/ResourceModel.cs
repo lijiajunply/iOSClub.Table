@@ -5,7 +5,7 @@ namespace iOSClub.Share.Data;
 
 public class ResourceModel
 {
-    [Key] public int Id { get; init; }
+    [Key] [DatabaseGenerated(DatabaseGeneratedOption.Identity)]public int Id { get; init; }
 
     [Column(TypeName = "varchar(20)")] public string Name { get; set; } = "";
 

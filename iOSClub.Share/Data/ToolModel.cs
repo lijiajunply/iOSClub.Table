@@ -5,7 +5,10 @@ namespace iOSClub.Share.Data;
 
 public class ToolModel
 {
-    [Key] public int Id { get; init; }
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; init; }
+
     [Column(TypeName = "varchar(20)")] public string Name { get; set; } = "";
     [Column(TypeName = "varchar(64)")] public string Url { get; set; } = "";
     [Column(TypeName = "varchar(64)")] public string IconUrl { get; set; } = "";

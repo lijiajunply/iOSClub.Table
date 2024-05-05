@@ -41,17 +41,17 @@ public sealed class SignContext : DbContext
     {
         modelBuilder.Entity<TaskModel>()
             .Property(e => e.Id)
-            .ValueGeneratedOnAdd();
+            .UseIdentityAlwaysColumn();
 
         modelBuilder.Entity<ProjectModel>()
             .Property(e => e.Id)
-            .ValueGeneratedOnAdd();
+            .UseIdentityAlwaysColumn();
         modelBuilder.Entity<ResourceModel>()
             .Property(e => e.Id)
-            .ValueGeneratedOnAdd();
+            .UseIdentityAlwaysColumn();
         modelBuilder.Entity<ToolModel>()
             .Property(e => e.Id)
-            .ValueGeneratedOnAdd();
+            .UseIdentityAlwaysColumn();
         
         modelBuilder.Entity<StaffModel>().HasMany(x => x.Tasks).WithMany(x => x.Users);
         modelBuilder.Entity<StaffModel>().HasMany(x => x.Projects).WithMany(x => x.Staffs);
