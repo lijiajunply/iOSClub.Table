@@ -39,6 +39,20 @@ public sealed class SignContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<TaskModel>()
+            .Property(e => e.Id)
+            .UseIdentityByDefaultColumn();
+
+        modelBuilder.Entity<ProjectModel>()
+            .Property(e => e.Id)
+            .UseIdentityByDefaultColumn();
+        modelBuilder.Entity<ResourceModel>()
+            .Property(e => e.Id)
+            .UseIdentityByDefaultColumn();
+        modelBuilder.Entity<ToolModel>()
+            .Property(e => e.Id)
+            .UseIdentityByDefaultColumn();
+        
         modelBuilder.Entity<StaffModel>().HasMany(x => x.Tasks).WithMany(x => x.Users);
         modelBuilder.Entity<StaffModel>().HasMany(x => x.Projects).WithMany(x => x.Staffs);
     }

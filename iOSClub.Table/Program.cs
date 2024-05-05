@@ -101,7 +101,6 @@ using (var scope = app.Services.CreateScope())
     context.Dispose();
 }
 
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
