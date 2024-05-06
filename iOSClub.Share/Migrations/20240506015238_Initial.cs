@@ -114,7 +114,7 @@ namespace iOSClub.Share.Migrations
                     Description = table.Column<string>(type: "varchar(200)", nullable: false),
                     StartTime = table.Column<string>(type: "varchar(10)", nullable: false),
                     EndTime = table.Column<string>(type: "varchar(10)", nullable: false),
-                    Status = table.Column<bool>(type: "INTEGER", nullable: false)
+                    Status = table.Column<bool>(type: "BOOLEAN", nullable: false)
                 },
                 constraints: table =>
                 {
