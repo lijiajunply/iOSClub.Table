@@ -149,7 +149,7 @@
         </FormItem>
         <FormItem Style="text-align: center">
             <Button Type="@ButtonType.Primary" HtmlType="submit">
-                @if (isCreate)
+                @if (TaskData.Id == 0)
                 {
                     <p>添加</p>
                 }
@@ -164,7 +164,6 @@
 
 @code {
     private TaskEditModel TaskData { get; set; } = new();
-    private bool isCreate { get; set; }
     private bool _visible;
 
     private void OpenModal()
@@ -175,7 +174,6 @@
     private void OpenModal(TaskModel task)
     {
         TaskData = TaskEditModel.FromTask(task);
-        isCreate = false;
         OpenModal();
     }
 
@@ -183,7 +181,7 @@
     {
         await using var context = await DbFactory.CreateDbContextAsync();
         var task = TaskData.ToTask();
-        if (isCreate)
+        if (TaskData.Id == 0)
         {
             var p = await context.Projects.FirstOrDefaultAsync(x => x.Id.ToString() == Id);
             if (p == null)

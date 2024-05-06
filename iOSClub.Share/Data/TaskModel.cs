@@ -8,8 +8,8 @@ public class TaskModel
     public ProjectModel Project { get; set; } = new();
     [Column(TypeName = "varchar(20)")] public string Title { get; set; } = "";
     [Column(TypeName = "varchar(200)")] public string Description { get; set; } = "";
-    [Column(TypeName = "varchar(10)")] public string StartTime { get; set; } = "";
-    [Column(TypeName = "varchar(10)")] public string EndTime { get; set; } = "";
+    [Column(TypeName = "varchar(20)")] public string StartTime { get; set; } = "";
+    [Column(TypeName = "varchar(20)")] public string EndTime { get; set; } = "";
     
     [Column(TypeName = "boolean")]public bool Status { get; set; }
 
