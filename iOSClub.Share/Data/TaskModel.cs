@@ -11,7 +11,7 @@ public class TaskModel
     [Column(TypeName = "varchar(10)")] public string StartTime { get; set; } = "";
     [Column(TypeName = "varchar(10)")] public string EndTime { get; set; } = "";
     
-    [Column(TypeName = "BOOLEAN")]public bool Status { get; set; }
+    [Column(TypeName = "boolean")]public bool Status { get; set; }
 
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
