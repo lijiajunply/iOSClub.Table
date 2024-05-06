@@ -85,7 +85,7 @@
         </FormItem>
         <FormItem Style="text-align: center">
             <Button Type="@ButtonType.Primary" HtmlType="submit">
-                @if (Data.Id == 0)
+                @if (_isNew)
                 {
                     <p>添加</p>
                 }
@@ -136,20 +136,23 @@
     private void OpenModal()
     {
         _visible = true;
+        _isNew = true;
     }
 
     private void OpenModal(ToolModel model)
     {
         Data = model;
         _visible = true;
+        _isNew = false;
     }
 
     private bool _visible;
+    private bool _isNew;
 
     private async Task OnFinish()
     {
         await using var context = await DbFactory.CreateDbContextAsync();
-        if (Data.Id == 0)
+        if (_isNew)
         {
             context.Tools.Add(Data);
             Tools.Add(Data);
@@ -162,6 +165,7 @@
 
         await context.SaveChangesAsync();
         _visible = false;
+        _isNew = false;
         await MessageService.Success("更改成功");
     }
 }

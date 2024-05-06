@@ -11,7 +11,7 @@
     <Extra>
         @if (IsAdmin)
         {
-            <Button Type="@ButtonType.Primary" OnClick="@(() => _visible = true)">
+            <Button Type="@ButtonType.Primary" OnClick="@(() => { _visible = true; _isNew = true; })">
                 添加资源
             </Button>
         }
@@ -83,12 +83,13 @@
 @code
 {
     private bool _visible;
+    private bool _isNew;
     private ResourceModel FormData { get; set; } = new();
 
     private async Task Create()
     {
         await using var context = await DbFactory.CreateDbContextAsync();
-        if (FormData.Id != 0)
+        if (!_isNew)
         {
             var resource = await context.Resources.FirstOrDefaultAsync(x => x.Id == FormData.Id);
             if (resource != null)
@@ -107,8 +108,10 @@
             Resources.Add(FormData);
             await MessageService.Success("添加成功");
         }
+
         _visible = false;
         FormData = new ResourceModel();
+        _isNew = true;
     }
 
     private async Task Delete(ResourceModel model)
@@ -157,6 +160,7 @@
     private void Update(ResourceModel context)
     {
         _visible = true;
+        _isNew = false;
         FormData = context;
     }
 

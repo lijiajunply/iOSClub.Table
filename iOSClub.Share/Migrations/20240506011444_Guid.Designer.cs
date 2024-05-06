@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using iOSClub.Share;
 
@@ -10,9 +11,11 @@ using iOSClub.Share;
 namespace iOSClub.Share.Migrations
 {
     [DbContext(typeof(SignContext))]
-    partial class SignContextModelSnapshot : ModelSnapshot
+    [Migration("20240506011444_Guid")]
+    partial class Guid
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.3");

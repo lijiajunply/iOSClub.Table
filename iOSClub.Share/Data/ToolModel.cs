@@ -7,7 +7,7 @@ public class ToolModel
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; init; }
+    public Guid  Id { get; init; }
 
     [Column(TypeName = "varchar(20)")] public string Name { get; set; } = "";
     [Column(TypeName = "varchar(64)")] public string Url { get; set; } = "";

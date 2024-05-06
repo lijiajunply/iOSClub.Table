@@ -10,11 +10,12 @@ public class TaskModel
     [Column(TypeName = "varchar(200)")] public string Description { get; set; } = "";
     [Column(TypeName = "varchar(10)")] public string StartTime { get; set; } = "";
     [Column(TypeName = "varchar(10)")] public string EndTime { get; set; } = "";
-    public bool Status { get; set; }
+    
+    [Column(TypeName = "BOOLEAN")]public bool Status { get; set; }
 
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; init; }
+    public Guid  Id { get; init; }
 
     public List<StaffModel> Users { get; init; } = [];
 

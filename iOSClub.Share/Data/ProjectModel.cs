@@ -10,7 +10,7 @@ public class ProjectModel
 
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; init; }
+    public Guid  Id { get; init; }
 
     [Column(TypeName = "varchar(512)")] public string Description { get; set; } = "";
     [Column(TypeName = "varchar(10)")] public string? StartTime { get; set; }
