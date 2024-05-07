@@ -10,10 +10,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
         var provider = (Provider)authStateProvider;
-        await provider.UpdateAuthState(null);
         await MessageService.Success("您已注销");
+        await provider.UpdateAuthState(null);
         NavigationManager.NavigateTo("");
     }
 

@@ -50,7 +50,7 @@ builder.Services.AddScoped<TokenActionFilter>();
 if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddDbContextFactory<SignContext>(opt =>
-        opt.UseNpgsql(configuration.GetConnectionString("DevelopmentSQL")));
+        opt.UseSqlite(configuration.GetConnectionString("DevelopmentSQL")));
 }
 else if (builder.Environment.IsProduction())
 {

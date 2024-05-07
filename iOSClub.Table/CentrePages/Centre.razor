@@ -10,15 +10,6 @@
 
 <meta name="referrer" content="never">
 
-@* <Carousel> *@
-@*     @foreach (var item in Events) *@
-@*     { *@
-@*         <CarouselSlick> *@
-@*             <img alt="" src="@item.Cover" class="img-container"/> *@
-@*         </CarouselSlick> *@
-@*     } *@
-@* </Carousel> *@
-
 <PageView ContextStyle="padding: 10px;">
     <Extra>
         <Title Level="4">@DataString</Title>
@@ -164,6 +155,7 @@
         Tools = await context.Tools.ToListAsync();
         Staff = await context.Staffs
             .Include(x => x.Projects)
+            .AsSplitQuery()
             .Include(x => x.Tasks)
             .FirstOrDefaultAsync(x => x.UserId == Member.UserId);
         var now = DateTime.Now.Hour;

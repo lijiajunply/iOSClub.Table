@@ -45,28 +45,28 @@ public sealed class SignContext : DbContext
         modelBuilder.Entity<TaskModel>()
             .Property(o => o.Id)
             .HasDefaultValueSql("nextval('\"TaskModelId\"')");
-        
+
         modelBuilder.HasSequence<int>("ProjectModelId")
             .StartsAt(1)
             .IncrementsBy(1);
         modelBuilder.Entity<ProjectModel>()
             .Property(o => o.Id)
             .HasDefaultValueSql("nextval('\"ProjectModelId\"')");
-        
+
         modelBuilder.HasSequence<int>("ResourceModelId")
             .StartsAt(1)
             .IncrementsBy(1);
         modelBuilder.Entity<ResourceModel>()
             .Property(o => o.Id)
             .HasDefaultValueSql("nextval('\"ResourceModelId\"')");
-        
+
         modelBuilder.HasSequence<int>("ToolModelId")
             .StartsAt(1)
             .IncrementsBy(1);
         modelBuilder.Entity<ToolModel>()
             .Property(o => o.Id)
             .HasDefaultValueSql("nextval('\"ToolModelId\"')");
-        
+
         modelBuilder.Entity<StaffModel>().HasMany(x => x.Tasks).WithMany(x => x.Users);
         modelBuilder.Entity<StaffModel>().HasMany(x => x.Projects).WithMany(x => x.Staffs);
     }
@@ -77,7 +77,7 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<SignContex
     public SignContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<SignContext>();
-        optionsBuilder.UseNpgsql("Host=localhost; Database=my_database; Username=my_username; Password=my_password");
+        optionsBuilder.UseSqlite("Data Source=Data.db");
         return new SignContext(optionsBuilder.Options);
     }
 }
