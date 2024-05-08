@@ -13,7 +13,6 @@ using Microsoft.Extensions.WebEncoders;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
-var configuration = builder.Configuration;
 
 // 将服务添加到容器
 builder.Services.AddRazorPages();
@@ -35,14 +34,14 @@ builder.Services.AddAuthentication(options => { options.DefaultScheme = JwtBeare
             ValidateAudience = false, //是否验证Audience
             ValidateIssuerSigningKey = true, //是否验证SecurityKey
             IssuerSigningKey =
-                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:SecretKey"]!)), //SecurityKey
+                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecretKey"]!)), //SecurityKey
             ValidateLifetime = true, //是否验证失效时间
             ClockSkew = TimeSpan.FromSeconds(30), //过期时间容错值，解决服务器端时间不同步问题（秒）
             RequireExpirationTime = true,
         };
     });
 
-builder.Services.AddSingleton(new JwtHelper(configuration));
+builder.Services.AddSingleton(new JwtHelper(builder.Configuration));
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<TokenActionFilter>();
 
@@ -50,12 +49,14 @@ builder.Services.AddScoped<TokenActionFilter>();
 if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddDbContextFactory<SignContext>(opt =>
-        opt.UseSqlite(configuration.GetConnectionString("DevelopmentSQL")));
+        opt.UseSqlite("Data Source=Data.db",
+            o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
 }
 else if (builder.Environment.IsProduction())
 {
     builder.Services.AddDbContextFactory<SignContext>(opt =>
-        opt.UseNpgsql(configuration.GetConnectionString("Postgresql")!));
+        opt.UseNpgsql(Environment.GetEnvironmentVariable("SQL",EnvironmentVariableTarget.Process),
+            o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
 }
 
 // 跨域
