@@ -46,16 +46,17 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<TokenActionFilter>();
 
 // 数据库
-if (builder.Environment.IsDevelopment())
+var sql = Environment.GetEnvironmentVariable("SQL", EnvironmentVariableTarget.Process);
+if (string.IsNullOrEmpty(sql))
 {
     builder.Services.AddDbContextFactory<SignContext>(opt =>
         opt.UseSqlite("Data Source=Data.db",
             o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
 }
-else if (builder.Environment.IsProduction())
+else
 {
     builder.Services.AddDbContextFactory<SignContext>(opt =>
-        opt.UseNpgsql(Environment.GetEnvironmentVariable("SQL",EnvironmentVariableTarget.Process),
+        opt.UseNpgsql(sql,
             o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
 }
 
