@@ -1,0 +1,30 @@
+﻿@page "/Error"
+
+<Flex Justify="center" Style="height: 100vh">
+    <Result Status="error"
+            Title="网站好像有点问题">
+        <ChildContent>
+            <div class="desc">
+                <Paragraph>
+                    <Text Strong Style="font-size: 16px;">
+                        在您使用时出现了错误
+                    </Text>
+                </Paragraph>
+                <Paragraph>
+                    <Icon Type="close-circle" Theme="Outline" Class="site-result-demo-error-icon"/> 如果你是开发者
+                </Paragraph>
+                <Paragraph>
+                    <Icon Type="close-circle" Theme="Outline" Class="site-result-demo-error-icon"/> 您也可以帮助我们
+                    <a href="https://gitee.com/XAUATiOSClub/iOSClub.Table/issues" target="_blank">提一个Issue &gt;</a>
+                </Paragraph>
+            </div>
+        </ChildContent>
+        <Extra>
+            <Button Type="@ButtonType.Primary" OnClick="@errorBoundary.Recover"> 恢复 </Button>
+        </Extra>
+    </Result>
+</Flex>
+
+@code {
+    ErrorBoundary errorBoundary = new();
+}

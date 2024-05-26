@@ -1,5 +1,4 @@
-﻿@using iOSClub.Share.Data
-@using iOSClub.Table.Models
+﻿@using iOSClub.Table.Models
 
 <Row OnBreakpoint="OnBreakpoint"/>
 
@@ -7,7 +6,7 @@
     <h1 class="logo">XAUAT iOS Club</h1>
     @if (_isMobile)
     {
-        <Icon Type="menu" OnClick="@open" Theme="outline" Style="color: #f3f5f7"/>
+        <Icon Type="menu" OnClick="@open" Theme="outline" Style="color: #f3f5f7;font-size: 18px"/>
     }
     else
     {
@@ -22,45 +21,39 @@
     }
 </div>
 
-@if (_isMobile)
-{
-    <Drawer MaskClosable="true" Visible="visible" Closable="false" OnClose="@close" Width="160" Placement="right">
-        <Menu Mode="@MenuMode.Vertical" Style="width: 140px">
-            <MenuItemGroup>
-                <TitleTemplate>
-                    @Title
-                    <Divider/>
-                </TitleTemplate>
-                <ChildContent>
-                    @foreach (var item in NavLists)
-                    {
-                        <MenuItem OnClick="@close" RouterLink="@item.Url" RouterMatch="NavLinkMatch.All">
-                            @if (!string.IsNullOrEmpty(item.Icon))
-                            {
-                                <Icon Type="@item.Icon"/>
-                            }
-                            @item.Name
-                        </MenuItem>
-                    }
-                </ChildContent>
-            </MenuItemGroup>
-        </Menu>
-    </Drawer>
-}
-
+<Drawer MaskClosable="true" Visible="visible" Closable="false" OnClose="@close" Width="160" Placement="right">
+    <Menu Mode="@MenuMode.Vertical" Style="width: 140px">
+        <MenuItemGroup>
+            <TitleTemplate>
+                西建大iOS Club
+                <Divider/>
+            </TitleTemplate>
+            <ChildContent>
+                @foreach (var item in NavLists)
+                {
+                    <MenuItem OnClick="@close" RouterLink="@item.Url" RouterMatch="NavLinkMatch.All">
+                        @if (!string.IsNullOrEmpty(item.Icon))
+                        {
+                            <Icon Type="@item.Icon"/>
+                        }
+                        @item.Name
+                    </MenuItem>
+                }
+            </ChildContent>
+        </MenuItemGroup>
+    </Menu>
+</Drawer>
 
 @code {
 
     private void OnBreakpoint(BreakpointType breakpoint)
     {
         _isMobile = breakpoint.IsIn(BreakpointType.Sm, BreakpointType.Xs, BreakpointType.Md);
-        StateHasChanged();
     }
 
     private bool _isMobile;
 
     [Parameter] public List<NavModel> NavLists { get; set; } = [];
-    [Parameter] public string Title { get; set; } = "西建大iOS Club";
     bool visible = false;
 
     void open()

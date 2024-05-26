@@ -8,70 +8,42 @@
 
 <meta name="referrer" content="never">
 
-@for (var index = Models.Length - 1 - 5*(Index - 1); index > Compute(); index--)
-{
-    var item = Models[index];
-    
-    <GridRow Class="container">
-        @* ReSharper disable once AccessToModifiedClosure *@
-        @if (index % 2 == 0)
+<div class="container">
+    <GridRow Gutter="16">
+        @foreach (var context in Models)
         {
-            <GridCol Span="12">
-                <div class="div">
-                    <a href="@item.Link" target="_blank">
-                        <h2>@item.Title</h2>
-                        <p class="Digest">@item.Digest</p>
-                    </a>
-                </div>
-            </GridCol>
-            <GridCol Span="12">
-                <Image Src="@item.Cover" Alt="@item.Title"/>
-            </GridCol>
-        }
-        else
-        {
-            <GridCol Span="12">
-                <Image Src="@item.Cover" Alt="@item.Title"/>
-            </GridCol>
-            <GridCol Span="12">
-                <div class="div">
-                    <a href="@item.Link" target="_blank">
-                        <h2>@item.Title</h2>
-                        <p class="Digest">@item.Digest</p>
-                    </a>
-                </div>
+            <GridCol Xs="24" Sm="24" Md="24" Lg="12" Xl="12" Xxl="12">
+                <Card Hoverable Class="div">
+                    <Flex Justify="space-between">
+                        <img alt="@context.Title"
+                             src="@context.Cover"
+                             style="display:block;width:273px;"/>
+                        <Flex Vertical Align="flex-end" Class="Digest" Justify="space-between" Style="padding: 32px;">
+                            <Title Level="3">
+                                @context.Title
+                            </Title>
+                            <a href="@context.Link" target="_blank">
+                                <Button Type="@ButtonType.Primary">
+                                    去看看
+                                </Button>
+                            </a>
+                        </Flex>
+                    </Flex>
+                </Card>
             </GridCol>
         }
     </GridRow>
-}
-
-@if (Models.Length > 5)
-{
-    <Pagination Style="text-align: center" OnChange="@Callback" PageSize="5" Total="@Models.Length"/>
-}
+</div>
 
 @code {
 
-    private int Index { get; set; } = 1;
     private EventModel[] Models { get; set; } = [];
-    
-    private int Compute()
-    {
-        var i = Models.Length - 1 - 5 * Index;
-        return i < 0 ? -1 : i;
-    }
-    
+
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
         await using var context = await DbFactory.CreateDbContextAsync();
-        Models = await context.Events.ToArrayAsync();
-    }
-
-    private void Callback(PaginationEventArgs obj)
-    {
-        Index = obj.Page;
-        StateHasChanged();
+        Models = await context.Events.Take(4).ToArrayAsync();
+        await base.OnInitializedAsync();
     }
 
 }
@@ -79,6 +51,8 @@
 <style>
     .div{
         margin: 10px;  
+        height: 270px;
+        max-width: 100%;
     }
     
     .div h2{
