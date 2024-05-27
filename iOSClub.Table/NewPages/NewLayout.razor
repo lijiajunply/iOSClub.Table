@@ -1,0 +1,104 @@
+﻿@layout MainLayout
+@inherits LayoutComponentBase
+
+<Row OnBreakpoint="OnBreakpoint"/>
+
+<Layout Class="layout">
+    <Header Style="background: #fff">
+        <Flex Align="center" Justify="space-between">
+            @if (IsMobile)
+            {
+                <Image Src="iOS_Club_LOGO.png" Style="width:40px; height:40px"/>
+                <Button Size="@AntSizeLDSType.Large" Type="@ButtonType.Text" OnClick="@(() => _drawerVisible = !_drawerVisible)">
+                    <Icon Type="@(_drawerVisible ? "close" : "menu")" Theme="outline" Style="font-size: 30px;"/>
+                </Button>
+            }
+            else
+            {
+                <Flex Gap="large">
+                    <Image Src="iOS_Club_LOGO.png" Style="width:40px; height:40px"/>
+                    <div style="font-size: 24px">XAUAT iOS Club</div>
+                </Flex>
+                
+            }
+        </Flex>
+    </Header>
+    <Content>
+        <div style="background: #ffffff">
+            @if (_drawerVisible)
+            {
+
+            }
+            else
+            {
+            <CascadingValue Value="IsMobile" Name="IsMobile">
+                @Body
+            </CascadingValue>
+            }
+        </div>
+    </Content>
+    <Footer Class="footer">
+        <Divider/>
+        <p>
+            Copyright
+            <Icon Type="copyright" Theme="outline"/>
+            2023 - 2024 XAUAT iOS Club
+        </p>
+        <div>
+            @if (IsMobile)
+            {
+                <a href="https://beian.miit.gov.cn/" target="_blank">备案号 陕ICP备2024031872号</a>
+            }
+            else
+            {
+                <Space>
+                    <Split>
+                        <Divider Type="DirectionVHType.Vertical"/>
+                    </Split>
+                    <ChildContent>
+                        <SpaceItem>
+                            <a href="https://cn.xauat.edu.cn/" target="_blank">西安建筑科技大学</a>
+                        </SpaceItem>
+                        <SpaceItem>
+                            <a href="https://beian.miit.gov.cn/" target="_blank">备案号 陕ICP备2024031872号</a>
+                        </SpaceItem>
+                        <SpaceItem>
+                            <a href="https://gitee.com/XAUATiOSClub" target="_blank">我们的Gitee组织</a>
+                        </SpaceItem>
+                    </ChildContent>
+                </Space>
+            }
+        </div>
+    </Footer>
+</Layout>
+
+@code
+{
+    private void OnBreakpoint(BreakpointType breakpoint)
+    {
+        IsMobile = breakpoint.IsIn(BreakpointType.Sm, BreakpointType.Xs, BreakpointType.Md);
+        StateHasChanged();
+    }
+
+    private bool IsMobile;
+    private bool _drawerVisible;
+
+    private RenderFragment Menu 
+        =>      @<Template>
+                    <SpaceItem>
+                        
+                    </SpaceItem>
+                    <SpaceItem>
+                        
+                    </SpaceItem>
+               </Template>;
+}
+
+<style>
+    .layout {
+        min-height: 100vh;
+    }
+    .footer{
+        text-align: center;
+    }
+</style>

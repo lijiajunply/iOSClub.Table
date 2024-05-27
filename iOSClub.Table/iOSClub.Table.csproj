@@ -44,4 +44,8 @@
       <AdditionalFiles Include="CentrePages\AdminPages\Permissions.razor" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="wwwroot\NewPages\" />
+    </ItemGroup>
+
 </Project>
