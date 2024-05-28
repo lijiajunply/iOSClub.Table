@@ -81,7 +81,6 @@
     private void OnBreakpoint(BreakpointType breakpoint)
     {
         IsMobile = breakpoint.IsIn(BreakpointType.Sm, BreakpointType.Xs, BreakpointType.Md);
-        StateHasChanged();
     }
 
     private bool IsMobile;

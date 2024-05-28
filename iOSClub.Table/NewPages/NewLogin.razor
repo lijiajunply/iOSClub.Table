@@ -43,7 +43,6 @@
 </GridRow>
 
 @code {
-    [CascadingParameter] private Task<AuthenticationState>? authenticationState { get; set; }
     [CascadingParameter] public bool IsMobile { get; set; }
     public LoginModel Model { get; } = new();
 
@@ -86,17 +85,15 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
-        if (authenticationState is not null)
-        {
-            var authState = await authenticationState;
-            var user = authState.User;
+        var authState = await authStateProvider.GetAuthenticationStateAsync() ;
+        var user = authState.User;
 
-            if (user.Identity is not null && user.Identity.IsAuthenticated)
-            {
-                navigation.NavigateTo("/Centre");
-            }
+        if (user.Identity is not null && user.Identity.IsAuthenticated)
+        {
+            navigation.NavigateTo("/Centre");
         }
+
+        await base.OnInitializedAsync();
     }
 
 }

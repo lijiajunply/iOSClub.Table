@@ -6,61 +6,62 @@
 @using iOSClub.Table.Models
 @using Microsoft.EntityFrameworkCore
 @inject IDbContextFactory<SignContext> DbFactory
+@inject AuthenticationStateProvider authStateProvider
 @inject NavigationManager Nav
 
 <Row OnBreakpoint="OnBreakpoint"/>
 
-<AuthorizeView>
-    <Authorized>
-        <Layout Style="height: 100vh">
-            <Header>
-                <Flex Vertical="false" Align="center" Gap="@(_isMobile ? "small" : "large")">
-                    @if (_isMobile)
-                    {
-                        <Button Size="@AntSizeLDSType.Large" Type="@ButtonType.Text" OnClick="@(() => _drawerVisible = !_drawerVisible)">
-                            <Icon Type="menu" Theme="outline" Style="color:#fff;font-size: 30px"/>
-                        </Button>
-                        <Image Src="iOS_Club_LOGO.png" Style="width:40px; height:40px"/>
-                    }
-                    else
-                    {
-                        <Image Src="iOS_Club_LOGO.png" Style="width:40px; height:40px"/>
-                        <div style="color:#f3f5f7;font-size: 32px">iOS Club个人中心</div>
-                    }
-                </Flex>
-            </Header>
-            <Layout Style="max-height: 100%;overflow:hidden">
+@if (_isAuth)
+{
+    <Layout Style="height: 100vh">
+        <Header>
+            <Flex Vertical="false" Align="center" Gap="@(_isMobile ? "small" : "large")">
                 @if (_isMobile)
                 {
-                    <Drawer Placement="left" Closable="false"
-                            Visible="@_drawerVisible"
-                            OnClose="@(() => _drawerVisible = false)">
-                        @Menu
-                    </Drawer>
+                    <Button Size="@AntSizeLDSType.Large" Type="@ButtonType.Text" OnClick="@(() => _drawerVisible = !_drawerVisible)">
+                        <Icon Type="menu" Theme="outline" Style="color:#fff;font-size: 30px"/>
+                    </Button>
+                    <Image Src="iOS_Club_LOGO.png" Style="width:40px; height:40px"/>
                 }
                 else
                 {
-                    <Sider Breakpoint="@BreakpointType.Md" Class="sider"
-                           CollapsedWidth="64" Trigger="@null">
-                        @Menu
-                    </Sider>
+                    <Image Src="iOS_Club_LOGO.png" Style="width:40px; height:40px"/>
+                    <div style="color:#f3f5f7;font-size: 32px">iOS Club个人中心</div>
                 }
-                <Content Class="layout-context">
-                    <CascadingValue Value="@Member">
-                        @Body
-                    </CascadingValue>
-                </Content>
-            </Layout>
+            </Flex>
+        </Header>
+        <Layout Style="max-height: 100%;overflow:hidden">
+            @if (_isMobile)
+            {
+                <Drawer Placement="left" Closable="false"
+                        Visible="@_drawerVisible"
+                        OnClose="@(() => _drawerVisible = false)">
+                    @Menu
+                </Drawer>
+            }
+            else
+            {
+                <Sider Breakpoint="@BreakpointType.Md" Class="sider"
+                       CollapsedWidth="64" Trigger="@null">
+                    @Menu
+                </Sider>
+            }
+            <Content Class="layout-context">
+                <CascadingValue Value="@Member">
+                    @Body
+                </CascadingValue>
+            </Content>
         </Layout>
-    </Authorized>
-    <NotAuthorized>
-        <div class="body">
-            <div class="main">
-                <ReturnView ReturnInfo="" FlushedUrl="@Nav.Uri"/>
-            </div>
+    </Layout>
+}
+else
+{
+    <div class="body">
+        <div class="main">
+            <ReturnView ReturnInfo="" FlushedUrl="@Nav.Uri"/>
         </div>
-    </NotAuthorized>
-</AuthorizeView>
+    </div>
+}
 
 @code
 {
@@ -72,18 +73,15 @@
 
     private bool _isMobile;
     private bool _drawerVisible;
+    private bool _isAuth { get; set; } = true;
 
     private MemberModel Member { get; set; } = new();
 
     private string State { get; set; } = "Member";
 
-    [CascadingParameter] private Task<AuthenticationState>? authenticationState { get; set; }
-
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
-        if (authenticationState is null) return;
-        var authState = await authenticationState;
+        var authState = await authStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
 
         if (user.Identity is not null && user.Identity.IsAuthenticated)
@@ -100,6 +98,12 @@
             Member = MemberModel.AutoCopy<StudentModel, MemberModel>(model);
             Member.Identity = identity;
         }
+        else
+        {
+            _isAuth = false;
+        }
+
+        await base.OnInitializedAsync();
     }
 }
 
