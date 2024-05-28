@@ -1,5 +1,6 @@
 ﻿@layout MainLayout
 @inherits LayoutComponentBase
+@inject NavigationManager Nav
 
 <Row OnBreakpoint="OnBreakpoint"/>
 
@@ -8,18 +9,22 @@
         <Flex Align="center" Justify="space-between">
             @if (IsMobile)
             {
-                <Image Src="iOS_Club_LOGO.png" Style="width:40px; height:40px"/>
+                <a href="/NewIndex">
+                    <Image Src="iOS_Club_LOGO.png" Preview="false" Style="width:40px; height:40px"/>
+                </a>
                 <Button Size="@AntSizeLDSType.Large" Type="@ButtonType.Text" OnClick="@(() => _drawerVisible = !_drawerVisible)">
                     <Icon Type="@(_drawerVisible ? "close" : "menu")" Theme="outline" Style="font-size: 30px;"/>
                 </Button>
             }
             else
             {
-                <Flex Gap="large">
-                    <Image Src="iOS_Club_LOGO.png" Style="width:40px; height:40px"/>
-                    <div style="font-size: 24px;font-weight: bold">XAUAT iOS Club</div>
-                </Flex>
-                
+                <a href="/NewIndex">
+                    <Flex Gap="large">
+                        <Image Src="iOS_Club_LOGO.png" Preview="false" Style="width:40px; height:40px"/>
+                        <div style="font-size: 24px;font-weight: bold;color: #1c1f23">XAUAT iOS Club</div>
+                    </Flex>
+                </a>
+                @Menu
             }
         </Flex>
     </Header>
@@ -27,18 +32,17 @@
         <div style="background: #ffffff">
             @if (_drawerVisible)
             {
-
+                @Menu
             }
             else
             {
-            <CascadingValue Value="IsMobile">
-                @Body
-            </CascadingValue>
+                <CascadingValue Value="IsMobile">
+                    @Body
+                </CascadingValue>
             }
         </div>
     </Content>
     <Footer Class="footer">
-        <Divider/>
         <p>
             Copyright
             <Icon Type="copyright" Theme="outline"/>
@@ -83,15 +87,20 @@
     private bool IsMobile;
     private bool _drawerVisible;
 
-    private RenderFragment Menu 
-        =>      @<Template>
-                    <SpaceItem>
-                        
-                    </SpaceItem>
-                    <SpaceItem>
-                        
-                    </SpaceItem>
-               </Template>;
+    private RenderFragment Menu
+        => @<Template>
+               <Flex Vertical="@IsMobile" Gap="large">
+                   <Button Type="@ButtonType.Text" Class="menu-button" OnClick="@(() => Nav.NavigateTo("/NewAbout"))">
+                       关于我们
+                   </Button>
+                   <Button Type="@ButtonType.Text" Class="menu-button" OnClick="@(() => Nav.NavigateTo("/NewEvent"))">
+                       社团活动
+                   </Button>
+                   <Button Type="@ButtonType.Primary" Class="menu-button" OnClick="@(() => Nav.NavigateTo("/NewLogin"))">
+        登录/注册
+    </Button>
+    </Flex>
+    </Template>;
 }
 
 <style>
@@ -100,5 +109,8 @@
     }
     .footer{
         text-align: center;
+    }
+    .menu-button{
+        border-radius: 10px;
     }
 </style>

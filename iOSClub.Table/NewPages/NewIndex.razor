@@ -7,7 +7,7 @@
                 <Image Src="iOS_Club_LOGO.png" Preview="false" Style="width:75%;text-align: center"/>
                 @if (!IsMobile)
                 {
-                    <Progress Percent="@Percent" Format="@(d => "")" Style="width:75%;margin: 10px"></Progress>
+                    <Progress Percent="@Percent" ShowInfo="false" Style="width:75%;margin: 10px"></Progress>
                     <Space style="text-align: center">
                         <SpaceItem>
                             <Button Type="@ButtonType.Text">
@@ -95,9 +95,9 @@
 
     private static CardModel[] Cards =>
     [
-        new CardModel("\ud83c\udf4e", "我们是谁?", "我们是由Apple公司资金支持，受南山书院和西安建筑科技大学大学生创新创业实践中心指导的学术型学生团体", "/About"),
-        new CardModel("\ud83d\udc69\ud83c\udffb\u200d\ud83d\udcbb", "iOS Club,不止iOS", "我们不止只有iOS，我们是一共一个跨专业与课堂的数码编程爱好者社团", "/Event"),
-        new CardModel("\ud83d\udcc5", "全校数码编程爱好者,联合起来！", "我们意图打造全校最大的科技社区，快来加入我们", "/Signup")
+        new CardModel("\ud83c\udf4e", "我们是谁?", "我们是由Apple公司资金支持，受南山书院和西安建筑科技大学大学生创新创业实践中心指导的学术型学生团体", "/NewAbout"),
+        new CardModel("\ud83d\udc69\ud83c\udffb\u200d\ud83d\udcbb", "iOS Club,不止iOS", "我们不止只有iOS，我们是一共一个跨专业与课堂的数码编程爱好者社团", "/NewEvent"),
+        new CardModel("\ud83d\udcc5", "全校数码编程爱好者,联合起来！", "我们意图打造全校最大的科技社区，快来加入我们", "/NewLogin")
     ];
 
     private void FirstWheel(WheelEventArgs obj)

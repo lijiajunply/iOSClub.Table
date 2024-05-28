@@ -1,0 +1,66 @@
+﻿@layout NewLayout
+@inherits LayoutComponentBase
+
+<GridRow>
+    @if (IsMobile)
+    {
+        <Drawer Placement="left" Closable="false"
+                Visible="@_drawerVisible"
+                OnClose="@(() => _drawerVisible = false)">
+            @Menu
+        </Drawer>
+    }
+    else
+    {
+        <GridCol Xs="0" Sm="0" Md="0" Lg="0" Xl="4" Xxl="4">
+            @Menu
+        </GridCol>
+    }
+
+    <GridCol Xs="24" Sm="24" Md="24" Lg="24" Xl="20" Xxl="20">
+        @Body
+    </GridCol>
+</GridRow>
+
+@code
+{
+    [CascadingParameter] public bool IsMobile { get; set; }
+    private bool _drawerVisible;
+}
+
+@code
+{
+    private RenderFragment Menu =>
+        @<Template>
+            <Menu Theme="MenuTheme.Light"
+                  Mode="MenuMode.Inline" Class="menu-block">
+                <MenuItemGroup Class="group-block">
+                    <TitleTemplate>
+                        <div class="group-title">
+                            社团简介
+                        </div>
+                    </TitleTemplate>
+                    <ChildContent>
+                        <MenuItem RouterLink="/NewAbout" RouterMatch="NavLinkMatch.All">成员信息</MenuItem>
+                    </ChildContent>
+                </MenuItemGroup>
+    </Menu>
+    </Template>;
+}
+
+<style>
+    
+    .group-block{
+        padding: 10px;
+    }
+    
+    .menu-block{
+        padding-top: 10px;
+        padding-left: 10px;
+    }
+
+    .group-title {
+        padding-bottom: 10px;
+        border-bottom: 1px solid #ededed;
+    }
+</style>

@@ -44,4 +44,10 @@
       <AdditionalFiles Include="CentrePages\AdminPages\Permissions.razor" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Update="NewPages\NewLogin.razor.css">
+        <DependentUpon>NewLogin.razor</DependentUpon>
+      </Content>
+    </ItemGroup>
+
 </Project>

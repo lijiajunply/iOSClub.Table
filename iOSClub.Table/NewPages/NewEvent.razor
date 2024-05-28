@@ -1,0 +1,108 @@
+﻿@page "/NewEvent"
+@using iOSClub.Share
+@using iOSClub.Share.Data
+@using Microsoft.EntityFrameworkCore
+@inject IDbContextFactory<SignContext> DbFactory
+@inject NavigationManager Nav
+
+<PageTitle>社团活动 - 西建大iOS Club</PageTitle>
+
+<meta name="referrer" content="never">
+
+<Title Level="1" Style="text-align: center">
+    社团活动
+</Title>
+<GridRow Gutter="16" Style="padding: 10px">
+    @foreach (var context in Models)
+    {
+        <GridCol Xs="24" Sm="24" Md="24" Lg="12" Xl="12" Xxl="12">
+            <Card Hoverable Class="div">
+                <Flex Justify="space-between">
+                    <img alt="@context.Title"
+                         src="@context.Cover"
+                         style="display:block;width:273px;"/>
+                    <Flex Vertical Align="flex-end" Class="Digest" Justify="space-between" Style="padding: 32px;">
+                        <Title Level="3">
+                            @context.Title
+                        </Title>
+                        <a href="@context.Link" target="_blank">
+                            <Button Type="@ButtonType.Primary">
+                                去看看
+                            </Button>
+                        </a>
+                    </Flex>
+                </Flex>
+            </Card>
+        </GridCol>
+    }
+</GridRow>
+
+<Divider/>
+
+@if (Tools.Length > 0)
+{
+    <Title Level="1" Style="text-align: center">
+        社团小工具
+    </Title>
+    <GridRow Gutter="16" Style="padding: 10px">
+        @foreach (var context in Tools)
+        {
+            <GridCol Xs="24" Sm="24" Md="24" Lg="12" Xl="8" Xxl="8">
+                <Card Hoverable Class="div">
+                    <Flex Vertical Justify="space-between" Align="flex-start" Style="height: 200px">
+                        <div>
+                            <Flex>
+                                <Image Src="@context.IconUrl"/>
+                                <Title Level="2">@context.Name</Title>
+                            </Flex>
+                            @foreach (var tag in context.Tag?.Split(",")!)
+                            {
+                                <Tag Color="blue-inverse">@tag</Tag>
+                            }
+                        </div>
+
+                        <Button Type="@ButtonType.Primary" OnClick="@(() => Nav.NavigateTo(context.Url))">
+                            去看看
+                        </Button>
+                    </Flex>
+                </Card>
+            </GridCol>
+        }
+    </GridRow>
+}
+
+@code {
+
+    private EventModel[] Models { get; set; } = [];
+    private ToolModel[] Tools { get; set; } = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        await using var context = await DbFactory.CreateDbContextAsync();
+        Models = await context.Events.Take(4).ToArrayAsync();
+        Tools = await context.Tools.ToArrayAsync();
+        await base.OnInitializedAsync();
+    }
+
+}
+
+<style>
+    .div{
+        margin: 10px;
+        height: 270px;
+        max-width: 100%;
+        background: #f3f5f7;
+        border-radius: 10px;
+    }
+
+    .div h2{
+        color: #f5f5f7;
+        animation: fade-in 1s ease-in-out;
+        margin: 0;
+    }
+    main{
+        animation: fade-in 1s ease-in-out;
+        background: #ffffff;
+    }
+
+</style>
