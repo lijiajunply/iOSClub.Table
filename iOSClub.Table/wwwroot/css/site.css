@@ -92,6 +92,25 @@ a, .btn-link {
     color: #e064b9;
 }
 
+.desktop-phone{
+    display: block !important;
+}
+
+.desktop-phone-flex{
+    display: flex !important;
+}
+
+.phone-desktop-flex{
+    display: none !important;
+}
+
+.phone-desktop{
+    display: none !important;
+}
+
+.desktop-laptop{
+    display: block !important;
+}
 /* 手机页面调整 */
 
 @media screen and (max-width: 768px) {
@@ -110,5 +129,27 @@ a, .btn-link {
 
     .main {
         padding: 0 !important;
+    }
+
+    .desktop-phone {
+        display: none !important;
+    }
+
+    .phone-desktop{
+        display: block !important;
+    }
+
+    .desktop-phone-flex{
+        display: none !important;
+    }
+
+    .phone-desktop-flex{
+        display: flex !important;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .desktop-laptop {
+        display: none;
     }
 }

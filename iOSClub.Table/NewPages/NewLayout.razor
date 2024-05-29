@@ -6,26 +6,22 @@
 
 <Layout Class="layout">
     <Header Style="background: #fff">
-        <Flex Align="center" Justify="space-between">
-            @if (IsMobile)
-            {
-                <a href="/NewIndex">
+        <Flex Align="center" Justify="space-between" Class="phone-desktop-flex">
+            <a href="/NewIndex">
+                <Image Src="iOS_Club_LOGO.png" Preview="false" Style="width:40px; height:40px"/>
+            </a>
+            <Button Size="@AntSizeLDSType.Large" Type="@ButtonType.Text" OnClick="@(() => _drawerVisible = !_drawerVisible)">
+                <Icon Type="@(_drawerVisible ? "close" : "menu")" Theme="outline" Style="font-size: 30px;"/>
+            </Button>
+        </Flex>
+        <Flex Align="center" Justify="space-between" Class="desktop-phone-flex">
+            <a href="/NewIndex">
+                <Flex Gap="large">
                     <Image Src="iOS_Club_LOGO.png" Preview="false" Style="width:40px; height:40px"/>
-                </a>
-                <Button Size="@AntSizeLDSType.Large" Type="@ButtonType.Text" OnClick="@(() => _drawerVisible = !_drawerVisible)">
-                    <Icon Type="@(_drawerVisible ? "close" : "menu")" Theme="outline" Style="font-size: 30px;"/>
-                </Button>
-            }
-            else
-            {
-                <a href="/NewIndex">
-                    <Flex Gap="large">
-                        <Image Src="iOS_Club_LOGO.png" Preview="false" Style="width:40px; height:40px"/>
-                        <div style="font-size: 24px;font-weight: bold;color: #1c1f23">XAUAT iOS Club</div>
-                    </Flex>
-                </a>
-                @Menu
-            }
+                    <div style="font-size: 24px;font-weight: bold;color: #1c1f23">XAUAT iOS Club</div>
+                </Flex>
+            </a>
+            @Menu
         </Flex>
     </Header>
     <Content>
@@ -51,7 +47,7 @@
         <div>
             @if (IsMobile)
             {
-                <a href="https://beian.miit.gov.cn/" target="_blank">备案号 陕ICP备2024031872号</a>
+                <a href="https://beian.miit.gov.cn/"  target="_blank">备案号 陕ICP备2024031872号</a>
             }
             else
             {

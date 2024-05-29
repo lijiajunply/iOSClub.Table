@@ -1,7 +1,7 @@
 ﻿@page "/NewIndex"
 
 <div @onwheel="FirstWheel">
-    <GridRow Class="block">
+    <GridRow Class="block" Align="center" Type="flex">
         <GridCol Style="text-align: center" Xs="24" Sm="24" Md="24" Lg="24" Xl="9" Xxl="9">
             <div style="text-align: center">
                 <Image Src="iOS_Club_LOGO.png" Preview="false" Style="width:75%;text-align: center"/>
@@ -44,7 +44,7 @@
                 </Title>
                 @for (var i = 0; i < Lyc.Length; i++)
                 {
-                    <h6 class="first-button @(i * 10 + 30 - Percent + 10 == 0 ? "playing" : "")">
+                    <h6 class="first-button" style="@(i * 10 + 30 - Percent + 10 == 0 ? "padding: 10px;background: #f6f6f7;font-weight: bold;" : "")">
                         @Lyc[i]
                     </h6>
                 }
@@ -84,7 +84,7 @@
 
     private record CardModel(string ImageUrl, string Title, string Content, string Url);
 
-    private string[] Lyc =>
+    private string[] Lyc { get; set; } =
     [
         "这里是",
         "梦想家们改变世界的起点",
@@ -142,12 +142,6 @@
 
     .first-button:hover {
         padding-left: 10px;
-        background: #f6f6f7;
-        font-weight: bold;
-    }
-
-    .playing {
-        padding: 10px;
         background: #f6f6f7;
         font-weight: bold;
     }
