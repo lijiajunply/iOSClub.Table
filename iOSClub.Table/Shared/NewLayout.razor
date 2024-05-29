@@ -47,7 +47,7 @@
         <div>
             @if (IsMobile)
             {
-                <a href="https://beian.miit.gov.cn/"  target="_blank">备案号 陕ICP备2024031872号</a>
+                <a href="https://beian.miit.gov.cn/" target="_blank">备案号 陕ICP备2024031872号</a>
             }
             else
             {
@@ -85,13 +85,13 @@
     private RenderFragment Menu
         => @<Template>
                <Flex Vertical="@IsMobile" Gap="large">
-                   <Button Type="@ButtonType.Text" Class="menu-button" OnClick="@(() => Nav.NavigateTo("/NewAbout"))">
+                   <Button Type="@ButtonType.Text" Class="menu-button" OnClick="@(() => { Nav.NavigateTo("/NewAbout"); _drawerVisible = false; })">
                        关于我们
                    </Button>
-                   <Button Type="@ButtonType.Text" Class="menu-button" OnClick="@(() => Nav.NavigateTo("/NewEvent"))">
+                   <Button Type="@ButtonType.Text" Class="menu-button" OnClick="@(() => { Nav.NavigateTo("/NewEvent"); _drawerVisible = false; })">
                        社团活动
                    </Button>
-                   <Button Type="@ButtonType.Primary" Class="menu-button" OnClick="@(() => Nav.NavigateTo("/NewLogin"))">
+                   <Button Type="@ButtonType.Primary" Class="menu-button" OnClick="@(() => { Nav.NavigateTo("/NewLogin"); _drawerVisible = false; })">
         登录/注册
     </Button>
     </Flex>

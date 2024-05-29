@@ -15,19 +15,25 @@
 {
     <Layout Style="height: 100vh">
         <Header>
-            <Flex Vertical="false" Align="center" Gap="@(_isMobile ? "small" : "large")">
-                @if (_isMobile)
-                {
-                    <Button Size="@AntSizeLDSType.Large" Type="@ButtonType.Text" OnClick="@(() => _drawerVisible = !_drawerVisible)">
-                        <Icon Type="menu" Theme="outline" Style="color:#fff;font-size: 30px"/>
-                    </Button>
-                    <Image Src="iOS_Club_LOGO.png" Style="width:40px; height:40px"/>
-                }
-                else
-                {
-                    <Image Src="iOS_Club_LOGO.png" Style="width:40px; height:40px"/>
-                    <div style="color:#f3f5f7;font-size: 32px">iOS Club个人中心</div>
-                }
+            <Flex Align="center" Justify="space-between" Class="phone-desktop-flex">
+                <a href="/NewIndex">
+                    <Image Src="iOS_Club_LOGO.png" Preview="false" Style="width:40px; height:40px"/>
+                </a>
+                <Button Size="@AntSizeLDSType.Large" Type="@ButtonType.Text" OnClick="@(() => _drawerVisible = !_drawerVisible)">
+                    <Icon Type="@(_drawerVisible ? "close" : "menu")" Theme="outline" Style="font-size: 30px;color: #f3f5f7"/>
+                </Button>
+            </Flex>
+            <Flex Align="center" Justify="space-between" Class="desktop-phone-flex">
+                <a href="/NewIndex">
+                    <Flex Gap="large">
+                        <Image Src="iOS_Club_LOGO.png" Preview="false" Style="width:40px; height:40px"/>
+                        <div style="font-size: 24px;font-weight: bold;color: #f3f5f7">XAUAT iOS Club</div>
+                    </Flex>
+                </a>
+                <Button Type="@ButtonType.Primary" OnClick="@(() => Nav.NavigateTo("/Logout"))">
+                    <Icon Type="logout" Theme="outline"/>
+                    <span class="nav-text">退出登录</span>
+                </Button>
             </Flex>
         </Header>
         <Layout Style="max-height: 100%;overflow:hidden">
@@ -167,10 +173,6 @@ else
             <MenuItem RouterLink="/Centre/Tool" RouterMatch="NavLinkMatch.All">
                 <Icon Type="tool" Theme="outline"/>
                 <span class="nav-text">社团小工具</span>
-            </MenuItem>
-            <MenuItem OnClick="@(() => Nav.NavigateTo("/Logout"))">
-                <Icon Type="logout" Theme="outline"/>
-                <span class="nav-text">退出登录</span>
             </MenuItem>
         </Menu>
     </Template>;

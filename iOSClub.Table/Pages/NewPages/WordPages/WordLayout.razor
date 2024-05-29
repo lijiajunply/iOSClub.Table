@@ -18,7 +18,9 @@
     }
 
     <GridCol Xs="24" Sm="24" Md="24" Lg="24" Xl="20" Xxl="20">
-        @Body
+        <div style="padding: 20px;min-height: 100%">
+            @Body
+        </div>
     </GridCol>
 </GridRow>
 
@@ -41,7 +43,19 @@
                         </div>
                     </TitleTemplate>
                     <ChildContent>
-                        <MenuItem RouterLink="/NewAbout" RouterMatch="NavLinkMatch.All">成员信息</MenuItem>
+                        <MenuItem RouterLink="/NewAbout" RouterMatch="NavLinkMatch.All">关于我们</MenuItem>
+                    </ChildContent>
+                </MenuItemGroup>
+                <MenuItemGroup Class="group-block">
+                    <TitleTemplate>
+                        <div class="group-title">
+                            部门简介
+                        </div>
+                    </TitleTemplate>
+                    <ChildContent>
+                        <MenuItem RouterLink="/" RouterMatch="NavLinkMatch.All">科技部</MenuItem>
+                        <MenuItem RouterLink="/" RouterMatch="NavLinkMatch.All">交流实践部</MenuItem>
+                        <MenuItem RouterLink="/" RouterMatch="NavLinkMatch.All">新媒体部</MenuItem>
                     </ChildContent>
                 </MenuItemGroup>
     </Menu>

@@ -35,6 +35,36 @@
       <_ContentIncludedByDefault Remove="AdminPages\_Imports.razor" />
       <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\bootstrap.min.css" />
       <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\bootstrap.min.css.map" />
+      <_ContentIncludedByDefault Remove="LoginPage\LoginLayout.razor" />
+      <_ContentIncludedByDefault Remove="LoginPage\Logout.razor" />
+      <_ContentIncludedByDefault Remove="LoginPage\QRCode.razor" />
+      <_ContentIncludedByDefault Remove="LoginPage\Signup.razor" />
+      <_ContentIncludedByDefault Remove="LoginPage\_Imports.razor" />
+      <_ContentIncludedByDefault Remove="CentrePages\AdminPages\Env.razor" />
+      <_ContentIncludedByDefault Remove="CentrePages\AdminPages\EventManager.razor" />
+      <_ContentIncludedByDefault Remove="CentrePages\AdminPages\MemberData.razor" />
+      <_ContentIncludedByDefault Remove="CentrePages\AdminPages\Permissions.razor" />
+      <_ContentIncludedByDefault Remove="CentrePages\Centre.razor" />
+      <_ContentIncludedByDefault Remove="CentrePages\CentreLayout.razor" />
+      <_ContentIncludedByDefault Remove="CentrePages\DepartmentPages\Department.razor" />
+      <_ContentIncludedByDefault Remove="CentrePages\DepartmentPages\EditProject.razor" />
+      <_ContentIncludedByDefault Remove="CentrePages\DepartmentPages\Project.razor" />
+      <_ContentIncludedByDefault Remove="CentrePages\DepartmentPages\Resource.razor" />
+      <_ContentIncludedByDefault Remove="CentrePages\PersonalData.razor" />
+      <_ContentIncludedByDefault Remove="CentrePages\Tool.razor" />
+      <_ContentIncludedByDefault Remove="CentrePages\_Imports.razor" />
+      <_ContentIncludedByDefault Remove="Pages\CentrePages\AdminPages\Env.razor" />
+      <_ContentIncludedByDefault Remove="Pages\CentrePages\AdminPages\EventManager.razor" />
+      <_ContentIncludedByDefault Remove="Pages\CentrePages\AdminPages\MemberData.razor" />
+      <_ContentIncludedByDefault Remove="Pages\CentrePages\AdminPages\Permissions.razor" />
+      <_ContentIncludedByDefault Remove="Pages\CentrePages\Centre.razor" />
+      <_ContentIncludedByDefault Remove="Pages\CentrePages\DepartmentPages\Department.razor" />
+      <_ContentIncludedByDefault Remove="Pages\CentrePages\DepartmentPages\EditProject.razor" />
+      <_ContentIncludedByDefault Remove="Pages\CentrePages\DepartmentPages\Project.razor" />
+      <_ContentIncludedByDefault Remove="Pages\CentrePages\DepartmentPages\Resource.razor" />
+      <_ContentIncludedByDefault Remove="Pages\CentrePages\PersonalData.razor" />
+      <_ContentIncludedByDefault Remove="Pages\CentrePages\Tool.razor" />
+      <_ContentIncludedByDefault Remove="Pages\CentrePages\_Imports.razor" />
     </ItemGroup>
 
     <ItemGroup>
@@ -42,6 +72,23 @@
       <AdditionalFiles Include="CentrePages\AdminPages\EventManager.razor" />
       <AdditionalFiles Include="CentrePages\AdminPages\MemberData.razor" />
       <AdditionalFiles Include="CentrePages\AdminPages\Permissions.razor" />
+      <AdditionalFiles Include="Pages\IndexPages\Event.razor" />
+      <AdditionalFiles Include="Pages\IndexPages\Index.razor" />
+      <AdditionalFiles Include="Pages\IndexPages\Login.razor" />
+      <AdditionalFiles Include="Pages\IndexPages\SocietyAbout.razor" />
+      <AdditionalFiles Include="Pages\IndexPages\_Imports.razor" />
+      <AdditionalFiles Include="Pages\LoginPage\Logout.razor" />
+      <AdditionalFiles Include="Pages\LoginPage\QRCode.razor" />
+      <AdditionalFiles Include="Pages\LoginPage\Signup.razor" />
+      <AdditionalFiles Include="Pages\LoginPage\_Imports.razor" />
+      <AdditionalFiles Include="Pages\NewPages\NewCentre.razor" />
+      <AdditionalFiles Include="Pages\NewPages\NewEvent.razor" />
+      <AdditionalFiles Include="Pages\NewPages\NewIndex.razor" />
+      <AdditionalFiles Include="Pages\NewPages\NewLogin.razor" />
+      <AdditionalFiles Include="Pages\NewPages\WordPages\NewAbout.razor" />
+      <AdditionalFiles Include="Pages\NewPages\WordPages\WordLayout.razor" />
+      <AdditionalFiles Include="Pages\NewPages\WordPages\_Imports.razor" />
+      <AdditionalFiles Include="Pages\NewPages\_Imports.razor" />
     </ItemGroup>
 
     <ItemGroup>
