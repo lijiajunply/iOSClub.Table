@@ -85,7 +85,6 @@ else
     {
         if (firstRender)
         {
-            //isWeiXin
             isWeiXin = await Js.InvokeAsync<bool>("isWeiXin");
             StateHasChanged();
         }
@@ -135,7 +134,6 @@ else
 
     private void OnFinishFailed()
     {
-        Console.WriteLine("出问题了");
         Loading = false;
     }
 }

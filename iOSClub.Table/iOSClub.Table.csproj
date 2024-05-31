@@ -81,7 +81,6 @@
       <AdditionalFiles Include="Pages\LoginPage\QRCode.razor" />
       <AdditionalFiles Include="Pages\LoginPage\Signup.razor" />
       <AdditionalFiles Include="Pages\LoginPage\_Imports.razor" />
-      <AdditionalFiles Include="Pages\NewPages\NewCentre.razor" />
       <AdditionalFiles Include="Pages\NewPages\NewEvent.razor" />
       <AdditionalFiles Include="Pages\NewPages\NewIndex.razor" />
       <AdditionalFiles Include="Pages\NewPages\NewLogin.razor" />

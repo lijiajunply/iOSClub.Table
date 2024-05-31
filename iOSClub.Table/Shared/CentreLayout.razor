@@ -1,181 +1,22 @@
-﻿@layout MainLayout
+﻿@layout NewCentreLayout
 @inherits LayoutComponentBase
-@using System.Security.Claims
-@using iOSClub.Share
-@using iOSClub.Share.Data
 @using iOSClub.Table.Models
-@using Microsoft.EntityFrameworkCore
-@inject IDbContextFactory<SignContext> DbFactory
-@inject AuthenticationStateProvider authStateProvider
-@inject NavigationManager Nav
 
-<Row OnBreakpoint="OnBreakpoint"/>
-
-@if (_isAuth)
-{
-    <Layout Style="height: 100vh">
-        <Header>
-            <Flex Align="center" Justify="space-between" Class="phone-desktop-flex">
-                <a href="/NewIndex">
-                    <Image Src="iOS_Club_LOGO.png" Preview="false" Style="width:40px; height:40px"/>
-                </a>
-                <Button Size="@AntSizeLDSType.Large" Type="@ButtonType.Text" OnClick="@(() => _drawerVisible = !_drawerVisible)">
-                    <Icon Type="@(_drawerVisible ? "close" : "menu")" Theme="outline" Style="font-size: 30px;color: #f3f5f7"/>
-                </Button>
-            </Flex>
-            <Flex Align="center" Justify="space-between" Class="desktop-phone-flex">
-                <a href="/NewIndex">
-                    <Flex Gap="large">
-                        <Image Src="iOS_Club_LOGO.png" Preview="false" Style="width:40px; height:40px"/>
-                        <div style="font-size: 24px;font-weight: bold;color: #f3f5f7">XAUAT iOS Club</div>
-                    </Flex>
-                </a>
-                <Button Type="@ButtonType.Primary" OnClick="@(() => Nav.NavigateTo("/Logout"))">
-                    <Icon Type="logout" Theme="outline"/>
-                    <span class="nav-text">退出登录</span>
-                </Button>
-            </Flex>
-        </Header>
-        <Layout Style="max-height: 100%;overflow:hidden">
-            @if (_isMobile)
-            {
-                <Drawer Placement="left" Closable="false"
-                        Visible="@_drawerVisible"
-                        OnClose="@(() => _drawerVisible = false)">
-                    @Menu
-                </Drawer>
-            }
-            else
-            {
-                <Sider Breakpoint="@BreakpointType.Md" Class="sider"
-                       CollapsedWidth="64" Trigger="@null">
-                    @Menu
-                </Sider>
-            }
-            <Content Class="layout-context">
-                <CascadingValue Value="@Member">
-                    @Body
-                </CascadingValue>
-            </Content>
-        </Layout>
-    </Layout>
-}
-else
-{
-    <div class="body">
-        <div class="main">
-            <ReturnView ReturnInfo="" FlushedUrl="@Nav.Uri"/>
-        </div>
-    </div>
-}
+<Layout Style="max-height: 100%;overflow:hidden">
+    <Sider Breakpoint="@BreakpointType.Md" Class="desktop-phone sider"
+           CollapsedWidth="64" Trigger="@null">
+        <CentreMenu State="@Member.Identity"/>
+    </Sider>
+    <Content Class="layout-context">
+        <CascadingValue Value="@Member">
+            @Body
+        </CascadingValue>
+    </Content>
+</Layout>
 
 @code
 {
-    private void OnBreakpoint(BreakpointType breakpoint)
-    {
-        _isMobile = breakpoint.IsIn(BreakpointType.Sm, BreakpointType.Xs, BreakpointType.Md);
-        StateHasChanged();
-    }
-
-    private bool _isMobile;
-    private bool _drawerVisible;
-    private bool _isAuth { get; set; } = true;
-
-    private MemberModel Member { get; set; } = new();
-
-    private string State { get; set; } = "Member";
-
-    protected override async Task OnInitializedAsync()
-    {
-        var authState = await authStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-
-        if (user.Identity is not null && user.Identity.IsAuthenticated)
-        {
-            var name = user.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
-            var identity = user.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
-            var id = user.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(identity) || string.IsNullOrEmpty(id)) return;
-            await using var context = await DbFactory.CreateDbContextAsync();
-            var model = await context.Students.FirstOrDefaultAsync(x => x.UserId == id && x.UserName == name);
-
-            State = identity;
-            if (model == null) return;
-            Member = MemberModel.AutoCopy<StudentModel, MemberModel>(model);
-            Member.Identity = identity;
-        }
-        else
-        {
-            _isAuth = false;
-        }
-
-        await base.OnInitializedAsync();
-    }
-}
-
-@code
-{
-    private RenderFragment Menu => @<Template>
-        <Menu Theme="MenuTheme.Light"
-              Mode="MenuMode.Inline">
-            <MenuItem RouterLink="/Centre" RouterMatch="NavLinkMatch.All">
-                <Icon Type="home" Theme="outline"/>
-                <span class="nav-text">主页</span>
-            </MenuItem>
-
-            @if (State != "Founder")
-            {
-                <MenuItem RouterLink="/Centre/PersonalData" RouterMatch="NavLinkMatch.All">
-                    <Icon Type="user" Theme="outline"/>
-                    <span class="nav-text">成员信息</span>
-                </MenuItem>
-                @if (State != "Member")
-                {
-                    <MenuItem RouterLink="/Centre/Department" RouterMatch="NavLinkMatch.All">
-                        <Icon Type="project" Theme="outline"/>
-                        <span class="nav-text">社团项目</span>
-                    </MenuItem>
-                    <MenuItem RouterLink="/Centre/Resource" RouterMatch="NavLinkMatch.All">
-                        <Icon Type="file-text" Theme="outline"/>
-                        <span class="nav-text">社团资源</span>
-                    </MenuItem>
-                }
-            }
-
-            @if (State.Contains("Minister") || State == "President" || State == "Founder")
-            {
-                <SubMenu>
-                    <TitleTemplate>
-                        <Icon Type="upload" Theme="outline"/>
-                        <span class="nav-text">管理</span>
-                    </TitleTemplate>
-                    <ChildContent>
-                        <MenuItem RouterLink="/Admin/MemberData" RouterMatch="NavLinkMatch.All">
-                            <Icon Type="team" Theme="outline"/>
-                            <span class="nav-text">成员管理</span>
-                        </MenuItem>
-                        <MenuItem RouterLink="/Admin/EventManager" RouterMatch="NavLinkMatch.All">
-                            <Icon Type="trophy" Theme="outline"/>
-                            <span class="nav-text">活动管理</span>
-                        </MenuItem>
-                        <MenuItem RouterLink="/Admin/Env" RouterMatch="NavLinkMatch.All">
-                            <Icon Type="setting" Theme="outline"/>
-                            <span class="nav-text">环境管理</span>
-                        </MenuItem>
-                        <MenuItem RouterLink="/Admin/Permissions" RouterMatch="NavLinkMatch.All">
-                            <Icon Type="alert" Theme="outline"/>
-                            <span class="nav-text">权限管理</span>
-                        </MenuItem>
-                    </ChildContent>
-                </SubMenu>
-            }
-
-            <MenuItem RouterLink="/Centre/Tool" RouterMatch="NavLinkMatch.All">
-                <Icon Type="tool" Theme="outline"/>
-                <span class="nav-text">社团小工具</span>
-            </MenuItem>
-        </Menu>
-    </Template>;
+    [CascadingParameter] private MemberModel Member { get; set; } = new();
 }
 
 <style>
