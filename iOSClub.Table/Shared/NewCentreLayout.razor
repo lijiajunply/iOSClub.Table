@@ -9,7 +9,7 @@
 @inject AuthenticationStateProvider authStateProvider
 @inject NavigationManager Nav
 
-<Drawer Placement="left" Closable="false"
+<Drawer Placement="bottom" Closable="false"
         Visible="@_drawerVisible"
         OnClose="@(() => _drawerVisible = false)">
     <CentreMenu State="@Member.Identity"/>
@@ -20,10 +20,11 @@
     <Layout Style="height: 100vh">
         <Header Class="Layout-Header">
             <Flex Align="center" Justify="space-between">
+                @* ReSharper disable once Html.PathError *@
                 <a href="/NewIndex">
                     <Flex Gap="large">
                         <Image Src="iOS_Club_LOGO.png" Preview="false" Style="width:40px; height:40px"/>
-                        <div style="font-size: 24px;font-weight: bold;color: #f3f5f7">iMember</div>
+                        <div class="Layout-Title">iMember</div>
                     </Flex>
                 </a>
                 <Flex class="desktop-phone-flex">
@@ -47,19 +48,21 @@
                         </ContentTemplate>
                         <ChildContent>
                             <Button Type="@ButtonType.Text">
-                                <Icon Type="user" Theme="outline" Style="color: #f3f5f7"/>
+                                <Icon Type="user" Theme="outline" Class="Layout-Title"/>
                             </Button>
                         </ChildContent>
                     </Popover>
                 </Flex>
                 <Button Size="@AntSizeLDSType.Large" class="phone-desktop-flex" Type="@ButtonType.Text" OnClick="@(() => _drawerVisible = !_drawerVisible)">
-                    <Icon Type="@(_drawerVisible ? "close" : "menu")" Theme="outline" Style="font-size: 30px;color: #f3f5f7"/>
+                    <Icon Type="menu" Theme="outline" Class="Layout-Title"/>
                 </Button>
             </Flex>
         </Header>
-        <CascadingValue Value="@Member">
-            @Body
-        </CascadingValue>
+        <Content>
+            <CascadingValue Value="@Member">
+                @Body
+            </CascadingValue>
+        </Content>
     </Layout>
 }
 else
@@ -109,5 +112,11 @@ else
 <style>
     .Layout-Header{
         
+    }
+    
+    .Layout-Title{
+        font-size: 24px;
+        font-weight: bold;
+        color: #f3f5f7;
     }
 </style>

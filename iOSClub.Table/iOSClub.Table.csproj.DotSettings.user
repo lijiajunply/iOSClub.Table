@@ -1,10 +1,12 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/CodeInspection/WebPathMapping/IgnoredPaths/=WWWROOT_005CNEWINDEX/@EntryIndexedValue">wwwroot\NewIndex</s:String>
 	<s:String x:Key="/Default/CodeInspection/WebPathMapping/IgnoredPaths/=WWWROOT_005C_005FCONTENT_005CANTDESIGN_005CCSS_005CANT_002DDESIGN_002DBLAZOR_002ECSS/@EntryIndexedValue">wwwroot\_content\AntDesign\css\ant-design-blazor.css</s:String>
 	<s:String x:Key="/Default/CodeInspection/WebPathMapping/IgnoredPaths/=WWWROOT_005C_005FCONTENT_005CANTDESIGN_005CJS_005CANT_002DDESIGN_002DBLAZOR_002EJS/@EntryIndexedValue">wwwroot\_content\AntDesign\js\ant-design-blazor.js</s:String>
 	<s:String x:Key="/Default/CodeInspection/WebPathMapping/IgnoredPaths/=WWWROOT_005C_005FFRAMEWORK_005CBLAZOR_002ESERVER_002EJS/@EntryIndexedValue">wwwroot\_framework\blazor.server.js</s:String>
 	
 	<s:String x:Key="/Default/CodeInspection/WebPathMapping/MappedPaths/=WWWROOT_005CIOSCLUB_002ETABLE_002ESTYLES_002ECSS/@EntryIndexedValue"></s:String>
 	<s:String x:Key="/Default/CodeInspection/WebPathMapping/PathsInCorrectCasing/=WWWROOT_005CIOSCLUB_002ETABLE_002ESTYLES_002ECSS/@EntryIndexedValue">wwwroot\iOSClub.Table.styles.css</s:String>
+	<s:String x:Key="/Default/CodeInspection/WebPathMapping/PathsInCorrectCasing/=WWWROOT_005CNEWINDEX/@EntryIndexedValue">wwwroot\NewIndex</s:String>
 	<s:String x:Key="/Default/CodeInspection/WebPathMapping/PathsInCorrectCasing/=WWWROOT_005C_005FCONTENT_005CANTDESIGN_005CCSS_005CANT_002DDESIGN_002DBLAZOR_002ECSS/@EntryIndexedValue">wwwroot\_content\AntDesign\css\ant-design-blazor.css</s:String>
 	<s:String x:Key="/Default/CodeInspection/WebPathMapping/PathsInCorrectCasing/=WWWROOT_005C_005FCONTENT_005CANTDESIGN_005CJS_005CANT_002DDESIGN_002DBLAZOR_002EJS/@EntryIndexedValue">wwwroot\_content\AntDesign\js\ant-design-blazor.js</s:String>
 	<s:String x:Key="/Default/CodeInspection/WebPathMapping/PathsInCorrectCasing/=WWWROOT_005C_005FFRAMEWORK_005CBLAZOR_002ESERVER_002EJS/@EntryIndexedValue">wwwroot\_framework\blazor.server.js</s:String></wpf:ResourceDictionary>

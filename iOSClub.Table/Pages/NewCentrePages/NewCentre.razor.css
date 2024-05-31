@@ -1,0 +1,11 @@
+﻿@media screen and (max-width: 768px) {
+    .Layout-Header{
+        border-radius: 0;
+        margin: 0;
+    }
+    
+    .block{
+        width: 100%;
+        margin: 10px;
+    }
+}
