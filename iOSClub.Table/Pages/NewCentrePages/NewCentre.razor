@@ -14,8 +14,14 @@
         <GridCol Xs="24" Sm="24" Md="12" Lg="12" Xl="8" Xxl="8">
             <a href="/Centre/PersonalData">
                 <Card Hoverable Class="card">
-                    <Image Style="height: 100px;width: 100px" Preview="false" Src="@(Member.Gender == "男" ? "Centre/男生.png" : "Centre/女生.png")"/>
-                    <Title style="font-size: 36px;font-family: SF Pro SC, SF Pro Display, Helvetica Neue, sans-serif;">@Member.UserName</Title>
+                    @if (Member.Identity != "Founder")
+                    {
+                        <Image Style="height: 100px;width: 100px" Preview="false" Src="@(Member.Gender == "男" ? "Centre/男生.png" : "Centre/女生.png")"/>   
+                    }else
+                    {
+                        <Image Style="height: 100px;width: 100px" Preview="false" Src="iOS_Club_LOGO.png"/>
+                    }
+                    <Title style="font-size: 36px;">@Member.UserName</Title>
                     <Paragraph Type="secondary">ID :@Member.UserId</Paragraph>
                     <Paragraph Style="font-size: 16px" Strong>@MemberModel.IdentityDictionary[Member.Identity]</Paragraph>
                 </Card>
@@ -49,7 +55,7 @@
                 </ContextTemplate>
             </AppleCard>
         </GridCol>
-        @if (Member.Identity != "Member")
+        @if (Member.Identity != "Member" && Member.Identity != "Founder")
         {
             <GridCol Xs="24" Sm="24" Md="12" Lg="12" Xl="16" Xxl="16">
                 <AppleCard>
@@ -122,7 +128,9 @@
         }
         @if (Member.Identity.Contains("Minister") || Member.Identity == "President" || Member.Identity == "Founder")
         {
-            <GridCol Xs="24" Sm="24" Md="12" Lg="12" Xl="8" Xxl="8">
+            <GridCol Xs="24" Sm="24" Md="12" Lg="12" 
+                     Xl="@(Member.Identity != "Founder" ? 8 : 16)" 
+                     Xxl="@(Member.Identity != "Founder" ? 8 : 16)">
                 <a href="/Admin/MemberData">
                     <AppleCard>
                         <TitleTemplate>
@@ -141,7 +149,9 @@
                     </AppleCard>
                 </a>
             </GridCol>
-            <GridCol Xs="24" Sm="24" Md="12" Lg="12" Xl="16" Xxl="16">
+            <GridCol Xs="24" Sm="24" Md="12" Lg="12"
+                     Xl="@(Member.Identity != "Founder" ? 16 : 8)" 
+                     Xxl="@(Member.Identity != "Founder" ? 16 : 8)">
                 <a href="/Admin/Env">
                     <AppleCard>
                         <TitleTemplate>

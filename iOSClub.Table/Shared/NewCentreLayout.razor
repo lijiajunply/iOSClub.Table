@@ -28,11 +28,19 @@
                     </Flex>
                 </a>
                 <Flex class="desktop-phone-flex">
-                    <Popover Trigger="@(new[] { Trigger.Click })">
+                    <Popover Class="Layout-Popover" Trigger="@(new[] { Trigger.Click })">
                         <TitleTemplate>
                             <Space Size="@("middle")">
                                 <SpaceItem>
-                                    <Image Style="height: 60px;width: 60px" Preview="false" Src="@(Member.Gender == "男" ? "Centre/男生.png" : "Centre/女生.png")"/>
+                                    @if (Member.Identity != "Founder")
+                                    {
+                                        <Image Style="height: 60px;width: 60px" Preview="false"
+                                               Src="@(Member.Gender == "男" ? "Centre/男生.png" : "Centre/女生.png")"/>
+                                    }
+                                    else
+                                    {
+                                        <Image Style="height: 60px;width: 60px" Preview="false" Src="iOS_Club_LOGO.png"/>
+                                    }
                                 </SpaceItem>
                                 <SpaceItem>
                                     <div>
@@ -43,8 +51,12 @@
                             </Space>
                         </TitleTemplate>
                         <ContentTemplate>
-                            <Paragraph Type="secondary">当前身份:@MemberModel.IdentityDictionary[Member.Identity]</Paragraph>
-                            <Button Type="@ButtonType.Text" Danger OnClick="@(() => Nav.NavigateTo("/Logout"))">退出登录</Button>
+                            <Paragraph Type="secondary">
+                                当前身份:@MemberModel.IdentityDictionary[Member.Identity]
+                            </Paragraph>
+                            <Button Type="@ButtonType.Text" Danger OnClick="@(() => Nav.NavigateTo("/Logout"))">
+                                退出登录
+                            </Button>
                         </ContentTemplate>
                         <ChildContent>
                             <Button Type="@ButtonType.Text">
@@ -53,7 +65,8 @@
                         </ChildContent>
                     </Popover>
                 </Flex>
-                <Button Size="@AntSizeLDSType.Large" class="phone-desktop-flex" Type="@ButtonType.Text" OnClick="@(() => _drawerVisible = !_drawerVisible)">
+                <Button Size="@AntSizeLDSType.Large" class="phone-desktop-flex" Type="@ButtonType.Text"
+                        OnClick="@(() => _drawerVisible = !_drawerVisible)">
                     <Icon Type="menu" Theme="outline" Class="Layout-Title"/>
                 </Button>
             </Flex>
@@ -94,7 +107,18 @@ else
             await using var context = await DbFactory.CreateDbContextAsync();
             var model = await context.Students.FirstOrDefaultAsync(x => x.UserId == id && x.UserName == name);
 
-            if (model == null) return;
+            if (model == null)
+            {
+                var f = await context.Staffs.FirstOrDefaultAsync(x => x.UserId == id && x.Name == name);
+                if (f == null) return;
+                model = new MemberModel()
+                {
+                    UserId = f.UserId,
+                    UserName = f.Name,
+                    Identity = f.Identity
+                };
+            }
+
             Member = MemberModel.AutoCopy<StudentModel, MemberModel>(model);
             Member.Identity = identity;
         }
@@ -110,13 +134,17 @@ else
 }
 
 <style>
-    .Layout-Header{
-        
+    .Layout-Header {
+
     }
-    
-    .Layout-Title{
+
+    .Layout-Title {
         font-size: 24px;
         font-weight: bold;
         color: #f3f5f7;
+    }
+    
+    .Layout-Popover{
+        border-radius: 10px;
     }
 </style>
