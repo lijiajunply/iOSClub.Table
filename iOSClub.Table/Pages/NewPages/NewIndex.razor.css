@@ -10,3 +10,38 @@
         text-align: center !important;
     }
 }
+
+@keyframes LyrButtonHover {
+     0% {
+         padding-left: 0;
+         transform: scale(1)
+     }
+
+     100% {
+         padding-left: 10px;
+         transform: scale(1.02)
+     }
+ }
+
+@keyframes LyrButtonNotHover {
+     0% {
+         padding-left: 10px;
+         transform: scale(1.02)
+     }
+     100% {
+         padding-left: 0;
+         transform: scale(1)
+     }
+ }
+
+@keyframes LyrButtonMove {
+     0% {
+         padding: 0;
+         transform: scale(1)
+     }
+
+     100% {
+         padding: 10px;
+         transform: scale(1.02)
+     }
+ }

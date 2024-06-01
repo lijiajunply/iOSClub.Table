@@ -4,14 +4,21 @@
 
 <Row OnBreakpoint="OnBreakpoint"/>
 
+<Drawer Placement="bottom" Closable="false"
+        Visible="@_drawerVisible"
+        OnClose="@(() => _drawerVisible = false)">
+    @Menu
+</Drawer>
+
 <Layout Class="layout">
     <Header Style="background: #fff">
         <Flex Align="center" Justify="space-between" Class="phone-desktop-flex">
             <a href="/NewIndex">
                 <Image Src="iOS_Club_LOGO.png" Preview="false" Style="width:40px; height:40px"/>
             </a>
-            <Button Size="@AntSizeLDSType.Large" Type="@ButtonType.Text" OnClick="@(() => _drawerVisible = !_drawerVisible)">
-                <Icon Type="@(_drawerVisible ? "close" : "menu")" Theme="outline" Style="font-size: 30px;"/>
+            <Button Size="@AntSizeLDSType.Large" Type="@ButtonType.Text"
+                    OnClick="@(() => _drawerVisible = !_drawerVisible)">
+                <Icon Type="menu" Theme="outline" Style="font-size: 30px;"/>
             </Button>
         </Flex>
         <Flex Align="center" Justify="space-between" Class="desktop-phone-flex">
@@ -24,19 +31,10 @@
             @Menu
         </Flex>
     </Header>
-    <Content>
-        <div style="background: #ffffff">
-            @if (_drawerVisible)
-            {
-                @Menu
-            }
-            else
-            {
-                <CascadingValue Value="IsMobile">
-                    @Body
-                </CascadingValue>
-            }
-        </div>
+    <Content Style="background: #ffffff">
+        <CascadingValue Value="IsMobile">
+            @Body
+        </CascadingValue>
     </Content>
     <Footer Class="footer">
         <p>
@@ -85,13 +83,18 @@
     private RenderFragment Menu
         => @<Template>
                <Flex Vertical="@IsMobile" Gap="large">
-                   <Button Type="@ButtonType.Text" Class="menu-button" OnClick="@(() => { Nav.NavigateTo("/NewAbout"); _drawerVisible = false; })">
+                   <Button Type="@ButtonType.Text" Class="menu-button"
+                           OnClick="@(() => { Nav.NavigateTo("/NewAbout"); _drawerVisible = false; })">
+
                        关于我们
                    </Button>
-                   <Button Type="@ButtonType.Text" Class="menu-button" OnClick="@(() => { Nav.NavigateTo("/NewEvent"); _drawerVisible = false; })">
+                   <Button Type="@ButtonType.Text" Class="menu-button"
+                           OnClick="@(() => { Nav.NavigateTo("/NewEvent"); _drawerVisible = false; })">
+
                        社团活动
                    </Button>
-                   <Button Type="@ButtonType.Primary" Class="menu-button" OnClick="@(() => { Nav.NavigateTo("/NewLogin"); _drawerVisible = false; })">
+                   <Button Type="@ButtonType.Primary" Class="menu-button"
+                           OnClick="@(() => { Nav.NavigateTo("/NewLogin"); _drawerVisible = false; })">
         登录/注册
     </Button>
     </Flex>
@@ -102,10 +105,18 @@
     .layout {
         min-height: 100vh;
     }
-    .footer{
+
+    .footer {
         text-align: center;
     }
-    .menu-button{
+
+    .menu-button {
         border-radius: 10px;
+    }
+    
+    @@media screen and (max-width: 768px) {
+        .menu-button {
+            border-radius: 0;
+        }
     }
 </style>

@@ -7,13 +7,14 @@
 @inject NavigationManager Nav
 @inject IWebHostEnvironment HostEnvironment
 
+<PageTitle>您的iMember中心 - 西建大iOS Club</PageTitle>
 <!--suppress ALL -->
 
 <Flex Justify="center" Align="center">
     <GridRow Class="block" Gutter="(20, 24)">
         <GridCol Xs="24" Sm="24" Md="12" Lg="12" Xl="8" Xxl="8">
             <a href="/Centre/PersonalData">
-                <Card Hoverable Class="card">
+                <Card Hoverable Class="card" Bordered="false">
                     @if (Member.Identity != "Founder")
                     {
                         <Image Style="height: 100px;width: 100px" Preview="false" Src="@(Member.Gender == "男" ? "Centre/男生.png" : "Centre/女生.png")"/>   
@@ -44,7 +45,7 @@
                             @foreach (var item in Tools)
                             {
                                 <SpaceItem>
-                                    <Button OnClick="@(() => Nav.NavigateTo(item.Url))" Class="card" Style="padding: 0">
+                                    <Button Type="@ButtonType.Text" OnClick="@(() => Nav.NavigateTo(item.Url))" Class="card" Style="padding: 0;height: auto;">
                                         <Image Preview="false" Src="@item.IconUrl"/>
                                         <Paragraph>@item.Name</Paragraph>
                                     </Button>

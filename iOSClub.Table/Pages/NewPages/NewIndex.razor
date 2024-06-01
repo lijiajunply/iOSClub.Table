@@ -7,8 +7,7 @@
         <GridCol Style="text-align: center" Xs="24" Sm="24" Md="24" Lg="24" Xl="9" Xxl="9">
             <div style="text-align: center">
                 <Image Src="iOS_Club_LOGO.png" Preview="false" Style="width:75%;text-align: center"/>
-                @if (!IsMobile)
-                {
+                <div class="desktop-phone">
                     <Progress Percent="@Percent" ShowInfo="false" Style="width:75%;margin: 10px"></Progress>
                     <Space style="text-align: center">
                         <SpaceItem>
@@ -27,41 +26,35 @@
                             </Button>
                         </SpaceItem>
                     </Space>
-                }
+                </div>
             </div>
         </GridCol>
         <GridCol Xs="24" Sm="24" Md="24" Lg="24" Xl="15" Xxl="15">
-            <span class="gradient-text">XAUAT iOS Club</span>
-            @if (IsMobile)
-            {
+            <div class="gradient-text">XAUAT iOS Club</div>
+            <div class="phone-desktop">
                 <Title Level="3" Style="text-align: center">一个跨专业与课堂的数码开发爱好者社团</Title>
                 <Paragraph Type="secondary" Style="text-align: center;font-size: 22px">
                     "Stay hungry, stay foolish"
                 </Paragraph>
-            }
-            else
-            {
+            </div>
+            <div class="desktop-phone">
                 <Title Level="1" Style="color: #3c3c43">
                     西安建筑科技大学iOS众创空间俱乐部
                 </Title>
                 @for (var i = 0; i < Lyc.Length; i++)
                 {
-                    <h6 class="first-button" style="@(i * 10 + 30 - Percent + 10 == 0 ? "padding: 10px;background: #f6f6f7;font-weight: bold;" : "")">
+                    <h6 class="@(i * 10 + 30 - Percent + 10 == 0 ? "Lyr-Display" : "") first-button">
                         @Lyc[i]
                     </h6>
                 }
-            }
-
+            </div>
         </GridCol>
     </GridRow>
 
     <div class="block-opacity">
-        @if (!IsMobile)
-        {
-            <Title Level="2" Style="text-align: center">
-                关于我们
-            </Title>
-        }
+        <Title Level="2" Style="text-align: center" Class="desktop-phone">
+            关于我们
+        </Title>
         <GridRow Class="block">
             @foreach (var item in Cards)
             {
@@ -143,12 +136,28 @@
     }
 
     .first-button:hover {
-        padding-left: 10px;
+        animation: LyrButtonHover 0.2s ease;
+        transform: scale(1.02);
         background: #f6f6f7;
         font-weight: bold;
+        padding-left: 10px;
+    }
+
+    .first-button:not(:hover) {
+        animation: LyrButtonNotHover 0.2s ease;
+    }
+
+    .Lyr-Display{
+        animation: LyrButtonMove 0.2s ease;
+        transform: scale(1.02);
+        background: #f6f6f7;
+        font-weight: bold;
+        padding: 10px;
     }
     
     .card-d{
         font-size: 22px;
     }
+    
+    
 </style>
