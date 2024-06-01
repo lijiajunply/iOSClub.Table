@@ -65,6 +65,7 @@
       <_ContentIncludedByDefault Remove="Pages\CentrePages\PersonalData.razor" />
       <_ContentIncludedByDefault Remove="Pages\CentrePages\Tool.razor" />
       <_ContentIncludedByDefault Remove="Pages\CentrePages\_Imports.razor" />
+      <_ContentIncludedByDefault Remove="wwwroot\NewPages\Apple.jpg" />
     </ItemGroup>
 
     <ItemGroup>
