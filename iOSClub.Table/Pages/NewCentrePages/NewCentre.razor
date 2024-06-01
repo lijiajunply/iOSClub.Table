@@ -139,7 +139,7 @@
                             <Paragraph Type="secondary">展示社团数据</Paragraph>
                         </TitleTemplate>
                         <ContextTemplate>
-                            <Flex Align="center">
+                            <Flex Align="center" Style="margin-top: 10px">
                                 <Statistic GroupSeparator=" " Title="当前成员" Value="@Total" TValue="int">
                                     <PrefixTemplate>
                                         <Icon Type="team" Theme="outline"/>
@@ -160,8 +160,9 @@
                             <Paragraph Type="secondary">显示当前服务器环境</Paragraph>
                         </TitleTemplate>
                         <ContextTemplate>
-                            <Flex Align="center" Justify="center" Style="height: 100%">
+                            <Flex Align="center" Style="margin-top: 10px">
                                 <Paragraph Type="secondary">当前储存路径: @HostEnvironment.WebRootPath</Paragraph>
+                                <Paragraph Type="secondary">服务器时间: @DateTime.Today.ToString("yyyy-MM-dd")</Paragraph>
                             </Flex>
                         </ContextTemplate>
                     </AppleCard>
@@ -253,6 +254,7 @@
     .block{
         width: 80%;
         margin-top: 45px;
+        margin-bottom: 45px;
     }
     
 </style>

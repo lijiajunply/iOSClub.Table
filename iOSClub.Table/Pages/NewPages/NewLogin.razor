@@ -45,7 +45,6 @@
 </GridRow>
 
 @code {
-    [CascadingParameter] public bool IsMobile { get; set; }
     public LoginModel Model { get; } = new();
 
     private async Task Submit()
@@ -110,5 +109,12 @@
         margin-top: 30px; 
         margin-bottom: 30px;
         max-width: 100vw
+    }
+
+    @@media screen and (max-width: 768px) {
+        .login-form{
+            box-shadow: none;
+            margin : 0;
+        }
     }
 </style>

@@ -1,4 +1,4 @@
-﻿@page "/NewSignup/{Text?}"
+﻿@page "/NewSignup"
 @using System.Diagnostics.CodeAnalysis
 @using iOSClub.Share
 @using iOSClub.Share.Data
@@ -10,39 +10,27 @@
 
 <PageTitle>创建您的iMember账号 - 西建大iOS Club</PageTitle>
 
-@if (isWeiXin)
-{
-    <div id="Mask" class="body">
-        <img src="/other/WeChat.jpg" alt="请使用浏览器注册，谢谢"/>
-    </div>
-}
-else
-{
-    <GridRow Type="flex" Justify="center" Style="height: 80vh;">
-        <GridCol Xs="24" Sm="24" Md="24" Lg="24" Xl="10" Xxl="10">
-            <Card Class="login-form" Bordered="false">
-                <Flex Gap="middle">
-                    <Image Src="iOS_Club_LOGO.png" Preview="false" Style="width:40px; height:40px"/>
-                    <div style="font-size: 24px;font-weight: bold;">XAUAT iOS Club</div>
-                </Flex>
-                <Carousel @ref="_carousel" DotPosition="@CarouselDotPosition.Top">
-                    @foreach (var item in steps)
-                    {
-                        <CarouselSlick>
-                            @item
-                        </CarouselSlick>
-                    }
-                </Carousel>
-            </Card>
-        </GridCol>
-    </GridRow>
-}
+<GridRow Type="flex" Justify="center" Style="height: 80vh;">
+    <GridCol Xs="24" Sm="24" Md="24" Lg="24" Xl="10" Xxl="10">
+        <Card Class="login-form" Bordered="false">
+            <Flex Gap="middle" Class="desktop-phone-flex">
+                <Image Src="iOS_Club_LOGO.png" Preview="false" Style="width:40px; height:40px"/>
+                <div style="font-size: 24px;font-weight: bold;">XAUAT iOS Club</div>
+            </Flex>
+            <Carousel @ref="_carousel" DotPosition="@CarouselDotPosition.Top">
+                @foreach (var item in steps)
+                {
+                    <CarouselSlick>
+                        @item
+                    </CarouselSlick>
+                }
+            </Carousel>
+        </Card>
+    </GridCol>
+</GridRow>
 
 
 @code {
-
-    [Parameter] public string? Text { get; set; }
-
     private int _index;
 
     private int Index
@@ -59,6 +47,8 @@ else
     {
         Index--;
     }
+
+    record OrgRecord(string qqApi, string https);
 
     private async Task OnValidSubmit()
     {
@@ -79,6 +69,14 @@ else
             }
 
             await context.SaveChangesAsync();
+
+            var date = DateTime.Today;
+
+            if (date.Month == 10)
+            {
+                await Js.InvokeVoidAsync("NavigateTo", SignRecord.ios.qqApi, SignRecord.ios.https);
+            }
+
             return;
         }
 
@@ -110,7 +108,7 @@ else
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender && Text == "ios")
+        if (firstRender)
         {
             isWeiXin = await Js.InvokeAsync<bool>("isWeiXin");
             StateHasChanged();
@@ -272,5 +270,11 @@ else
         -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
         -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
         transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    }
+    @@media screen and (max-width: 768px) {
+        .login-form{
+            box-shadow: none;
+            margin : 0;
+        }
     }
 </style>
