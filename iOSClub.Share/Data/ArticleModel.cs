@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace iOSClub.Share.Data;
 
-public class EventModel
+public class ArticleModel
 {
     [Column(TypeName = "varchar(256)")] public string Title { get; init; } = "";
 

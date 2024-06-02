@@ -42,31 +42,22 @@
             <Icon Type="copyright" Theme="outline"/>
             2023 - 2024 XAUAT iOS Club
         </p>
-        <div>
-            @if (IsMobile)
-            {
-                <a href="https://beian.miit.gov.cn/" target="_blank">备案号 陕ICP备2024031872号</a>
-            }
-            else
-            {
-                <Space>
-                    <Split>
-                        <Divider Type="DirectionVHType.Vertical"/>
-                    </Split>
-                    <ChildContent>
-                        <SpaceItem>
-                            <a href="https://cn.xauat.edu.cn/" target="_blank">西安建筑科技大学</a>
-                        </SpaceItem>
-                        <SpaceItem>
-                            <a href="https://beian.miit.gov.cn/" target="_blank">备案号 陕ICP备2024031872号</a>
-                        </SpaceItem>
-                        <SpaceItem>
-                            <a href="https://gitee.com/XAUATiOSClub" target="_blank">我们的Gitee组织</a>
-                        </SpaceItem>
-                    </ChildContent>
-                </Space>
-            }
-        </div>
+        <Space>
+            <Split>
+                <Divider Type="DirectionVHType.Vertical"/>
+            </Split>
+            <ChildContent>
+                <SpaceItem Class="desktop-phone-flex">
+                    <a href="https://cn.xauat.edu.cn/" target="_blank">西安建筑科技大学</a>
+                </SpaceItem>
+                <SpaceItem>
+                    <a href="https://beian.miit.gov.cn/" target="_blank">备案号 陕ICP备2024031872号</a>
+                </SpaceItem>
+                <SpaceItem Class="desktop-phone-flex">
+                    <a href="https://gitee.com/XAUATiOSClub" target="_blank">我们的Gitee组织</a>
+                </SpaceItem>
+            </ChildContent>
+        </Space>
     </Footer>
 </Layout>
 

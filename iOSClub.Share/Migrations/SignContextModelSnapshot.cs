@@ -14,20 +14,12 @@ namespace iOSClub.Share.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.3");
-
-            modelBuilder.HasSequence<int>("ProjectModelId");
-
-            modelBuilder.HasSequence<int>("ResourceModelId");
-
-            modelBuilder.HasSequence<int>("TaskModelId");
-
-            modelBuilder.HasSequence<int>("ToolModelId");
+            modelBuilder.HasAnnotation("ProductVersion", "8.0.6");
 
             modelBuilder.Entity("ProjectModelStaffModel", b =>
                 {
-                    b.Property<int>("ProjectsId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("ProjectsId")
+                        .HasColumnType("varchar(33)");
 
                     b.Property<string>("StaffsUserId")
                         .HasColumnType("varchar(10)");
@@ -41,8 +33,8 @@ namespace iOSClub.Share.Migrations
 
             modelBuilder.Entity("StaffModelTaskModel", b =>
                 {
-                    b.Property<int>("TasksId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("TasksId")
+                        .HasColumnType("varchar(33)");
 
                     b.Property<string>("UsersUserId")
                         .HasColumnType("varchar(10)");
@@ -54,7 +46,7 @@ namespace iOSClub.Share.Migrations
                     b.ToTable("StaffModelTaskModel");
                 });
 
-            modelBuilder.Entity("iOSClub.Share.Data.EventModel", b =>
+            modelBuilder.Entity("iOSClub.Share.Data.ArticleModel", b =>
                 {
                     b.Property<string>("Link")
                         .HasColumnType("varchar(256)");
@@ -73,15 +65,13 @@ namespace iOSClub.Share.Migrations
 
                     b.HasKey("Link");
 
-                    b.ToTable("Events");
+                    b.ToTable("Articles");
                 });
 
             modelBuilder.Entity("iOSClub.Share.Data.ProjectModel", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValueSql("nextval('\"ProjectModelId\"')");
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(33)");
 
                     b.Property<string>("DepartmentName")
                         .IsRequired()
@@ -108,10 +98,8 @@ namespace iOSClub.Share.Migrations
 
             modelBuilder.Entity("iOSClub.Share.Data.ResourceModel", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValueSql("nextval('\"ResourceModelId\"')");
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(33)");
 
                     b.Property<string>("Description")
                         .HasColumnType("varchar(512)");
@@ -182,10 +170,8 @@ namespace iOSClub.Share.Migrations
 
             modelBuilder.Entity("iOSClub.Share.Data.TaskModel", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValueSql("nextval('\"TaskModelId\"')");
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(33)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -195,8 +181,9 @@ namespace iOSClub.Share.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(20)");
 
-                    b.Property<int>("ProjectId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("ProjectId")
+                        .IsRequired()
+                        .HasColumnType("varchar(33)");
 
                     b.Property<string>("StartTime")
                         .IsRequired()
@@ -218,10 +205,8 @@ namespace iOSClub.Share.Migrations
 
             modelBuilder.Entity("iOSClub.Share.Data.ToolModel", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValueSql("nextval('\"ToolModelId\"')");
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(33)");
 
                     b.Property<string>("Description")
                         .IsRequired()

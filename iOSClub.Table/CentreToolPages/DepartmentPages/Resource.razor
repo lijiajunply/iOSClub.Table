@@ -90,7 +90,7 @@
     private async Task Create()
     {
         await using var context = await DbFactory.CreateDbContextAsync();
-        if (FormData.Id != 0)
+        if (!string.IsNullOrEmpty(FormData.Id))
         {
             var resource = await context.Resources.FirstOrDefaultAsync(x => x.Id == FormData.Id);
             if (resource != null)
@@ -104,6 +104,7 @@
         }
         else
         {
+            FormData.Id = FormData.GenerationId();
             await context.Resources.AddAsync(FormData);
             await context.SaveChangesAsync();
             Resources.Add(FormData);

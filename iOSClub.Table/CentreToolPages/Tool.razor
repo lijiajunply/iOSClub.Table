@@ -68,24 +68,24 @@
 <Modal @bind-Visible="@_visible" Footer="@null">
     <Form Model="Data"
           OnFinish="OnFinish" ValidateMode="FormValidateMode.Rules">
-        <FormItem Class="item" Label="任务名称" Rules="@SignRecord.TaskTitleRules">
+        <FormItem Class="item" Label="App名称" Rules="@SignRecord.TaskTitleRules">
             <Input @bind-Value="@context.Name"/>
         </FormItem>
-        <FormItem Class="item" Label="任务描述" Rules="@SignRecord.TaskDescriptionRules">
+        <FormItem Class="item" Label="App描述" Rules="@SignRecord.TaskDescriptionRules">
             <TextArea @bind-Value="@context.Description" ></TextArea>
         </FormItem>
-        <FormItem Class="item" Label="任务链接">
+        <FormItem Class="item" Label="App链接">
             <Input @bind-Value="@context.Url"/>
         </FormItem>
-        <FormItem Class="item" Label="任务封面">
+        <FormItem Class="item" Label="App封面">
             <Input @bind-Value="@context.IconUrl"/>
         </FormItem>
-        <FormItem Class="item" Label="任务标签">
+        <FormItem Class="item" Label="App标签">
             <Input @bind-Value="@context.Tag"/>
         </FormItem>
         <FormItem Style="text-align: center">
             <Button Type="@ButtonType.Primary" HtmlType="submit">
-                @if (Data.Id == 0)
+                @if (string.IsNullOrEmpty(Data.Id))
                 {
                     <p>添加</p>
                 }
@@ -149,9 +149,10 @@
     private async Task OnFinish()
     {
         await using var context = await DbFactory.CreateDbContextAsync();
-        if (Data.Id == 0)
+        if (string.IsNullOrEmpty(Data.Id))
         {
-            context.Tools.Add(Data);
+            Data.Id = Data.GenerationId();
+            await context.Tools.AddAsync(Data);
             Tools.Add(Data);
         }
         else

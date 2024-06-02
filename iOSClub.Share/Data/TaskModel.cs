@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace iOSClub.Share.Data;
 
-public class TaskModel
+public class TaskModel : DataModel
 {
     public ProjectModel Project { get; set; } = new();
     [Column(TypeName = "varchar(20)")] public string Title { get; set; } = "";
@@ -13,9 +13,7 @@ public class TaskModel
     
     [Column(TypeName = "boolean")] public bool Status { get; set; }
 
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; init; }
+    [Key] [Column(TypeName = "varchar(33)")]public string Id { get; set; } = "";
 
     public List<StaffModel> Users { get; init; } = [];
 

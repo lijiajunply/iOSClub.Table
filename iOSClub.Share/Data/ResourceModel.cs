@@ -3,11 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace iOSClub.Share.Data;
 
-public class ResourceModel
+public class ResourceModel : DataModel
 {
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; init; }
+    [Key] [Column(TypeName = "varchar(33)")]public string Id { get; set; } = "";
 
     [Column(TypeName = "varchar(20)")] public string Name { get; set; } = "";
 

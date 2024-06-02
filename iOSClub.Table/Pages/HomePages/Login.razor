@@ -11,7 +11,7 @@
 <PageTitle>登录到您的iMember - 西建大iOS Club</PageTitle>
 
 <GridRow Type="flex" Justify="center" Style="height: 80vh;">
-    <GridCol Xs="24" Sm="24" Md="24" Lg="24" Xl="12" Xxl="12">
+    <GridCol Xs="24" Sm="24" Md="24" Lg="10" Xl="10" Xxl="10">
         <Card Class="login-form" Bordered="false">
             <Title Level="2" Style="text-align: center">登录</Title>
             <Form Model="Model"
@@ -83,7 +83,7 @@
     {
         _message.Error("出错了!");
     }
-
+    
     protected override async Task OnInitializedAsync()
     {
         var authState = await authStateProvider.GetAuthenticationStateAsync() ;

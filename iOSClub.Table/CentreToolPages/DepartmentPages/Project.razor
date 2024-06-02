@@ -150,7 +150,7 @@
         </FormItem>
         <FormItem Style="text-align: center">
             <Button Type="@ButtonType.Primary" HtmlType="submit">
-                @if (TaskData.Id == 0)
+                @if (string.IsNullOrEmpty(TaskData.Id))
                 {
                     <p>添加</p>
                 }
@@ -182,7 +182,7 @@
     {
         await using var context = await DbFactory.CreateDbContextAsync();
         var task = TaskData.ToTask();
-        if (TaskData.Id == 0)
+        if (string.IsNullOrEmpty(TaskData.Id))
         {
             var p = await context.Projects.FirstOrDefaultAsync(x => x.Id.ToString() == Id);
             if (p == null)
@@ -194,6 +194,7 @@
             task.Project = Data;
             var staff = await context.Staffs.FirstAsync(x => x.UserId == Member.UserId);
             task.Users.Add(staff);
+            task.Id = task.GenerationId();
             p.Tasks.Add(task);
             Data.Tasks.Add(task);
             await context.SaveChangesAsync();

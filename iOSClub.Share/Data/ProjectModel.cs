@@ -3,14 +3,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace iOSClub.Share.Data;
 
-public class ProjectModel
+public class ProjectModel : DataModel
 {
     [Column(TypeName = "varchar(20)")] public string DepartmentName { get; set; } = "";
     [Column(TypeName = "varchar(20)")] public string Title { get; set; } = "";
 
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int  Id { get; init; }
+    [Key] [Column(TypeName = "varchar(33)")]public string Id { get; set; } = "";
 
     [Column(TypeName = "varchar(512)")] public string Description { get; set; } = "";
     [Column(TypeName = "varchar(20)")] public string? StartTime { get; set; }

@@ -39,12 +39,12 @@
 
 @code {
 
-    private EventModel[] Models { get; set; } = [];
+    private ArticleModel[] Models { get; set; } = [];
 
     protected override async Task OnInitializedAsync()
     {
         await using var context = await DbFactory.CreateDbContextAsync();
-        Models = await context.Events.ToArrayAsync();
+        Models = await context.Articles.ToArrayAsync();
         await base.OnInitializedAsync();
     }
 

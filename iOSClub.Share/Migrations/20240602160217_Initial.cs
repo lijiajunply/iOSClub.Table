@@ -11,7 +11,7 @@ namespace iOSClub.Share.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Events",
+                name: "Articles",
                 columns: table => new
                 {
                     Link = table.Column<string>(type: "varchar(256)", nullable: false),
@@ -21,20 +21,19 @@ namespace iOSClub.Share.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Events", x => x.Link);
+                    table.PrimaryKey("PK_Articles", x => x.Link);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Projects",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    Id = table.Column<string>(type: "varchar(33)", nullable: false),
                     DepartmentName = table.Column<string>(type: "varchar(20)", nullable: false),
                     Title = table.Column<string>(type: "varchar(20)", nullable: false),
                     Description = table.Column<string>(type: "varchar(512)", nullable: false),
-                    StartTime = table.Column<string>(type: "varchar(10)", nullable: true),
-                    EndTime = table.Column<string>(type: "varchar(10)", nullable: true)
+                    StartTime = table.Column<string>(type: "varchar(20)", nullable: true),
+                    EndTime = table.Column<string>(type: "varchar(20)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -45,8 +44,7 @@ namespace iOSClub.Share.Migrations
                 name: "Resources",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    Id = table.Column<string>(type: "varchar(33)", nullable: false),
                     Name = table.Column<string>(type: "varchar(20)", nullable: false),
                     Description = table.Column<string>(type: "varchar(512)", nullable: true),
                     Tag = table.Column<string>(type: "varchar(50)", nullable: true)
@@ -90,8 +88,7 @@ namespace iOSClub.Share.Migrations
                 name: "Tools",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    Id = table.Column<string>(type: "varchar(33)", nullable: false),
                     Name = table.Column<string>(type: "varchar(20)", nullable: false),
                     Url = table.Column<string>(type: "varchar(64)", nullable: false),
                     IconUrl = table.Column<string>(type: "varchar(64)", nullable: false),
@@ -107,14 +104,13 @@ namespace iOSClub.Share.Migrations
                 name: "Tasks",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    ProjectId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Id = table.Column<string>(type: "varchar(33)", nullable: false),
+                    ProjectId = table.Column<string>(type: "varchar(33)", nullable: false),
                     Title = table.Column<string>(type: "varchar(20)", nullable: false),
                     Description = table.Column<string>(type: "varchar(200)", nullable: false),
-                    StartTime = table.Column<string>(type: "varchar(10)", nullable: false),
-                    EndTime = table.Column<string>(type: "varchar(10)", nullable: false),
-                    Status = table.Column<bool>(type: "BOOLEAN", nullable: false)
+                    StartTime = table.Column<string>(type: "varchar(20)", nullable: false),
+                    EndTime = table.Column<string>(type: "varchar(20)", nullable: false),
+                    Status = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -131,7 +127,7 @@ namespace iOSClub.Share.Migrations
                 name: "ProjectModelStaffModel",
                 columns: table => new
                 {
-                    ProjectsId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ProjectsId = table.Column<string>(type: "varchar(33)", nullable: false),
                     StaffsUserId = table.Column<string>(type: "varchar(10)", nullable: false)
                 },
                 constraints: table =>
@@ -155,7 +151,7 @@ namespace iOSClub.Share.Migrations
                 name: "StaffModelTaskModel",
                 columns: table => new
                 {
-                    TasksId = table.Column<int>(type: "INTEGER", nullable: false),
+                    TasksId = table.Column<string>(type: "varchar(33)", nullable: false),
                     UsersUserId = table.Column<string>(type: "varchar(10)", nullable: false)
                 },
                 constraints: table =>
@@ -195,7 +191,7 @@ namespace iOSClub.Share.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Events");
+                name: "Articles");
 
             migrationBuilder.DropTable(
                 name: "ProjectModelStaffModel");

@@ -12,7 +12,7 @@
 <PageTitle>创建您的iMember账号 - 西建大iOS Club</PageTitle>
 
 <GridRow Type="flex" Justify="center" Style="height: 80vh;">
-    <GridCol Xs="24" Sm="24" Md="24" Lg="24" Xl="10" Xxl="10">
+    <GridCol Xs="24" Sm="24" Md="24" Lg="10" Xl="10" Xxl="10">
         <Card Class="login-form" Bordered="false">
             <Flex Gap="middle" Class="desktop-phone-flex">
                 <Image Src="iOS_Club_LOGO.png" Preview="false" Style="width:40px; height:40px"/>
@@ -71,15 +71,13 @@
 
             var date = DateTime.Today;
 
-            if (date.Month == 10)
+            if (date.Month != 10) return;
+            if (isWeiXin)
             {
-                if (isWeiXin)
-                {
-                    Nav.NavigateTo("/iOSPic");
-                    return;
-                }
-                await Js.InvokeVoidAsync("NavigateTo", SignRecord.ios.qqApi, SignRecord.ios.https);
+                Nav.NavigateTo("/iOSPic");
+                return;
             }
+            await Js.InvokeVoidAsync("NavigateTo", SignRecord.ios.qqApi, SignRecord.ios.https);
 
             return;
         }
