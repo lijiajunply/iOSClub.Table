@@ -20,6 +20,6 @@ RUN dotnet publish "iOSClub.Table.csproj" -c $BUILD_CONFIGURATION -o /app/publis
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
-ENV SQL=""
+ENV SQL ""
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "iOSClub.Table.dll"]

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/iOSClub.Share/Data/StudentModel.cs" dialect="AZURE" />
-    <file url="file://$PROJECT_DIR$/iOSClub.Table/CentrePages/AdminPages/MemberData.razor" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/iOSClub.Table/CentreToolPages/AdminPages/MemberData.razor" dialect="MySQL" />
     <file url="PROJECT" dialect="SQLite" />
   </component>
 </project>

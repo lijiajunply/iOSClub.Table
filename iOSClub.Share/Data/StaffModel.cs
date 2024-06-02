@@ -9,7 +9,7 @@ public class StaffModel
     [Column(TypeName = "varchar(10)")]
     public string UserId { get; init; } = "";
 
-    [Column(TypeName = "varchar(50)")] public string Name { get; init; } = "";
+    [Column(TypeName = "varchar(50)")] public string Name { get; set; } = "";
 
     /// <summary>
     /// Founder : 创始人
