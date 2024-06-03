@@ -2,12 +2,24 @@
 @inherits LayoutComponentBase
 @inject NavigationManager Nav
 
-<Row OnBreakpoint="OnBreakpoint"/>
-
-<Drawer Placement="bottom" Closable="false"
+<Drawer Placement="top" Closable="false"
         Visible="@_drawerVisible"
+        OffsetY="64"
         OnClose="@(() => _drawerVisible = false)">
-    @Menu
+    <Flex Gap="large" Vertical>
+        <Button Type="@ButtonType.Text" Class="menu-button"
+                OnClick="@(() => { Nav.NavigateTo("/About"); _drawerVisible = false; })">
+            关于我们
+        </Button>
+        <Button Type="@ButtonType.Text" Class="menu-button"
+                OnClick="@(() => { Nav.NavigateTo("/Event"); _drawerVisible = false; })">
+            社团活动
+        </Button>
+        <Button Type="@ButtonType.Primary" Class="menu-button"
+                OnClick="@(() => { Nav.NavigateTo("/Login"); _drawerVisible = false; })">
+            登录/注册
+        </Button>
+    </Flex>
 </Drawer>
 
 <Layout Class="layout">
@@ -28,13 +40,24 @@
                     <div style="font-size: 24px;font-weight: bold;color: #1c1f23">XAUAT iOS Club</div>
                 </Flex>
             </a>
-            @Menu
+            <Flex Gap="large">
+                <Button Type="@ButtonType.Text" Class="menu-button"
+                        OnClick="@(() => { Nav.NavigateTo("/About"); _drawerVisible = false; })">
+                    关于我们
+                </Button>
+                <Button Type="@ButtonType.Text" Class="menu-button"
+                        OnClick="@(() => { Nav.NavigateTo("/Event"); _drawerVisible = false; })">
+                    社团活动
+                </Button>
+                <Button Type="@ButtonType.Primary" Class="menu-button"
+                        OnClick="@(() => { Nav.NavigateTo("/Login"); _drawerVisible = false; })">
+                    登录/注册
+                </Button>
+            </Flex>
         </Flex>
     </Header>
     <Content Style="background: #ffffff">
-        <CascadingValue Value="IsMobile">
-            @Body
-        </CascadingValue>
+        @Body
     </Content>
     <Footer Class="footer">
         <p>
@@ -63,31 +86,7 @@
 
 @code
 {
-    private void OnBreakpoint(BreakpointType breakpoint)
-    {
-        IsMobile = breakpoint.IsIn(BreakpointType.Sm, BreakpointType.Xs, BreakpointType.Md);
-    }
-
-    private bool IsMobile;
     private bool _drawerVisible;
-
-    private RenderFragment Menu
-        => @<Template>
-               <Flex Vertical="@IsMobile" Gap="large">
-                   <Button Type="@ButtonType.Text" Class="menu-button"
-                           OnClick="@(() => { Nav.NavigateTo("/About"); _drawerVisible = false; })">
-                       关于我们
-                   </Button>
-                   <Button Type="@ButtonType.Text" Class="menu-button"
-                           OnClick="@(() => { Nav.NavigateTo("/Event"); _drawerVisible = false; })">
-                       社团活动
-                   </Button>
-                   <Button Type="@ButtonType.Primary" Class="menu-button"
-                           OnClick="@(() => { Nav.NavigateTo("/Login"); _drawerVisible = false; })">
-        登录/注册
-    </Button>
-    </Flex>
-    </Template>;
 }
 
 <style>
@@ -110,7 +109,8 @@
     }
 
     .ant-drawer-content {
-        border-radius: 10px 10px 0 0;
+        border-radius: 0 0 10px 10px;
         padding-top: 10px;
+        border: hidden;
     }
 </style>
